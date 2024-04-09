@@ -1,7 +1,7 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import {SafeAreaView} from 'react-native';
-import Router from './src/routes/Router';
+import Router from './src/routes/router';
 
 function App(): React.JSX.Element {
   return (
