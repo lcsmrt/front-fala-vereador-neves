@@ -7,12 +7,13 @@ import {useState} from 'react';
 import EyeOpenIcon from '../../assets/icons/eyeOpen';
 import EyeClosedIcon from '../../assets/icons/eyeClosed';
 import LinearGradient from 'react-native-linear-gradient';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import useUserAuthentication from './hooks/useUserAuthentication';
 
 const Login = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const navigation = useNavigation();
+  const {credentials, handleCredentialsChange, credentialErrors, handleLogin} =
+    useUserAuthentication();
 
   return (
     <LinearGradient
@@ -26,6 +27,11 @@ const Login = () => {
         <Input
           placeholder="E-mail"
           classes="w-full mb-1"
+          value={credentials.login || ''}
+          onChangeText={(text: string) =>
+            handleCredentialsChange('login', text)
+          }
+          notification={credentialErrors.login || ''}
           leftIcon={
             <View className="h-6 w-6 mr-2">
               <UserIcon stroke="#999" />
@@ -35,6 +41,11 @@ const Login = () => {
         <Input
           placeholder="Senha"
           classes="w-full"
+          value={credentials.senha || ''}
+          onChangeText={(text: string) =>
+            handleCredentialsChange('senha', text)
+          }
+          notification={credentialErrors.senha || ''}
           secureTextEntry={!isPasswordVisible}
           leftIcon={
             <View className="h-6 w-6 mr-2">
@@ -55,11 +66,7 @@ const Login = () => {
           }
         />
 
-        <Button
-          className="w-full mt-8"
-          onPress={() =>
-            (navigation as NavigationProp<any, any>).navigate('Home')
-          }>
+        <Button className="w-full mt-8" onPress={handleLogin}>
           <Text className="text-slate-50 text-lg">Entrar</Text>
         </Button>
 

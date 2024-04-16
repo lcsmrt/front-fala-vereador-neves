@@ -62,8 +62,8 @@ const Input = React.forwardRef<TextInput, InputProps>(
             </View>
           </View>
           {notification && (
-            <View className="h-3">
-              <Text className="text-xs text-rose-700">{notification}</Text>
+            <View className="pl-2 h-4">
+              <Text className="text-xs text-rose-400">{notification}</Text>
             </View>
           )}
         </View>

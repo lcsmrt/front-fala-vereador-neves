@@ -5,9 +5,10 @@ interface CardProps {
   classes?: string;
   children?: React.ReactNode;
   touchable?: boolean;
+  hasShadow?: boolean;
 }
 
-const Card = ({classes, children, touchable}: CardProps) => {
+const Card = ({classes, children, touchable, hasShadow}: CardProps) => {
   const cardStyles = clsx(
     'bg-slate-50 p-6 rounded-xl border border-slate-200',
     classes,
@@ -15,9 +16,43 @@ const Card = ({classes, children, touchable}: CardProps) => {
   return (
     <>
       {touchable ? (
-        <TouchableOpacity className={cardStyles}>{children}</TouchableOpacity>
+        <TouchableOpacity
+          className={cardStyles}
+          style={
+            hasShadow
+              ? {
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.22,
+                  shadowRadius: 2.22,
+                  elevation: 3,
+                }
+              : {}
+          }>
+          {children}
+        </TouchableOpacity>
       ) : (
-        <View className={cardStyles}>{children}</View>
+        <View
+          className={cardStyles}
+          style={
+            hasShadow
+              ? {
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.22,
+                  shadowRadius: 2.22,
+                  elevation: 3,
+                }
+              : {}
+          }>
+          {children}
+        </View>
       )}
     </>
   );
