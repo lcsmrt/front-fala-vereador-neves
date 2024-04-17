@@ -1,5 +1,5 @@
 import {useMutation} from '@tanstack/react-query';
-import httpRequest from '../../axios/httpRequest';
+import httpRequest from '../axios/httpRequest';
 
 // AUTENTICA USUÁRIO AO REALIZAR LOGIN
 export interface AuthenticateUserParams {
