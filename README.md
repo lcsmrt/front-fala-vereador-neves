@@ -19,7 +19,7 @@ necessários nessa etapa, visto que o React Native é uma biblioteca multiplataf
 
 ## Tecnologias Utilizadas
 
-- **Axios e Tanstack Query:** As duas são usadas para configurar a parte de requisições para a APÌ. O Axios lida com interceptores, cookies, URL base etc., enquanto o Tanstack Query é usado para organizar
+- **Axios e Tanstack Query:** As duas são usadas para configurar a parte de requisições para a API. O Axios lida com interceptores, cookies, URL base etc., enquanto o Tanstack Query é usado para organizar
 as requisições de forma geral, encapsulando toda essa lógica.
 - **NativeWind:** Usado para a parte de estilização. Foi uma tentativa de trabalhar com algo semelhante ao TailWind, que é uma excelente biblioteca do React. A funcionalidade é bastante semelhante, mas faltam
 muitas das funcionalidades existentes no TailWind.
