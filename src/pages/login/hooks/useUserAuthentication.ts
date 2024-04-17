@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import {
   AuthenticateUserParams,
   useAuthenticateUser,
-} from '../../../lib/api/tanstackQuery/accessControl/accessControlRequests';
+} from '../../../lib/api/tanstackQuery/accessControlRequests';
 import useValidation from '../../../lib/hooks/useValidation';
 import {useLoadingContext} from '../../../lib/contexts/useLoadingContext';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -46,7 +46,6 @@ const useUserAuthentication = () => {
         try {
           const jsonUser = JSON.stringify(authenticatedUser);
           await EncryptedStorage.setItem('user', jsonUser);
-          console.log('Usuário armazenado com sucesso.X');
         } catch (error) {
           console.error('Erro ao armazenar os dados do usuário: ', error);
         }
