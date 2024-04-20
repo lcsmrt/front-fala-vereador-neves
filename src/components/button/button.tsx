@@ -24,7 +24,7 @@ const Button = React.forwardRef<TouchableOpacity, ButtonProps>(
         : size === 'lg'
         ? 'h-16 rounded-md px-8'
         : size === 'icon'
-        ? 'h-8 w-8'
+        ? 'h-6 w-6'
         : 'h-14 px-4 py-2',
     );
 

@@ -22,10 +22,6 @@ const useChatMessages = (id: string | number) => {
     setIsLoading(isChatMessagesLoading);
   }, [isChatMessagesLoading]);
 
-  useEffect(() => {
-    if (chatMessages) console.log("Chat: ", chatMessages);
-  }, [chatMessages]);
-
   return {isChatMessagesLoading, getMessages, chatMessages};
 };
 

@@ -12,6 +12,7 @@ const useUserSolicitations = (user: User | null) => {
   const {setIsLoading} = useLoadingContext();
 
   const getUserSolicitations = () => {
+    console.log('User: ', user);
     if (user && user.id)
       getSolicitations({
         id: user.id,
@@ -26,6 +27,12 @@ const useUserSolicitations = (user: User | null) => {
   useEffect(() => {
     setIsLoading(isSolicitationsLoading);
   }, [isSolicitationsLoading]);
+
+  useEffect(() => {
+    if (solicitations) {
+      console.log('Solicitations: ', solicitations);
+    }
+  }, [solicitations]);
 
   return {isSolicitationsLoading, getUserSolicitations, solicitations};
 };

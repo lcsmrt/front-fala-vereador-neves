@@ -15,3 +15,9 @@ export interface ChatMessage {
   opcaoMensagens?: MessageOptions[];
   anexo?: Attachment;
 }
+
+export interface ChatMessageFormData {
+  mensagem?: string;
+  origemVereador?: boolean;
+  anonimo?: boolean;
+}

@@ -1,6 +1,7 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import httpRequest from '../axios/httpRequest';
-import {ChatMessage} from '../../types/chatMessage';
+import {ChatMessage, ChatMessageFormData} from '../../types/chatMessage';
+import RNFetchBlob from 'rn-fetch-blob';
 
 // BUSCA MENSAGENS DO CHAT
 const getChatMessages = async (id: string | number) => {
@@ -23,16 +24,32 @@ export const useActionableGetChatMessages = () => {
 
 // ENVIA MENSAGEM NO CHAT
 interface SendMessageParams {
-  id: string;
-  formData: FormData;
+  id: string | number;
+  message: ChatMessageFormData;
 }
 
-const sendMessage = async ({id, formData}: SendMessageParams) => {
-  const {data} = await httpRequest.post(
-    `/solicitacoes/adicionar_mensagem/${id}`,
-    formData,
-  );
-  return data;
+const sendMessage = async ({id, message}: SendMessageParams) => {
+  try {
+    const {data} = await RNFetchBlob.fetch(
+      'POST',
+      `http://198.27.114.51:8083/solicitacoes/adicionar_mensagem/${id}`,
+      {
+        'Content-Type': 'multipart/form-data',
+      },
+      [
+        {
+          name: 'form',
+          data: JSON.stringify(message),
+          type: 'application/json',
+        },
+      ],
+    );
+
+    console.log('Mensagem enviada com sucesso: ', data);
+    return data;
+  } catch (error) {
+    console.log('Erro ao enviar mensagem: ', error);
+  }
 };
 
 export const useSendMessage = () => {

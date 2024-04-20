@@ -2,7 +2,7 @@ import Svg, {Path} from 'react-native-svg';
 
 const LockIcon = ({
   stroke,
-  strokeWidth,
+  strokeWidth = 1.5,
 }: {
   stroke?: string;
   strokeWidth?: number;

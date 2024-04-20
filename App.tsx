@@ -4,6 +4,7 @@ import {SafeAreaView} from 'react-native';
 import Router from './src/routes/router';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {LoadingContextProvider} from './src/lib/contexts/useLoadingContext';
+import {DrawerContextProvider} from './src/lib/contexts/useDrawerContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,13 +18,15 @@ const queryClient = new QueryClient({
 function App(): React.JSX.Element {
   return (
     <QueryClientProvider client={queryClient}>
-      <LoadingContextProvider>
-        <NavigationContainer>
-          <SafeAreaView style={{flex: 1}}>
-            <Router />
-          </SafeAreaView>
-        </NavigationContainer>
-      </LoadingContextProvider>
+      <NavigationContainer>
+        <LoadingContextProvider>
+          <DrawerContextProvider>
+            <SafeAreaView style={{flex: 1}}>
+              <Router />
+            </SafeAreaView>
+          </DrawerContextProvider>
+        </LoadingContextProvider>
+      </NavigationContainer>
     </QueryClientProvider>
   );
 }

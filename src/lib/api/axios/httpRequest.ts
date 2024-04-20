@@ -1,12 +1,18 @@
 import axios from 'axios';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const httpRequest = axios.create({
   baseURL: 'http://198.27.114.51:8083',
-  // Vai usar cookies http-only?
 });
 
 httpRequest.interceptors.request.use(
-  config => config,
+  async config => {
+    await EncryptedStorage.getItem('token').then(token => {
+      config.headers.Authorization = `Bearer ${token}`;
+    });
+    console.log('Requisição: ', config);
+    return config;
+  },
   error => {
     console.error('Erro na requisição: ', error);
     return Promise.reject(error);

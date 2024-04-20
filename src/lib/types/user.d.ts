@@ -14,4 +14,5 @@ export interface User {
   telefone?: string;
   uf?: string;
   vereador?: boolean;
+  token?: string;
 }

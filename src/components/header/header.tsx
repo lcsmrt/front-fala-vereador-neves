@@ -3,6 +3,7 @@ import Button from '../button/button';
 import {useNavigation} from '@react-navigation/native';
 import ArrowLeftIcon from '../../assets/icons/arrowLeft';
 import MenuIcon from '../../assets/icons/menu';
+import {useDrawerContext} from '../../lib/contexts/useDrawerContext';
 
 interface HeaderProps {
   hasBackButton?: boolean;
@@ -11,8 +12,12 @@ interface HeaderProps {
 
 const Header = ({hasBackButton, hasHambugerMenu}: HeaderProps) => {
   const navigation = useNavigation();
+  const {setIsDrawerVisible} = useDrawerContext();
   const onBackPress = () => {
     navigation.goBack();
+  };
+  const onMenuPress = () => {
+    setIsDrawerVisible(true);
   };
 
   return (
@@ -29,7 +34,7 @@ const Header = ({hasBackButton, hasHambugerMenu}: HeaderProps) => {
         )}
         {hasHambugerMenu ? (
           <View>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" onPress={onMenuPress}>
               <MenuIcon stroke="#fff" />
             </Button>
           </View>

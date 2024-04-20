@@ -2,7 +2,7 @@ import Svg, {Path} from 'react-native-svg';
 
 const EyeClosedIcon = ({
   stroke,
-  strokeWidth,
+  strokeWidth = 1.5,
 }: {
   strokeWidth?: number;
   stroke?: string;

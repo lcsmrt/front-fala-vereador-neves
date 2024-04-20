@@ -44,8 +44,9 @@ const useUserAuthentication = () => {
     if (isAuthenticated) {
       const storeUser = async () => {
         try {
-          const jsonUser = JSON.stringify(authenticatedUser);
+          const jsonUser = JSON.stringify(authenticatedUser.usuario);
           await EncryptedStorage.setItem('user', jsonUser);
+          await EncryptedStorage.setItem('token', authenticatedUser.token);
         } catch (error) {
           console.error('Erro ao armazenar os dados do usuário: ', error);
         }

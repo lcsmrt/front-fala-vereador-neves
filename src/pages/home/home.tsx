@@ -11,6 +11,9 @@ import useUser from '../../lib/hooks/useUser';
 import useUserSolicitations from './hooks/useUserSolicitations';
 import useUserSolicitationsKpis from './hooks/useUseSolicitationsKpis';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
+import Button from '../../components/button/button';
+import PlusIcon from '../../assets/icons/plus';
+import NewSoliciation from './components/newSolicitation';
 
 const Home = () => {
   const navigation: NavigationProp<any, any> = useNavigation();
@@ -67,59 +70,58 @@ const Home = () => {
           </Card>
         </View>
 
-        <View className="flex justify-center items-center flex-1 px-4">
-          {solicitations?.length ? (
-            <FlatList
-              className="w-full mt-4"
-              data={solicitations}
-              renderItem={({item}) => (
-                <Card
-                  touchable
-                  hasShadow
-                  classes="w-full mb-4 p-4 flex flex-row items-center"
-                  onPress={() =>
-                    navigation.navigate('Chat', {solicitation: item})
-                  }>
-                  <Avatar
-                    size="lg"
-                    fallback={getNameInitials(item.vereador?.nomeCivil ?? '')}
-                  />
-                  <View className="ml-4">
-                    <Text className="font-semibold mb-1">
-                      {item.vereador?.nomePopular ?? ''}
-                    </Text>
-                    <Text className="font-medium text-xs mb-1">{`Protocolo: ${
-                      item.protocolo ?? ''
-                    }`}</Text>
-                    <Text className="font-semibold text-xs">
-                      {item.statusSolicitacao?.descricao ?? ''}
-                    </Text>
-                  </View>
-                </Card>
-              )}
-              refreshControl={
-                <RefreshControl
-                  refreshing={
-                    isSolicitationsLoading || isSolicitationsKpisLoading
-                  }
-                  onRefresh={() => {
-                    getUserSolicitations();
-                    getUserSolicitationsKpis();
-                  }}
-                />
-              }
-            />
-          ) : (
-            <>
-              {!isSolicitationsLoading && (
-                <Text className="text-base text-center mb-20">
-                  Nenhuma solicitação encontrada.
+        <FlatList
+          className="w-full mt-4 flex-1 px-4"
+          data={solicitations}
+          renderItem={({item}) => (
+            <Card
+              touchable
+              hasShadow
+              classes="w-full mb-4 p-4 flex flex-row items-center"
+              onPress={() => navigation.navigate('Chat', {solicitation: item})}>
+              <Avatar
+                size="lg"
+                fallback={getNameInitials(item.vereador?.nomeCivil ?? '')}
+              />
+              <View className="ml-4">
+                <Text className="font-semibold mb-1">
+                  {item.vereador?.nomePopular ?? ''}
                 </Text>
-              )}
-            </>
+                <Text className="font-medium text-xs mb-1">{`Protocolo: ${
+                  item.protocolo ?? ''
+                }`}</Text>
+                <Text className="font-semibold text-xs">
+                  {item.statusSolicitacao?.descricao ?? ''}
+                </Text>
+              </View>
+            </Card>
           )}
-        </View>
+          ListEmptyComponent={
+            <View className="flex-1 justify-center items-center mt-20">
+              <Text className="text-base text-center">
+                Nenhuma solicitação encontrada.
+              </Text>
+            </View>
+          }
+          refreshControl={
+            <RefreshControl
+              refreshing={isSolicitationsLoading || isSolicitationsKpisLoading}
+              onRefresh={() => {
+                getUserSolicitations();
+                getUserSolicitationsKpis();
+              }}
+            />
+          }
+        />
       </View>
+
+      <View className="absolute bottom-0 right-0 mr-4 mb-4">
+        <Button className="rounded-full h-20 w-20">
+          <PlusIcon stroke="#fff" />
+        </Button>
+      </View>
+
+      {/* <NewSoliciation /> */}
     </>
   );
 };
