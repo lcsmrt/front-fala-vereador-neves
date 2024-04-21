@@ -1,17 +1,43 @@
-import Animated from 'react-native-reanimated';
-import Button from '../button/button';
+import {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
+import {Modal} from 'react-native';
 import {useDrawerContext} from '../../lib/contexts/useDrawerContext';
-import {Text} from 'react-native';
+import {useEffect} from 'react';
+import DrawerContent from './drawerContent';
 
 const Drawer = () => {
-  const {setIsDrawerVisible} = useDrawerContext();
+  const {isDrawerVisible, setIsDrawerVisible} = useDrawerContext();
+  const offset = useSharedValue(-1000);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{translateX: offset.value}],
+    };
+  });
+
+  useEffect(() => {
+    offset.value = withTiming(isDrawerVisible ? 0 : -1000, {duration: 300});
+  }, [isDrawerVisible]);
+
+  const handleCloseDrawer = () => {
+    offset.value = withTiming(-1000, {duration: 300}, () =>
+      runOnJS(setIsDrawerVisible)(false),
+    );
+  };
 
   return (
-    <Animated.View className="absolute w-[85%] h-screen bg-white left-0 flex flex-col p-4 items-start">
-      <Button variant="ghost">
-        <Text className='text-lg'>Sair</Text>
-      </Button>
-    </Animated.View>
+    <>
+      <Modal transparent visible={isDrawerVisible} animationType="none">
+        <DrawerContent
+          animatedStyle={animatedStyle}
+          onClose={handleCloseDrawer}
+        />
+      </Modal>
+    </>
   );
 };
 

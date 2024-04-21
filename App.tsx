@@ -1,10 +1,10 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import {SafeAreaView} from 'react-native';
 import Router from './src/routes/router';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {LoadingContextProvider} from './src/lib/contexts/useLoadingContext';
 import {DrawerContextProvider} from './src/lib/contexts/useDrawerContext';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,9 +21,9 @@ function App(): React.JSX.Element {
       <NavigationContainer>
         <LoadingContextProvider>
           <DrawerContextProvider>
-            <SafeAreaView style={{flex: 1}}>
+            <GestureHandlerRootView style={{flex: 1}}>
               <Router />
-            </SafeAreaView>
+            </GestureHandlerRootView>
           </DrawerContextProvider>
         </LoadingContextProvider>
       </NavigationContainer>
