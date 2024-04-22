@@ -45,8 +45,6 @@ const BottomSheet = gestureHandlerRootHOC(
         const newPosition = offset.value + event.translationY;
         if (newPosition < 0) {
           offset.value = 0;
-        } else if (newPosition >= 1000) {
-          offset.value = 1000;
         } else {
           offset.value = event.translationY;
         }
@@ -63,7 +61,7 @@ const BottomSheet = gestureHandlerRootHOC(
       <>
         <GestureDetector gesture={panGesture}>
           <Animated.View
-            className="absolute w-full h-3/5 bg-white bottom-0 flex flex-col py-7 z-50 rounded-t-3xl"
+            className="absolute w-full h-4/5 bg-white bottom-0 flex flex-col py-4 px-8 z-50 rounded-t-3xl"
             style={animatedStyle}>
             {children}
           </Animated.View>
