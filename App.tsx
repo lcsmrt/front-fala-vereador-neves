@@ -5,6 +5,7 @@ import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {LoadingContextProvider} from './src/lib/contexts/useLoadingContext';
 import {DrawerContextProvider} from './src/lib/contexts/useDrawerContext';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {BottomSheetContextProvider} from './src/lib/contexts/useBottomSheetContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,9 +22,11 @@ function App(): React.JSX.Element {
       <NavigationContainer>
         <LoadingContextProvider>
           <DrawerContextProvider>
-            <GestureHandlerRootView style={{flex: 1}}>
-              <Router />
-            </GestureHandlerRootView>
+            <BottomSheetContextProvider>
+              <GestureHandlerRootView style={{flex: 1}}>
+                <Router />
+              </GestureHandlerRootView>
+            </BottomSheetContextProvider>
           </DrawerContextProvider>
         </LoadingContextProvider>
       </NavigationContainer>

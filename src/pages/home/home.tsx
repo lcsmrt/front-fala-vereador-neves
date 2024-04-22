@@ -14,10 +14,11 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import Button from '../../components/button/button';
 import PlusIcon from '../../assets/icons/plus';
 import NewSoliciation from './components/newSolicitation';
+import {useBottomSheetContext} from '../../lib/contexts/useBottomSheetContext';
 
 const Home = () => {
   const navigation: NavigationProp<any, any> = useNavigation();
-
+  const {setIsBottomSheetVisible} = useBottomSheetContext();
   const {user} = useUser();
   const {isSolicitationsLoading, getUserSolicitations, solicitations} =
     useUserSolicitations(user);
@@ -116,12 +117,12 @@ const Home = () => {
       </View>
 
       <View className="absolute bottom-0 right-0 mr-4 mb-4">
-        <Button className="rounded-full h-20 w-20">
+        <Button
+          className="rounded-full h-20 w-20"
+          onPress={() => setIsBottomSheetVisible(true)}>
           <PlusIcon stroke="#fff" />
         </Button>
       </View>
-
-      {/* <NewSoliciation /> */}
     </>
   );
 };

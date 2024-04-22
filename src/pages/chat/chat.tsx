@@ -50,6 +50,7 @@ const Chat = () => {
 
         <View className="flex-1">
           <FlatList
+            showsVerticalScrollIndicator={false}
             data={chatMessages}
             renderItem={({item}) => (
               <>

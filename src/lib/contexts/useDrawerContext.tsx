@@ -1,5 +1,5 @@
 import {createContext, useContext, useState} from 'react';
-import Drawer from '../../components/drawer/drawer';
+import AppDrawer from '../../components/drawer/appDrawer';
 
 const DrawerContext = createContext({
   isDrawerVisible: false,
@@ -14,7 +14,7 @@ const DrawerContextProvider = ({children}: {children: React.ReactNode}) => {
   return (
     <DrawerContext.Provider value={{isDrawerVisible, setIsDrawerVisible}}>
       {children}
-      {isDrawerVisible && <Drawer />}
+      {isDrawerVisible && <AppDrawer />}
     </DrawerContext.Provider>
   );
 };
