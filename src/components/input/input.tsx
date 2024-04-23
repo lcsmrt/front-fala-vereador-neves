@@ -4,7 +4,7 @@ import {Text, TextInput, TextInputProps, View} from 'react-native';
 
 interface InputProps extends TextInputProps {
   variant?: 'default' | 'destructive';
-  inputSize?: 'default' | 'sm' | 'lg';
+  inputSize?: 'default' | 'sm' | 'lg' | 'multiline';
   label?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
@@ -41,7 +41,13 @@ const Input = React.forwardRef<TextInput, InputProps>(
         : isFocused
         ? 'border-green-600'
         : 'border-slate-400',
-      inputSize === 'sm' ? 'h-12' : inputSize === 'lg' ? 'h-16' : 'h-14',
+      inputSize === 'sm'
+        ? 'h-12'
+        : inputSize === 'lg'
+        ? 'h-16'
+        : inputSize === 'multiline'
+        ? 'h-fit max-h-28'
+        : 'h-14',
     );
 
     return (
@@ -54,7 +60,8 @@ const Input = React.forwardRef<TextInput, InputProps>(
               <TextInput
                 ref={ref}
                 {...inputProps}
-                className="h-full flex-1 border-none bg-transparent"
+                className="h-full flex-1 border-none bg-transparent py-2"
+                textAlignVertical={inputSize === 'multiline' ? 'top' : 'center'}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
               />

@@ -50,7 +50,7 @@ const BottomSheet = gestureHandlerRootHOC(
         }
       })
       .onEnd(event => {
-        if (event.translationY > 100) {
+        if (event.translationY > 300) {
           runOnJS(handleCloseDrawer)();
         } else {
           offset.value = withTiming(0);
@@ -61,7 +61,7 @@ const BottomSheet = gestureHandlerRootHOC(
       <>
         <GestureDetector gesture={panGesture}>
           <Animated.View
-            className="absolute w-full h-4/5 bg-white bottom-0 flex flex-col py-4 px-8 z-50 rounded-t-3xl"
+            className="absolute flex-1 w-full h-fit bg-white bottom-0 flex flex-col py-6 px-8 z-50 rounded-t-3xl"
             style={animatedStyle}>
             {children}
           </Animated.View>
