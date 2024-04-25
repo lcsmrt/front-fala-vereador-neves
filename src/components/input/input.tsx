@@ -29,15 +29,13 @@ const Input = React.forwardRef<TextInput, InputProps>(
     const [isFocused, setIsFocused] = useState(false);
     const isDisabled = inputProps.editable === false;
 
-    const wrapperStyle = clsx('flex items-end justify-between gap-3', classes);
+    const wrapperStyle = clsx('flex items-end justify-between', classes);
     const inputStyle = clsx(
       'flex flex-row w-full items-center justify-between overflow-hidden rounded-xl border',
       'bg-slate-50 px-3 text-sm transition-colors',
       isDisabled && 'opacity-50',
       variant === 'destructive'
-        ? isFocused
-          ? 'border-rose-700'
-          : 'border-rose-700'
+        ? 'border-rose-700'
         : isFocused
         ? 'border-green-600'
         : 'border-slate-400',
@@ -52,9 +50,9 @@ const Input = React.forwardRef<TextInput, InputProps>(
 
     return (
       <View className={wrapperStyle}>
-        <View className="grid w-full gap-1">
-          <View className="grid w-full gap-1.5">
-            {label && <Text>{label}</Text>}
+        <View className="grid w-full">
+          <View className="grid w-full">
+            {label && <Text className="mb-1">{label}</Text>}
             <View className={inputStyle}>
               {leftIcon && <>{leftIcon}</>}
               <TextInput
@@ -69,7 +67,7 @@ const Input = React.forwardRef<TextInput, InputProps>(
             </View>
           </View>
           {notification && (
-            <View className="pl-2 h-4">
+            <View className="pl-2 h-4 mt-1">
               <Text className="text-xs text-rose-400">{notification}</Text>
             </View>
           )}

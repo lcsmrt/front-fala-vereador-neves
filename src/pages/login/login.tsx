@@ -8,8 +8,10 @@ import EyeOpenIcon from '../../assets/icons/eyeOpen';
 import EyeClosedIcon from '../../assets/icons/eyeClosed';
 import LinearGradient from 'react-native-linear-gradient';
 import useUserAuthentication from './hooks/useUserAuthentication';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 
 const Login = () => {
+  const navigation: NavigationProp<any, any> = useNavigation();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const {credentials, handleCredentialsChange, credentialErrors, handleLogin} =
@@ -79,7 +81,10 @@ const Login = () => {
         <Text className="text-slate-50 text-base m-0">
           Não possui uma conta?
         </Text>
-        <Button variant="ghost" className="m-0 p-0">
+        <Button
+          variant="ghost"
+          className="m-0 p-0"
+          onPress={() => navigation.navigate}>
           <Text className="text-amber-300 text-base m-0">Cadastre-se</Text>
         </Button>
       </View>

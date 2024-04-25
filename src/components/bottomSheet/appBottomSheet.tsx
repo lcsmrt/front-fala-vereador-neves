@@ -8,17 +8,59 @@ import {useGetAldermans} from '../../lib/api/tanstackQuery/aldermanRequests';
 import {useGetSolicitationTypes} from '../../lib/api/tanstackQuery/solicitationTypeRequests';
 import useValidation from '../../lib/hooks/useValidation';
 import Button from '../button/button';
-import ChevronDownIcon from '../../assets/icons/chevronDown';
 import Switch from '../input/switch';
+import {useOpenSolicitation} from '../../lib/api/tanstackQuery/solicitationRequests';
+import {useEffect} from 'react';
+import {useLoadingContext} from '../../lib/contexts/useLoadingContext';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 const AppBottomSheet = () => {
+  const navigation: NavigationProp<any, any> = useNavigation();
+
   const {isBottomSheetVisible, setIsBottomSheetVisible} =
     useBottomSheetContext();
 
   const {data: aldermans} = useGetAldermans();
   const {data: solicitationTypes} = useGetSolicitationTypes();
 
-  const {values, handleChange} = useValidation({});
+  const {values, handleChange, validateForm} = useValidation({});
+
+  const {
+    mutate: openSolicitation,
+    isPending: isOpeningSolicitation,
+    isSuccess: isSolicitationOpened,
+  } = useOpenSolicitation();
+
+  const {setIsLoading} = useLoadingContext();
+
+  const handleOpenSolicitation = () => {
+    if (validateForm()) {
+      const solicitation = {
+        assunto: values.assunto,
+        conteudo: values.conteudo,
+        topico: values.topico,
+        anonimo: values.anonimo,
+        vereador: values.vereador || null,
+      };
+
+      try {
+        openSolicitation(solicitation);
+      } catch {
+        console.error('Erro ao abrir solicitação');
+      }
+    }
+  };
+
+  useEffect(() => {
+    setIsLoading(isOpeningSolicitation);
+  }, [isOpeningSolicitation]);
+
+  useEffect(() => {
+    if (isSolicitationOpened) {
+      setIsBottomSheetVisible(false);
+      navigation.navigate('Chat');
+    }
+  }, [isSolicitationOpened]);
 
   return (
     <Modal transparent visible={isBottomSheetVisible} animationType="none">
@@ -81,7 +123,7 @@ const AppBottomSheet = () => {
         </View>
 
         <View className="flex-1 flex justify-end mt-6">
-          <Button className="w-full" onPress={() => console.log(values)}>
+          <Button className="w-full" onPress={handleOpenSolicitation}>
             <Text className="text-slate-50 text-lg">Enviar</Text>
           </Button>
         </View>

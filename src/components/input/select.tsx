@@ -50,7 +50,7 @@ const Select = React.forwardRef(
       setIsOpen(false);
     };
 
-    const wrapperStyle = clsx('flex items-end justify-between gap-3', classes);
+    const wrapperStyle = clsx('flex items-end justify-between', classes);
     const selectStyle = clsx(
       'flex flex-row w-full items-center justify-between overflow-hidden rounded-xl border',
       'bg-slate-50 px-3 text-sm transition-colors',
@@ -64,19 +64,20 @@ const Select = React.forwardRef(
         : 'border-slate-400',
       size === 'sm' ? 'h-12' : size === 'lg' ? 'h-16' : 'h-14',
     );
+    const textStyle = clsx(selectedOption ? 'text-zinc-900' : 'text-zinc-400');
 
     return (
       <View className={wrapperStyle}>
-        <View className="grid w-full gap-1">
-          <View className="grid w-full gap-1.5">
-            {label && <Text>{label}</Text>}
+        <View className="grid w-full">
+          <View className="grid w-full">
+            {label && <Text className="mb-1">{label}</Text>}
             <TouchableOpacity
               className={selectStyle}
               onPress={() => !disabled && setIsOpen(true)}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}>
               {leftIcon && <>{leftIcon}</>}
-              <Text>
+              <Text className={textStyle}>
                 {selectedOption
                   ? selectedOption[displayKey]
                   : placeholder ?? 'Selecionar'}
@@ -87,7 +88,7 @@ const Select = React.forwardRef(
             </TouchableOpacity>
           </View>
           {notification && (
-            <View className="pl-2 h-4">
+            <View className="pl-2 h-4 mt-1">
               <Text className="text-xs text-rose-400">{notification}</Text>
             </View>
           )}

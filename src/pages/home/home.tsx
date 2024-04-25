@@ -30,7 +30,7 @@ const Home = () => {
 
   return (
     <>
-      <Header hasBackButton hasHambugerMenu />
+      <Header hasHambugerMenu />
 
       <View className="flex-1">
         <View className="absolute inset-0 w-full h-48 bg-sky-500 z-[-1]" />
