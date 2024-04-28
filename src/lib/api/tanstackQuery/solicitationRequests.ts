@@ -75,7 +75,7 @@ interface OpenSolicitationParams {
 }
 
 const openSolicitation = async (solicitation: OpenSolicitationParams) => {
-  const {data} = await httpRequest.post('/solicitacoes');
+  const {data} = await httpRequest.post('/solicitacoes', solicitation);
   return data;
 };
 

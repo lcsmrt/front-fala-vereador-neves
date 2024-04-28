@@ -1,17 +1,23 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useState} from 'react';
 import {FlatList, Modal, Text, TouchableOpacity, View} from 'react-native';
 import Backdrop from '../backdrop/backdrop';
 import ChevronDownIcon from '../../assets/icons/chevronDown';
+import {TextInput} from 'react-native-gesture-handler';
+import Input from './input';
+import SearchIcon from '../../assets/icons/search';
+import {filterOptions} from '../../lib/utils/filter';
 
-interface SelectProps {
+interface ComboBoxProps {
   variant?: 'default' | 'destructive';
   size?: 'default' | 'sm' | 'lg';
   options: Record<string, any>[];
+  textKey?: string;
   displayKey: string;
   value?: Record<string, any>;
   onSelect: (option: Record<string, any>) => void;
+  onChange?: (text: string) => void;
   placeholder?: string;
   label?: string;
   leftIcon?: React.ReactNode;
@@ -19,24 +25,28 @@ interface SelectProps {
   notification?: string;
   disabled?: boolean;
   classes?: string;
+  manualFilter?: boolean;
 }
 
-const Select = React.forwardRef(
+const ComboBox = React.forwardRef(
   (
     {
       variant,
       size,
       options,
       displayKey,
+      textKey,
       value,
       onSelect,
+      onChange,
       placeholder,
       label,
       leftIcon,
       notification,
       disabled,
       classes,
-    }: SelectProps,
+      manualFilter = false,
+    }: ComboBoxProps,
     ref,
   ) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -45,6 +55,36 @@ const Select = React.forwardRef(
       any
     > | null>(null);
     const [isFocused, setIsFocused] = useState(false);
+    const [filterText, setFilterText] = useState('');
+    // TRANSFORMAR ESSE TORÓ DE CÓDIGO EM UMA FUNÇÃO UTILITÁRIA
+    const filteredOptions = manualFilter
+      ? options
+      : filterOptions(options, displayKey, filterText);
+
+    const inputRef = useRef<TextInput>(null);
+
+    const getTextDisplay = () => {
+      const source = value || selectedOption;
+
+      if (!source) return placeholder ?? 'Selecionar';
+
+      return textKey ? source[textKey] : source[displayKey];
+    };
+    const textDisplay = getTextDisplay();
+
+    useEffect(() => {
+      if (isOpen) {
+        setTimeout(() => {
+          inputRef.current?.focus();
+        }, 300);
+      }
+
+      if (!isOpen) {
+        setTimeout(() => {
+          inputRef.current?.blur();
+        }, 300);
+      }
+    }, [isOpen]);
 
     const handleSelect = (option: Record<string, any>) => {
       setSelectedOption(option);
@@ -79,13 +119,7 @@ const Select = React.forwardRef(
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}>
               {leftIcon && <>{leftIcon}</>}
-              <Text className={textStyle}>
-                {value
-                  ? value[displayKey]
-                  : selectedOption
-                  ? selectedOption[displayKey]
-                  : placeholder ?? 'Selecionar'}
-              </Text>
+              <Text className={textStyle}>{textDisplay}</Text>
               <View className="h-7 w-7 ml-2">
                 <ChevronDownIcon stroke="#999" />
               </View>
@@ -105,8 +139,22 @@ const Select = React.forwardRef(
           onRequestClose={() => setIsOpen(false)}>
           <Backdrop open={isOpen} onPress={() => setIsOpen(false)}>
             <View className="bg-white w-11/12 max-h-[65%] mx-auto rounded-xl p-4">
+              <Input
+                placeholder="Digite para buscar..."
+                onChangeText={text => {
+                  if (onChange) onChange(text);
+                  if (!manualFilter) setFilterText(text);
+                }}
+                inputSize="sm"
+                ref={inputRef}
+                rightIcon={
+                  <View className="h-6 w-6 ml-2">
+                    <SearchIcon stroke="#999" />
+                  </View>
+                }
+              />
               <FlatList
-                data={options}
+                data={filteredOptions}
                 renderItem={({item}) => (
                   <TouchableOpacity
                     className="py-3 px-3"
@@ -123,4 +171,4 @@ const Select = React.forwardRef(
   },
 );
 
-export default Select;
+export default ComboBox;

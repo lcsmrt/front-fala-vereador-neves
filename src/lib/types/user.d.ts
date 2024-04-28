@@ -3,16 +3,18 @@ export interface User {
   cep?: string;
   cidade?: string;
   complemento?: string;
-  dataNascimento?: string;
+  nascimento?: string;
+  doc?: string;
   email?: string;
   endereco?: string;
   id?: string;
   nome?: string;
   numero?: string;
   pais?: string;
-  sexo?: string;
+  sexo?: 'M' | 'F';
+  senha?: string;
   telefone?: string;
+  tipoDocumento?: 'CPF' | 'CNPJ';
   uf?: string;
   vereador?: boolean;
-  token?: string;
 }

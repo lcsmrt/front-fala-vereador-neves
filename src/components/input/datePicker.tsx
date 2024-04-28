@@ -15,6 +15,8 @@ interface DatePickerProps {
   notification?: string;
   disabled?: boolean;
   classes?: string;
+  value?: Date;
+  onDateChange?: (date: Date | null) => void;
 }
 
 const DatePicker = ({
@@ -24,8 +26,10 @@ const DatePicker = ({
   notification,
   disabled,
   classes,
+  value,
+  onDateChange,
 }: DatePickerProps) => {
-  const [date, setDate] = useState<Date | null>(null);
+  const [date, setDate] = useState<Date | null>(value || null);
   const [mode, setMode] = useState<'date' | 'time'>('date');
   const [show, setShow] = useState<boolean>(false);
 
@@ -33,6 +37,7 @@ const DatePicker = ({
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios'); // IOS PRECISA QUE O COMPONENTE FIQUE ABERTO AO SCROLLAR, ANDROID PRECISA QUE SEJA FECHADO
     setDate(currentDate);
+    onDateChange && onDateChange(currentDate);
   };
 
   const showMode = (currentMode: 'date' | 'time') => {
@@ -49,7 +54,9 @@ const DatePicker = ({
     'flex flex-row w-full items-center justify-between overflow-hidden rounded-xl border',
     'bg-slate-50 px-3 text-sm transition-colors',
     disabled && 'opacity-50',
-    variant === 'destructive' ? 'border-rose-700' : 'border-slate-400',
+    variant === 'destructive' || notification
+      ? 'border-rose-700'
+      : 'border-slate-400',
     size === 'sm' ? 'h-12' : size === 'lg' ? 'h-16' : 'h-14',
   );
   const textStyle = clsx(date ? 'text-zinc-900' : 'text-zinc-400');

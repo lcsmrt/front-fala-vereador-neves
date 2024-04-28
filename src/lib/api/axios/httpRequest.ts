@@ -8,9 +8,10 @@ const httpRequest = axios.create({
 httpRequest.interceptors.request.use(
   async config => {
     await EncryptedStorage.getItem('token').then(token => {
-      config.headers.Authorization = `Bearer ${token}`;
+      if (token) config.headers.Authorization = `Bearer ${token}`;
     });
     console.log('Requisição: ', config);
+    console.log('Token: ', config.headers.Authorization);
     return config;
   },
   error => {

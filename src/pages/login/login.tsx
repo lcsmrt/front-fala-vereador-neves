@@ -8,10 +8,11 @@ import EyeOpenIcon from '../../assets/icons/eyeOpen';
 import EyeClosedIcon from '../../assets/icons/eyeClosed';
 import LinearGradient from 'react-native-linear-gradient';
 import useUserAuthentication from './hooks/useUserAuthentication';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {LoginScreenNavigationProp} from '../../lib/types/system/navigation';
 
 const Login = () => {
-  const navigation: NavigationProp<any, any> = useNavigation();
+  const navigation: LoginScreenNavigationProp = useNavigation();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const {credentials, handleCredentialsChange, credentialErrors, handleLogin} =
@@ -84,7 +85,7 @@ const Login = () => {
         <Button
           variant="ghost"
           className="m-0 p-0"
-          onPress={() => navigation.navigate}>
+          onPress={() => navigation.navigate('Register')}>
           <Text className="text-amber-300 text-base m-0">Cadastre-se</Text>
         </Button>
       </View>

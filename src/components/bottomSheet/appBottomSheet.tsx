@@ -12,7 +12,7 @@ import Switch from '../input/switch';
 import {useOpenSolicitation} from '../../lib/api/tanstackQuery/solicitationRequests';
 import {useEffect} from 'react';
 import {useLoadingContext} from '../../lib/contexts/useLoadingContext';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 
 const AppBottomSheet = () => {
   const navigation: NavigationProp<any, any> = useNavigation();
@@ -44,9 +44,11 @@ const AppBottomSheet = () => {
       };
 
       try {
+        console.log(solicitation);
         openSolicitation(solicitation);
-      } catch {
-        console.error('Erro ao abrir solicitação');
+      } catch (error: any) {
+        const errorMessage = error.response.data.message;
+        console.error(errorMessage);
       }
     }
   };

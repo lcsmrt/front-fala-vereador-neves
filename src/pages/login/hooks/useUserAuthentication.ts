@@ -6,20 +6,27 @@ import {
 import useValidation from '../../../lib/hooks/useValidation';
 import {useLoadingContext} from '../../../lib/contexts/useLoadingContext';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {LoginScreenNavigationProp} from '../../../lib/types/system/navigation';
 
 const useUserAuthentication = () => {
-  const navigation = useNavigation();
+  const navigation: LoginScreenNavigationProp = useNavigation();
 
   const {
     values: credentials,
     handleChange: handleCredentialsChange,
     errors: credentialErrors,
     validateForm: validateCredentials,
-  } = useValidation({
-    login: value => (value ? null : 'Campo obrigatório'),
-    senha: value => (value ? null : 'Campo obrigatório'),
-  });
+  } = useValidation(
+    {
+      login: value => (value ? null : 'Campo obrigatório'),
+      senha: value => (value ? null : 'Campo obrigatório'),
+    },
+    {
+      login: '',
+      senha: '',
+    },
+  );
 
   const {
     mutate: authenticateUser,
@@ -54,7 +61,7 @@ const useUserAuthentication = () => {
 
       storeUser();
 
-      (navigation as NavigationProp<any, any>).navigate('Home');
+      navigation.replace('Home');
     }
   }, [isAuthenticated, authenticatedUser]);
 

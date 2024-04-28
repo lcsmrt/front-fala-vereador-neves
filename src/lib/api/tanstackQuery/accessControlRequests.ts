@@ -1,5 +1,6 @@
 import {useMutation} from '@tanstack/react-query';
 import httpRequest from '../axios/httpRequest';
+import {User} from '../../types/user';
 
 // AUTENTICA USUÁRIO AO REALIZAR LOGIN
 export interface AuthenticateUserParams {
@@ -14,4 +15,14 @@ const authenticateUser = async ({login, senha}: AuthenticateUserParams) => {
 
 export const useAuthenticateUser = () => {
   return useMutation({mutationFn: authenticateUser});
+};
+
+// REGISTRA USUÁRIO
+const registerUser = async (userData: User) => {
+  const {data} = await httpRequest.post('/usuario_publico', userData);
+  return data;
+};
+
+export const useRegisterUser = () => {
+  return useMutation({mutationFn: registerUser});
 };

@@ -4,12 +4,46 @@ import Input from '../../../../../components/input/input';
 import Select from '../../../../../components/input/select';
 import DatePicker from '../../../../../components/input/datePicker';
 import Button from '../../../../../components/button/button';
+import {
+  formatDate,
+  maksCpfCnpj,
+  revertDateFormat,
+} from '../../../../../lib/utils/formatters';
 
 interface PersonalDataProps {
+  userData: any;
+  handleUserDataChange: (name: string, value: any) => void;
   onPressNext: () => void;
+  userDataErrors: any;
+  validateUserDataField: (name: string, value: any) => string | null;
 }
 
-const PersonalData = ({onPressNext}: PersonalDataProps) => {
+const PersonalData = ({
+  userData,
+  handleUserDataChange,
+  onPressNext,
+  userDataErrors,
+  validateUserDataField,
+}: PersonalDataProps) => {
+  const onSubmit = () => {
+    const nameError = validateUserDataField('nome', userData.nome);
+    const docError = validateUserDataField('doc', userData.doc);
+    const sexoError = validateUserDataField('sexo', userData.sexo);
+    const nascimentoError = validateUserDataField(
+      'nascimento',
+      userData.nascimento,
+    );
+
+    if (nameError || docError || sexoError || nascimentoError) return;
+
+    handleUserDataChange(
+      'tipoDocumento',
+      userData.doc.length === 14 ? 'CPF' : 'CNPJ',
+    );
+
+    onPressNext();
+  };
+
   return (
     <View className="flex-1 px-7 py-7">
       <Text className="text-lg font-semibold">Dados pessoais</Text>
@@ -21,25 +55,46 @@ const PersonalData = ({onPressNext}: PersonalDataProps) => {
           placeholder="Digite seu nome completo"
           classes="mb-4 w-full"
           label="Nome"
+          value={userData.nome || ''}
+          onChangeText={(text: string) => handleUserDataChange('nome', text)}
+          notification={userDataErrors.nome || ''}
         />
         <Input
           placeholder="Informe seu CPF ou CNPJ"
           classes="mb-4 w-full"
           label="CPF/CNPJ"
+          value={userData.doc || ''}
+          onChangeText={(text: string) =>
+            handleUserDataChange('doc', maksCpfCnpj(text))
+          }
+          notification={userDataErrors.doc || ''}
+          keyboardType="numeric"
         />
         <Select
           placeholder="Selecione seu sexo"
           classes="mb-4 w-full"
           label="Sexo"
-          options={[]}
-          displayKey=""
-          onSelect={() => {}}
+          options={[
+            {label: 'Masculino', value: 'M'},
+            {label: 'Feminino', value: 'F'},
+          ]}
+          displayKey="label"
+          value={userData.sexo}
+          onSelect={value => handleUserDataChange('sexo', value)}
+          notification={userDataErrors.sexo || ''}
         />
-        <DatePicker label="Nascimento" />
+        <DatePicker
+          value={userData.nascimento && revertDateFormat(userData.nascimento)}
+          label="Nascimento"
+          onDateChange={date =>
+            handleUserDataChange('nascimento', formatDate(date))
+          }
+          notification={userDataErrors.nascimento || ''}
+        />
       </View>
 
       <View className="flex-1 flex justify-end">
-        <Button className="w-full" onPress={onPressNext}>
+        <Button className="w-full" onPress={onSubmit}>
           <Text className="text-slate-50 text-lg">Próximo</Text>
         </Button>
       </View>

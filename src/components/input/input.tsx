@@ -34,7 +34,7 @@ const Input = React.forwardRef<TextInput, InputProps>(
       'flex flex-row w-full items-center justify-between overflow-hidden rounded-xl border',
       'bg-slate-50 px-3 text-sm transition-colors',
       isDisabled && 'opacity-50',
-      variant === 'destructive'
+      variant === 'destructive' || notification
         ? 'border-rose-700'
         : isFocused
         ? 'border-green-600'

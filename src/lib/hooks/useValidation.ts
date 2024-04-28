@@ -12,8 +12,11 @@ type ValidatorsProps = {
   [key: string]: (value: any) => string | null;
 };
 
-const useValidation = (validators: ValidatorsProps) => {
-  const [values, setValues] = useState<ValuesProps>({});
+const useValidation = (
+  validators: ValidatorsProps,
+  initialValues?: ValuesProps,
+) => {
+  const [values, setValues] = useState<ValuesProps>(initialValues ?? {});
   const [errors, setErrors] = useState<ErrorsProps>({});
 
   const validateField = useCallback(
