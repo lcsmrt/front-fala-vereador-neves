@@ -3,6 +3,8 @@ import Login from '../pages/login/login';
 import Home from '../pages/home/home';
 import Chat from '../pages/chat/chat';
 import Register from '../pages/register/register';
+import EditProfile from '../pages/editProfile/editProfile';
+import ForgotPassword from '../pages/forgotPassword/forgotPassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,7 +29,7 @@ const Router = () => {
             statusBarColor: '#0ea5e9',
           }}
         />
-        
+
         <Stack.Screen
           name="Home"
           component={Home}
@@ -40,6 +42,24 @@ const Router = () => {
         <Stack.Screen
           name="Chat"
           component={Chat}
+          options={{
+            headerShown: false,
+            statusBarColor: '#0ea5e9',
+          }}
+        />
+
+        <Stack.Screen
+          name="Edit Profile"
+          component={EditProfile}
+          options={{
+            headerShown: false,
+            statusBarColor: '#0ea5e9',
+          }}
+        />
+
+        <Stack.Screen
+          name="Forgot Password"
+          component={ForgotPassword}
           options={{
             headerShown: false,
             statusBarColor: '#0ea5e9',

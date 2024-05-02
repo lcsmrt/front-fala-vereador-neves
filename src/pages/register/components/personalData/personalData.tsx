@@ -1,14 +1,14 @@
 import {Text, View} from 'react-native';
-import Separator from '../../../../../components/separator/separator';
-import Input from '../../../../../components/input/input';
-import Select from '../../../../../components/input/select';
-import DatePicker from '../../../../../components/input/datePicker';
-import Button from '../../../../../components/button/button';
+import Separator from '../../../../components/separator/separator';
+import Input from '../../../../components/input/input';
+import Select from '../../../../components/input/select';
+import DatePicker from '../../../../components/input/datePicker';
+import Button from '../../../../components/button/button';
 import {
   formatDate,
   maksCpfCnpj,
   revertDateFormat,
-} from '../../../../../lib/utils/formatters';
+} from '../../../../lib/utils/formatters';
 
 interface PersonalDataProps {
   userData: any;
@@ -45,7 +45,7 @@ const PersonalData = ({
   };
 
   return (
-    <View className="flex-1 px-7 py-7">
+    <View className="flex-1 p-7">
       <Text className="text-lg font-semibold">Dados pessoais</Text>
 
       <Separator orientation="horizontal" classes="mt-4 mb-4" />
@@ -56,7 +56,7 @@ const PersonalData = ({
           classes="mb-4 w-full"
           label="Nome"
           value={userData.nome || ''}
-          onChangeText={(text: string) => handleUserDataChange('nome', text)}
+          onChangeText={text => handleUserDataChange('nome', text)}
           notification={userDataErrors.nome || ''}
         />
         <Input
@@ -64,9 +64,7 @@ const PersonalData = ({
           classes="mb-4 w-full"
           label="CPF/CNPJ"
           value={userData.doc || ''}
-          onChangeText={(text: string) =>
-            handleUserDataChange('doc', maksCpfCnpj(text))
-          }
+          onChangeText={text => handleUserDataChange('doc', maksCpfCnpj(text))}
           notification={userDataErrors.doc || ''}
           keyboardType="numeric"
         />
@@ -95,7 +93,7 @@ const PersonalData = ({
 
       <View className="flex-1 flex justify-end">
         <Button className="w-full" onPress={onSubmit}>
-          <Text className="text-slate-50 text-lg">Próximo</Text>
+          <Text className="text-slate-50 text-base">Próximo</Text>
         </Button>
       </View>
     </View>

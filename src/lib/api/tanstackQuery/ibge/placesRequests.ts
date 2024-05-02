@@ -25,15 +25,14 @@ export interface City {
   nome: string;
 }
 
-const getCities = async (uf?: string) => {
-  if (!uf) return [];
-  const response = await ibgeHttpRequest.get(`/estados/${uf}/municipios`);
-  return response.data;
+const getCities = async () => {
+  const response = await ibgeHttpRequest.get(`/municipios`);
+  return response.data || [];
 };
 
-export const useGetCities = (uf: string) => {
+export const useGetCities = () => {
   return useQuery<City[], Error>({
-    queryKey: ['cities', uf],
-    queryFn: () => getCities(uf),
+    queryKey: ['cities'],
+    queryFn: getCities,
   });
 };

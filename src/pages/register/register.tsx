@@ -1,12 +1,12 @@
 import {View} from 'react-native';
 import Header from '../../components/header/header';
 import Button from '../../components/button/button';
-import PersonalData from './components/steps/personalData/personalData';
+import PersonalData from './components/personalData/personalData';
 import ArrowLeftIcon from '../../assets/icons/arrowLeft';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import Contact from './components/steps/contact/contact';
-import Account from './components/steps/account/account';
+import Contact from './components/contact/contact';
+import Account from './components/account/account';
 import useUserRegisterHandler from './hooks/useUserRegisterHandler';
 
 const Register = () => {
@@ -62,7 +62,15 @@ const Register = () => {
           validateUserDataField={validateUserDataField}
         />
       )}
-      {step === 3 && <Account onFinish={() => {}} />}
+      {step === 3 && (
+        <Account
+          userData={userData}
+          userDataErrors={userDataErrors}
+          onFinish={handleLogin}
+          handleUserDataChange={handleUserDataChange}
+          validateUserDataField={validateUserDataField}
+        />
+      )}
     </>
   );
 };

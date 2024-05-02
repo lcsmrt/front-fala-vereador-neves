@@ -97,3 +97,34 @@ export const maksCpfCnpj = (value: string): string => {
       .replace(/(-\d{2})\d+?$/, '$1');
   }
 };
+
+/**
+ * Função para mascarar um CEP.
+ * @param value Texto contendo um CEP. (Não possui validações ainda)
+ * @returns CEP formatado.
+ */
+
+export const maskCep = (value: string): string => {
+  if (!value) return '';
+
+  return value
+    .replace(/\D/g, '')
+    .replace(/(\d{5})(\d)/, '$1-$2')
+    .replace(/(-\d{3})\d+?$/, '$1');
+};
+
+/**
+ * Função para mascarar um número de telefone.
+ * @param value Texto contendo um número de telefone. (Não possui validações ainda)
+ * @returns Número de telefone formatado.
+ */
+
+export const maskPhone = (value: string): string => {
+  if (!value) return '';
+
+  return value
+    .replace(/\D/g, '')
+    .replace(/(\d{2})(\d)/, '($1) $2')
+    .replace(/(\d{5})(\d)/, '$1-$2')
+    .replace(/(-\d{4})\d+?$/, '$1');
+};

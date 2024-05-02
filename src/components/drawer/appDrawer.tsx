@@ -32,7 +32,13 @@ const AppDrawer = () => {
           <Separator orientation="horizontal" classes="mt-6" />
         </View>
         <View className="flex-1 w-full px-8 mt-6">
-          <Button variant="ghost" className="w-full items-start">
+          <Button
+            variant="ghost"
+            className="w-full items-start"
+            onPress={() => {
+              setIsDrawerVisible(false);
+              navigation.navigate('Edit Profile');
+            }}>
             <Text className="text-lg">Editar Perfil</Text>
           </Button>
           <Button variant="ghost" className="w-full items-start">
@@ -46,7 +52,7 @@ const AppDrawer = () => {
             className="w-full items-start"
             onPress={() => {
               setIsDrawerVisible(false);
-              navigation.navigate('Login');
+              // navigation.replace('Login');
             }}>
             <Text className="text-lg">Sair</Text>
           </Button>

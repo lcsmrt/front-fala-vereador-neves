@@ -16,7 +16,7 @@ const Chat = () => {
   const route = useRoute();
   const {solicitation} = route.params as {solicitation: Solicitation};
 
-  const {chatMessages, getMessages, isChatMessagesLoading} = useChatMessages(
+  const {chatMessages, isChatMessagesLoading} = useChatMessages(
     solicitation.pk ?? 0,
   );
   const {message, setMessage, handleSendMessage} = useHandleSendMessage(
@@ -69,12 +69,6 @@ const Chat = () => {
                 )}
               </>
             )}
-            refreshControl={
-              <RefreshControl
-                refreshing={isChatMessagesLoading}
-                onRefresh={getMessages}
-              />
-            }
           />
         </View>
 

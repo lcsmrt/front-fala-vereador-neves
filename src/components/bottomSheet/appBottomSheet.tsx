@@ -23,7 +23,22 @@ const AppBottomSheet = () => {
   const {data: aldermans} = useGetAldermans();
   const {data: solicitationTypes} = useGetSolicitationTypes();
 
-  const {values, handleChange, validateForm} = useValidation({});
+  const {values, handleChange, errors, validateForm} = useValidation(
+    {
+      assunto: value => (value ? null : 'É preciso informar o assunto'),
+      conteudo: value => (value ? null : 'A solicitação não pode estar vazia'),
+      topico: value =>
+        value ? null : 'É preciso selecionar um tipo de solicitação',
+      vereador: value => (value ? null : 'É preciso selecionar um vereador'),
+    },
+    {
+      assunto: '',
+      conteudo: '',
+      topico: null,
+      vereador: null,
+      anonimo: false,
+    },
+  );
 
   const {
     mutate: openSolicitation,
@@ -84,6 +99,7 @@ const AppBottomSheet = () => {
             placeholder="Selecione o vereador"
             size="sm"
             classes="w-full mb-2"
+            notification={errors.vereador || ''}
           />
           <Select
             options={solicitationTypes || []}
@@ -93,6 +109,7 @@ const AppBottomSheet = () => {
             placeholder="Selecione o tipo de solicitação"
             size="sm"
             classes="w-full mb-2"
+            notification={errors.topico || ''}
           />
           <Input
             inputSize="sm"
@@ -100,6 +117,7 @@ const AppBottomSheet = () => {
             value={values.assunto}
             onChangeText={text => handleChange('assunto', text)}
             classes="w-full mb-2"
+            notification={errors.assunto || ''}
           />
           <Input
             label="Conteúdo"
@@ -108,6 +126,7 @@ const AppBottomSheet = () => {
             multiline
             inputSize="multiline"
             classes="w-full"
+            notification={errors.conteudo || ''}
           />
         </View>
 

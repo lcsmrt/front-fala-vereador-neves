@@ -40,6 +40,7 @@ const Login = () => {
               <UserIcon stroke="#999" />
             </View>
           }
+          keyboardType="email-address"
         />
         <Input
           placeholder="Senha"
@@ -70,10 +71,12 @@ const Login = () => {
         />
 
         <Button className="w-full mt-8" onPress={handleLogin}>
-          <Text className="text-slate-50 text-lg">Entrar</Text>
+          <Text className="text-slate-50 text-base">Entrar</Text>
         </Button>
 
-        <Button variant="ghost">
+        <Button
+          variant="ghost"
+          onPress={() => navigation.navigate('Forgot Password')}>
           <Text className="text-slate-50 text-base">Esqueci minha senha</Text>
         </Button>
       </View>

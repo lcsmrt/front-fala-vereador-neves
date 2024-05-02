@@ -54,7 +54,14 @@ const useUserRegisterHandler = () => {
 
   const handleLogin = () => {
     if (validateUserData()) {
-      registerUser(userData as User);
+      const formattedUserData = {
+        ...userData,
+        uf: userData.uf?.sigla,
+        cidade: userData.cidade?.nome,
+        sexo: userData.sexo?.value,
+      };
+
+      registerUser(formattedUserData as User);
     }
   };
 
@@ -66,7 +73,7 @@ const useUserRegisterHandler = () => {
 
   useEffect(() => {
     if (isRegistered) {
-      navigation.replace('Home');
+      navigation.replace('Login');
     }
   }, [isRegistered, registeredUser]);
 

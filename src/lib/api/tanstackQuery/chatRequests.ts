@@ -2,6 +2,7 @@ import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import httpRequest from '../axios/httpRequest';
 import {ChatMessage, ChatMessageFormData} from '../../types/chatMessage';
 import RNFetchBlob from 'rn-fetch-blob';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 // BUSCA MENSAGENS DO CHAT
 const getChatMessages = async (id: string | number) => {
@@ -29,12 +30,15 @@ interface SendMessageParams {
 }
 
 const sendMessage = async ({id, message}: SendMessageParams) => {
+  const token = await EncryptedStorage.getItem('token');
+
   try {
-    const {data} = await RNFetchBlob.fetch(
+    const response = await RNFetchBlob.fetch(
       'POST',
       `http://198.27.114.51:8083/solicitacoes/adicionar_mensagem/${id}`,
       {
         'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${token}`,
       },
       [
         {
@@ -45,10 +49,17 @@ const sendMessage = async ({id, message}: SendMessageParams) => {
       ],
     );
 
-    console.log('Mensagem enviada com sucesso: ', data);
-    return data;
+    if (response.respInfo.status >= 400) {
+      console.log('Error response:', response.data);
+      throw new Error(
+        `Erro ao enviar mensagem. Status code: ${response.respInfo.status}`,
+      );
+    }
+
+    console.log('Mensagem enviada com sucesso: ', response.data);
+    return response.data;
   } catch (error) {
-    console.log('Erro ao enviar mensagem: ', error);
+    console.error('Erro ao enviar mensagem: ', error);
   }
 };
 

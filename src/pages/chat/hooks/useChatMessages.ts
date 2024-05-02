@@ -1,28 +1,18 @@
-import { useEffect } from 'react';
-import {useActionableGetChatMessages} from '../../../lib/api/tanstackQuery/chatRequests';
-import { useLoadingContext } from '../../../lib/contexts/useLoadingContext';
+import {useEffect} from 'react';
+import {useGetChatMessages} from '../../../lib/api/tanstackQuery/chatRequests';
+import {useLoadingContext} from '../../../lib/contexts/useLoadingContext';
 
 const useChatMessages = (id: string | number) => {
-  const {
-    mutate: getChatMessages,
-    isPending: isChatMessagesLoading,
-    data: chatMessages,
-  } = useActionableGetChatMessages();
+  const {data: chatMessages, isLoading: isChatMessagesLoading} =
+    useGetChatMessages(id);
+
   const {setIsLoading} = useLoadingContext();
-
-  const getMessages = () => {
-    if (id) getChatMessages(id);
-  };
-
-  useEffect(() => {
-    getMessages();
-  }, [id]);
 
   useEffect(() => {
     setIsLoading(isChatMessagesLoading);
   }, [isChatMessagesLoading]);
 
-  return {isChatMessagesLoading, getMessages, chatMessages};
+  return {isChatMessagesLoading, chatMessages};
 };
 
 export default useChatMessages;

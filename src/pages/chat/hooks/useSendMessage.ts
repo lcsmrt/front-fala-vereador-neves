@@ -1,12 +1,10 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {useSendMessage} from '../../../lib/api/tanstackQuery/chatRequests';
 import useUser from '../../../lib/hooks/useUser';
-import {useLoadingContext} from '../../../lib/contexts/useLoadingContext';
 
 const useHandleSendMessage = (solicitationPk: number) => {
   const {user} = useUser();
   const {mutate: sendMessage, isPending: isSendingMessage} = useSendMessage();
-  const {setIsLoading} = useLoadingContext();
 
   const [message, setMessage] = useState<string>('');
 
@@ -25,10 +23,6 @@ const useHandleSendMessage = (solicitationPk: number) => {
       },
     });
   };
-
-  useEffect(() => {
-    setIsLoading(isSendingMessage);
-  }, [isSendingMessage]);
 
   return {
     message,
