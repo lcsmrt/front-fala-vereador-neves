@@ -33,6 +33,7 @@ const useUserAuthentication = () => {
     isPending: isAuthenticating,
     isSuccess: isAuthenticated,
     data: authenticatedUser,
+    error: authenticationError,
   } = useAuthenticateUser();
 
   const handleLogin = () => {
@@ -70,6 +71,7 @@ const useUserAuthentication = () => {
     handleCredentialsChange,
     credentialErrors,
     handleLogin,
+    authenticationError,
   };
 };
 

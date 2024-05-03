@@ -1,4 +1,4 @@
-import {FlatList, RefreshControl, Text, View} from 'react-native';
+import {FlatList, RefreshControl, ScrollView, Text, View} from 'react-native';
 import Header from '../../components/header/header';
 import Avatar from '../../components/avatar/avatar';
 import {
@@ -13,7 +13,6 @@ import useUserSolicitationsKpis from './hooks/useUseSolicitationsKpis';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import Button from '../../components/button/button';
 import PlusIcon from '../../assets/icons/plus';
-import NewSoliciation from './components/newSolicitation';
 import {useBottomSheetContext} from '../../lib/contexts/useBottomSheetContext';
 
 const Home = () => {
@@ -32,7 +31,7 @@ const Home = () => {
     <>
       <Header hasHambugerMenu />
 
-      <View className="flex-1">
+      {/* <View className="flex-1">
         <View className="absolute inset-0 w-full h-48 bg-sky-500 z-[-1]" />
 
         <View className="p-4 w-full">
@@ -122,7 +121,11 @@ const Home = () => {
           onPress={() => setIsBottomSheetVisible(true)}>
           <PlusIcon stroke="#fff" />
         </Button>
-      </View>
+      </View> */}
+
+      <ScrollView className="flex-1">
+        
+      </ScrollView>
     </>
   );
 };
