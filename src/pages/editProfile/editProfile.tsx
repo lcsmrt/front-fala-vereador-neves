@@ -34,7 +34,14 @@ const EditProfile = () => {
     handleUserDataChange('nome', user?.nome ?? '');
     handleUserDataChange('cep', user?.cep ?? '');
     handleUserDataChange('endereco', user?.endereco ?? '');
-    handleUserDataChange('numero', user?.numero ?? '');
+    handleUserDataChange(
+      'numero',
+      user?.numero
+        ? typeof user?.numero === 'number'
+          ? String(user?.numero)
+          : user?.numero
+        : '',
+    );
     handleUserDataChange('complemento', user?.complemento ?? '');
     handleUserDataChange(
       'uf',

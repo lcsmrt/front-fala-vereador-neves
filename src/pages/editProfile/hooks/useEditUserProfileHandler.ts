@@ -3,7 +3,7 @@ import {useUpdateUser} from '../../../lib/api/tanstackQuery/accessControlRequest
 import {useLoadingContext} from '../../../lib/contexts/useLoadingContext';
 import useUser from '../../../lib/hooks/useUser';
 import useValidation from '../../../lib/hooks/useValidation';
-import {User} from '../../../lib/types/user';
+import {User} from '../../../lib/types/accessControl/user';
 
 const useEditUserProfileHandler = () => {
   const {user} = useUser();

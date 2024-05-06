@@ -31,7 +31,7 @@ const Home = () => {
     <>
       <Header hasHambugerMenu />
 
-      {/* <View className="flex-1">
+      <View className="flex-1">
         <View className="absolute inset-0 w-full h-48 bg-sky-500 z-[-1]" />
 
         <View className="p-4 w-full">
@@ -115,17 +115,15 @@ const Home = () => {
         />
       </View>
 
-      <View className="absolute bottom-0 right-0 mr-4 mb-4">
-        <Button
-          className="rounded-full h-20 w-20"
-          onPress={() => setIsBottomSheetVisible(true)}>
-          <PlusIcon stroke="#fff" />
-        </Button>
-      </View> */}
-
-      <ScrollView className="flex-1">
-        
-      </ScrollView>
+      {!user?.vereador && (
+        <View className="absolute bottom-0 right-0 mr-4 mb-4">
+          <Button
+            className="rounded-full h-20 w-20"
+            onPress={() => setIsBottomSheetVisible(true)}>
+            <PlusIcon stroke="#fff" />
+          </Button>
+        </View>
+      )}
     </>
   );
 };

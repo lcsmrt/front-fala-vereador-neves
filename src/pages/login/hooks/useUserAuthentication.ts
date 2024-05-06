@@ -8,6 +8,7 @@ import {useLoadingContext} from '../../../lib/contexts/useLoadingContext';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {useNavigation} from '@react-navigation/native';
 import {LoginScreenNavigationProp} from '../../../lib/types/system/navigation';
+import {useToastContext} from '../../../lib/contexts/useToastContext';
 
 const useUserAuthentication = () => {
   const navigation: LoginScreenNavigationProp = useNavigation();
@@ -43,6 +44,7 @@ const useUserAuthentication = () => {
   };
 
   const {setIsLoading} = useLoadingContext();
+  const {showToast} = useToastContext();
 
   useEffect(() => {
     setIsLoading(isAuthenticating);
@@ -56,7 +58,7 @@ const useUserAuthentication = () => {
           await EncryptedStorage.setItem('user', jsonUser);
           await EncryptedStorage.setItem('token', authenticatedUser.token);
         } catch (error) {
-          console.error('Erro ao armazenar os dados do usuário: ', error);
+          showToast('Erro ao armazenar os dados do usuário', 'error');
         }
       };
 
@@ -65,6 +67,25 @@ const useUserAuthentication = () => {
       navigation.replace('Home');
     }
   }, [isAuthenticated, authenticatedUser]);
+
+  useEffect(() => {
+    if (authenticationError) {
+      showToast(`Erro ao autenticar usuário`, 'error');
+    }
+  }, [authenticationError]);
+
+  useEffect(() => {
+    const checkIfUserIsAuthenticated = async () => {
+      const user = await EncryptedStorage.getItem('user');
+      const token = await EncryptedStorage.getItem('token');
+
+      if (user && token) {
+        navigation.replace('Home');
+      }
+    };
+
+    checkIfUserIsAuthenticated();
+  }, []);
 
   return {
     credentials,

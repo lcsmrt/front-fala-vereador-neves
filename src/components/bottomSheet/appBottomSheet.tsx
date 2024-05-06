@@ -12,11 +12,9 @@ import Switch from '../input/switch';
 import {useOpenSolicitation} from '../../lib/api/tanstackQuery/solicitationRequests';
 import {useEffect} from 'react';
 import {useLoadingContext} from '../../lib/contexts/useLoadingContext';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {useToastContext} from '../../lib/contexts/useToastContext';
 
 const AppBottomSheet = () => {
-  const navigation: NavigationProp<any, any> = useNavigation();
-
   const {isBottomSheetVisible, setIsBottomSheetVisible} =
     useBottomSheetContext();
 
@@ -47,6 +45,7 @@ const AppBottomSheet = () => {
   } = useOpenSolicitation();
 
   const {setIsLoading} = useLoadingContext();
+  const {showToast} = useToastContext();
 
   const handleOpenSolicitation = () => {
     if (validateForm()) {
@@ -63,7 +62,7 @@ const AppBottomSheet = () => {
         openSolicitation(solicitation);
       } catch (error: any) {
         const errorMessage = error.response.data.message;
-        console.error(errorMessage);
+        showToast(errorMessage, 'error');
       }
     }
   };
@@ -75,7 +74,7 @@ const AppBottomSheet = () => {
   useEffect(() => {
     if (isSolicitationOpened) {
       setIsBottomSheetVisible(false);
-      navigation.navigate('Chat');
+      showToast('Solicitação enviada com sucesso', 'success');
     }
   }, [isSolicitationOpened]);
 

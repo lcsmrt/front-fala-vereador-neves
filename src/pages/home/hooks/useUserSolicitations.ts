@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import {useActionableGetSolicitations} from '../../../lib/api/tanstackQuery/solicitationRequests';
 import {useLoadingContext} from '../../../lib/contexts/useLoadingContext';
-import {User} from '../../../lib/types/user';
+import {User} from '../../../lib/types/accessControl/user';
 
 const useUserSolicitations = (user: User | null) => {
   const {

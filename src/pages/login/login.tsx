@@ -1,4 +1,4 @@
-import {Modal, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import Input from '../../components/input/input';
 import UserIcon from '../../assets/icons/user';
 import LockIcon from '../../assets/icons/lock';
@@ -15,13 +15,8 @@ const Login = () => {
   const navigation: LoginScreenNavigationProp = useNavigation();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const {
-    credentials,
-    handleCredentialsChange,
-    credentialErrors,
-    handleLogin,
-    authenticationError,
-  } = useUserAuthentication();
+  const {credentials, handleCredentialsChange, credentialErrors, handleLogin} =
+    useUserAuthentication();
 
   return (
     <LinearGradient
@@ -81,7 +76,7 @@ const Login = () => {
 
         <Button
           variant="ghost"
-          onPress={() => navigation.navigate('Forgot Password')}>
+          onPress={() => navigation.navigate('ForgotPassword')}>
           <Text className="text-slate-50 text-base">Esqueci minha senha</Text>
         </Button>
       </View>
@@ -97,14 +92,6 @@ const Login = () => {
           <Text className="text-amber-300 text-base m-0">Cadastre-se</Text>
         </Button>
       </View>
-
-      <Modal visible={Boolean(authenticationError)}>
-        <View className="flex-1 items-center justify-center">
-          <Text className="text-slate-50 text-base">
-            {authenticationError?.message}
-          </Text>
-        </View>
-      </Modal>
     </LinearGradient>
   );
 };

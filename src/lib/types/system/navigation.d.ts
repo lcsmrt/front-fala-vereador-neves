@@ -1,4 +1,4 @@
-import {StackNavigationProp} from '@react-navigation/stack';
+import { NativeNativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -9,32 +9,32 @@ export type RootStackParamList = {
   Chat: undefined;
 };
 
-export type LoginScreenNavigationProp = StackNavigationProp<
+export type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'Login'
 >;
 
-export type RegisterScreenNavigationProp = StackNavigationProp<
+export type RegisterScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'Register'
 >;
 
-export type ForgotPasswordScreenNavigationProp = StackNavigationProp<
+export type ForgotPasswordScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  'Forgot Password'
+  'ForgotPassword'
 >;
 
-export type EditProfileScreenNavigationProp = StackNavigationProp<
+export type EditProfileScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  'Edit Profile'
+  'EditProfile'
 >;
 
-export type HomeScreenNavigationProp = StackNavigationProp<
+export type HomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'Home'
 >;
 
-export type ChatScreenNavigationProp = StackNavigationProp<
+export type ChatScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'Chat'
 >;

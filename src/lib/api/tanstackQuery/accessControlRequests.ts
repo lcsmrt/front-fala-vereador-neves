@@ -1,8 +1,9 @@
 import {useMutation} from '@tanstack/react-query';
 import httpRequest from '../axios/httpRequest';
-import {User} from '../../types/user';
+import {User} from '../../types/accessControl/user';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import RNFetchBlob from 'rn-fetch-blob';
+import { PasswordReset } from '../../types/accessControl/passwordReset';
 
 // AUTENTICA USUÁRIO
 export interface AuthenticateUserParams {
@@ -82,3 +83,13 @@ const sendPasswordRecoveryEmail = async (email: string) => {
 export const useSendPasswordRecoveryEmail = () => {
   return useMutation({mutationFn: sendPasswordRecoveryEmail});
 };
+
+// REDEFINE SENHA
+const resetPassword = async (passwordResetData: PasswordReset) => {
+  const {data} = await httpRequest.post('/recuperar_senha/recuperar', passwordResetData);
+  return data;
+}
+
+export const useResetPassword = () => {
+  return useMutation({mutationFn: resetPassword});
+}

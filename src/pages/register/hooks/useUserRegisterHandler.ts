@@ -3,7 +3,7 @@ import {RegisterScreenNavigationProp} from '../../../lib/types/system/navigation
 import useValidation from '../../../lib/hooks/useValidation';
 import {useRegisterUser} from '../../../lib/api/tanstackQuery/accessControlRequests';
 import {useLoadingContext} from '../../../lib/contexts/useLoadingContext';
-import {User} from '../../../lib/types/user';
+import {User} from '../../../lib/types/accessControl/user';
 import {useEffect} from 'react';
 
 const useUserRegisterHandler = () => {

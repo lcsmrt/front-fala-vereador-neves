@@ -1,8 +1,4 @@
-interface Document {
-  nome?: string;
-  contentType?: string;
-  documento?: string[];
-}
+import {Document} from '../system/document';
 
 export interface Attachment {
   pk?: number;

@@ -1,9 +1,9 @@
-import {View, Text, FlatList, RefreshControl} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 import Header from '../../components/header/header';
 import Avatar from '../../components/avatar/avatar';
 import {useRoute} from '@react-navigation/native';
 import {getNameInitials} from '../../lib/utils/formatters';
-import {Solicitation} from '../../lib/types/solicitation';
+import {Solicitation} from '../../lib/types/solicitation/solicitation';
 import Separator from '../../components/separator/separator';
 import useChatMessages from './hooks/useChatMessages';
 import Input from '../../components/input/input';
@@ -11,17 +11,44 @@ import Button from '../../components/button/button';
 import SendIcon from '../../assets/icons/send';
 import PaperclipIcon from '../../assets/icons/paperclip';
 import useHandleSendMessage from './hooks/useSendMessage';
+import {useEffect, useRef} from 'react';
+import DocumentPicker from 'react-native-document-picker';
+import {File} from '../../lib/types/system/document';
 
 const Chat = () => {
   const route = useRoute();
   const {solicitation} = route.params as {solicitation: Solicitation};
 
-  const {chatMessages, isChatMessagesLoading} = useChatMessages(
-    solicitation.pk ?? 0,
-  );
-  const {message, setMessage, handleSendMessage} = useHandleSendMessage(
-    solicitation.pk ?? 0,
-  );
+  const flatListRef = useRef<FlatList>(null);
+
+  const {chatMessages, profileImage} = useChatMessages(solicitation.pk ?? 0);
+  const {message, setMessage, setFile, handleSendMessage} =
+    useHandleSendMessage(solicitation.pk ?? 0);
+
+  useEffect(() => {
+    setTimeout(() => {
+      flatListRef.current?.scrollToEnd({animated: true});
+    }, 100);
+  }, [chatMessages]);
+
+  const selectFile = async () => {
+    try {
+      const result = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+        allowMultiSelection: false,
+      });
+
+      setFile(result[0] as File);
+
+      console.log('Arquivo selecionado:', result[0]);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        console.log('Selecão de arquivo cancelada');
+      } else {
+        console.error('Erro ao selecionar arquivo:', err);
+      }
+    }
+  };
 
   return (
     <>
@@ -31,18 +58,18 @@ const Chat = () => {
         <View className="w-full flex flex-row items-center justify-between mb-4">
           <View>
             <Text className="font-semibold mb-1">
-              {solicitation.vereador?.nomePopular ?? ''}
+              {solicitation?.vereador?.nomePopular ?? ''}
             </Text>
             <Text className="font-medium mb-1">
-              {`Protocolo: ${solicitation.protocolo ?? ''}`}
+              {`Protocolo: ${solicitation?.protocolo ?? ''}`}
             </Text>
             <Text className="font-medium">
-              {`Assunto: ${solicitation.assunto ?? ''}`}
+              {`Assunto: ${solicitation?.assunto ?? ''}`}
             </Text>
           </View>
           <Avatar
             size="lg"
-            fallback={getNameInitials(solicitation.vereador?.nomeCivil ?? '')}
+            fallback={getNameInitials(solicitation?.vereador?.nomeCivil ?? '')}
           />
         </View>
 
@@ -50,6 +77,7 @@ const Chat = () => {
 
         <View className="flex-1">
           <FlatList
+            ref={flatListRef}
             showsVerticalScrollIndicator={false}
             data={chatMessages}
             renderItem={({item}) => (
@@ -79,7 +107,7 @@ const Chat = () => {
             value={message}
             onChangeText={(text: string) => setMessage(text)}
             rightIcon={
-              <Button size="icon" variant="ghost">
+              <Button size="icon" variant="ghost" onPress={selectFile}>
                 <PaperclipIcon stroke="#999" />
               </Button>
             }

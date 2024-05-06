@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
-import {Alderman} from '../../types/alderman';
+import {Alderman} from '../../types/accessControl/alderman';
 import httpRequest from '../axios/httpRequest';
 
 const getAldermans = async () => {

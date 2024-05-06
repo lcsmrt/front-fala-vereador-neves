@@ -49,7 +49,7 @@ const Router = () => {
         />
 
         <Stack.Screen
-          name="Edit Profile"
+          name="EditProfile"
           component={EditProfile}
           options={{
             headerShown: false,
@@ -58,7 +58,7 @@ const Router = () => {
         />
 
         <Stack.Screen
-          name="Forgot Password"
+          name="ForgotPassword"
           component={ForgotPassword}
           options={{
             headerShown: false,

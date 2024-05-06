@@ -9,13 +9,28 @@ import {
 import useUser from '../../lib/hooks/useUser';
 import Separator from '../separator/separator';
 import Button from '../button/button';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {useDrawerContext} from '../../lib/contexts/useDrawerContext';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {RootStackParamList} from '../../lib/types/system/navigation';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 const AppDrawer = () => {
-  const navigation: NavigationProp<any, any> = useNavigation();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const {user} = useUser();
   const {isDrawerVisible, setIsDrawerVisible} = useDrawerContext();
+
+  const logout = async () => {
+    await EncryptedStorage.removeItem('token');
+    await EncryptedStorage.removeItem('user');
+
+    setIsDrawerVisible(false);
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Login'}],
+    });
+  };
 
   return (
     <Modal transparent visible={isDrawerVisible} animationType="none">
@@ -32,28 +47,27 @@ const AppDrawer = () => {
           <Separator orientation="horizontal" classes="mt-6" />
         </View>
         <View className="flex-1 w-full px-8 mt-6">
-          <Button
-            variant="ghost"
-            className="w-full items-start"
-            onPress={() => {
-              setIsDrawerVisible(false);
-              navigation.navigate('Edit Profile');
-            }}>
-            <Text className="text-lg">Editar Perfil</Text>
-          </Button>
-          <Button variant="ghost" className="w-full items-start">
+          {!user?.vereador && (
+            <Button
+              variant="ghost"
+              className="w-full items-start"
+              onPress={() => {
+                setIsDrawerVisible(false);
+                navigation.navigate('EditProfile');
+              }}>
+              <Text className="text-lg">Editar Perfil</Text>
+            </Button>
+          )}
+          {/* <Button variant="ghost" className="w-full items-start">
             <Text className="text-lg">Tema</Text>
-          </Button>
+          </Button> */}
         </View>
         <View className="w-full px-8">
           <Separator orientation="horizontal" classes="mb-6" />
           <Button
             variant="ghost"
             className="w-full items-start"
-            onPress={() => {
-              setIsDrawerVisible(false);
-              // navigation.replace('Login');
-            }}>
+            onPress={logout}>
             <Text className="text-lg">Sair</Text>
           </Button>
         </View>

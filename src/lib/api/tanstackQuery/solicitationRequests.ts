@@ -4,8 +4,8 @@ import {
   Solicitation,
   SolicitationKpi,
   SolicitationType,
-} from '../../types/solicitation';
-import {Alderman} from '../../types/alderman';
+} from '../../types/solicitation/solicitation';
+import {Alderman} from '../../types/accessControl/alderman';
 
 // BUSCA TODAS AS SOLICITAÇÕES DE UM USUÁRIO OU VEREADOR
 interface GetSolicitationParams {

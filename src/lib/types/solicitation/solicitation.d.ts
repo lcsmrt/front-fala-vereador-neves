@@ -1,4 +1,4 @@
-import {Alderman} from './alderman';
+import {Alderman} from '../accessControl/alderman';
 
 interface SolicitationStatus {
   pk?: number;

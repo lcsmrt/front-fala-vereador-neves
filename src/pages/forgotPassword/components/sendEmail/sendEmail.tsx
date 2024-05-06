@@ -5,14 +5,14 @@ import Button from '../../../../components/button/button';
 
 interface SendEmailProps {
   email: any;
-  handleEmailChange: (name: string, value: any) => void;
+  handlePasswordResetDataChange: (name: string, value: any) => void;
   emailErrors: any;
   handleSendEmail: () => void;
 }
 
 const SendEmail = ({
   email,
-  handleEmailChange,
+  handlePasswordResetDataChange,
   emailErrors,
   handleSendEmail,
 }: SendEmailProps) => {
@@ -30,9 +30,9 @@ const SendEmail = ({
         placeholder="Digite seu e-mail"
         classes="mb-8 w-full"
         label="E-mail"
-        value={email.email || ''}
-        onChangeText={text => handleEmailChange('email', text)}
-        notification={emailErrors.email || ''}
+        value={email || ''}
+        onChangeText={text => handlePasswordResetDataChange('email', text)}
+        notification={emailErrors || ''}
         keyboardType="email-address"
       />
 
