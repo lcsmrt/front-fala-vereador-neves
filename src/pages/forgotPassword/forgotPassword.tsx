@@ -14,13 +14,18 @@ const ForgotPassword = () => {
     passwordResetErrors,
     handleSendEmail,
     isEmailSent,
+    handleValidateCode,
+    isCodeValid,
+    handleResetPassword,
   } = usePasswordResetHandler();
 
   useEffect(() => {
     if (isEmailSent && step === 1) {
       setStep(2);
+    } else if (isCodeValid && step === 2) {
+      setStep(3);
     }
-  }, [isEmailSent]);
+  }, [isEmailSent, isCodeValid]);
 
   return (
     <>
@@ -40,6 +45,7 @@ const ForgotPassword = () => {
           passwordResetData={passwordResetData}
           handlePasswordResetDataChange={handlePasswordResetDataChange}
           handleResendEmail={() => handleSendEmail(true)}
+          handleValidateCode={handleValidateCode}
         />
       )}
 
@@ -48,7 +54,7 @@ const ForgotPassword = () => {
           passwordResetData={passwordResetData}
           handlePasswordResetDataChange={handlePasswordResetDataChange}
           passwordResetErrors={passwordResetErrors}
-          handleResetPassword={() => {}}
+          handleResetPassword={handleResetPassword}
         />
       )}
     </>

@@ -3,8 +3,9 @@ import {RegisterScreenNavigationProp} from '../../../lib/types/system/navigation
 import useValidation from '../../../lib/hooks/useValidation';
 import {useRegisterUser} from '../../../lib/api/tanstackQuery/accessControlRequests';
 import {useLoadingContext} from '../../../lib/contexts/useLoadingContext';
-import {User} from '../../../lib/types/accessControl/user';
 import {useEffect} from 'react';
+import { useToastContext } from '../../../lib/contexts/useToastContext';
+import { User } from '../../../lib/types/accessControl/user';
 
 const useUserRegisterHandler = () => {
   const navigation: RegisterScreenNavigationProp = useNavigation();
@@ -50,6 +51,7 @@ const useUserRegisterHandler = () => {
     isPending: isRegistering,
     isSuccess: isRegistered,
     data: registeredUser,
+    error: registerError,
   } = useRegisterUser();
 
   const handleLogin = () => {
@@ -61,11 +63,14 @@ const useUserRegisterHandler = () => {
         sexo: userData.sexo?.value,
       };
 
+      console.log('formattedUserData', formattedUserData);
+
       registerUser(formattedUserData as User);
     }
   };
 
   const {setIsLoading} = useLoadingContext();
+  const {showToast} = useToastContext();
 
   useEffect(() => {
     setIsLoading(isRegistering);
@@ -73,9 +78,15 @@ const useUserRegisterHandler = () => {
 
   useEffect(() => {
     if (isRegistered) {
+      showToast('Usuário cadastrado com sucesso', 'success');
       navigation.replace('Login');
     }
   }, [isRegistered, registeredUser]);
+
+  useEffect(() => {
+    if (registerError) {
+      showToast('Erro ao cadastrar usuário', 'error');
+    }}, [registerError]);
 
   return {
     userData,

@@ -2,18 +2,25 @@ import {Text, View} from 'react-native';
 import Separator from '../../../../components/separator/separator';
 import CodeInput from '../../../../components/input/codeInput';
 import Button from '../../../../components/button/button';
+import {useEffect} from 'react';
 
 interface EnterCodeProps {
   passwordResetData: any;
   handlePasswordResetDataChange: (name: string, value: any) => void;
   handleResendEmail: () => void;
+  handleValidateCode: () => void;
 }
 
 const EnterCode = ({
   passwordResetData,
   handlePasswordResetDataChange,
   handleResendEmail,
+  handleValidateCode,
 }: EnterCodeProps) => {
+  useEffect(() => {
+    if (passwordResetData.codigo.length === 4) handleValidateCode();
+  }, [passwordResetData]);
+
   return (
     <View className="flex-1 p-7">
       <Text className="text-lg font-semibold">Verifique seu e-mail</Text>
