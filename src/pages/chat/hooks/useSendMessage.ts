@@ -1,14 +1,14 @@
 import {useEffect, useState} from 'react';
 import {useSendMessage} from '../../../lib/api/tanstackQuery/chatRequests';
 import useUser from '../../../lib/hooks/useUser';
-import {File} from '../../../lib/types/system/document';
+import {Document} from '../../../lib/types/system/document';
 
 const useHandleSendMessage = (solicitationPk: number) => {
   const {user} = useUser();
   const {mutate: sendMessage, data: sendMessageData} = useSendMessage();
 
   const [message, setMessage] = useState<string>('');
-  const [file, setFile] = useState<File>();
+  const [file, setFile] = useState<Document>();
 
   const handleSendMessage = () => {
     if (!user || !solicitationPk) return;
@@ -21,16 +21,17 @@ const useHandleSendMessage = (solicitationPk: number) => {
       id: solicitationPk,
       message: {
         mensagem: message,
-        arquivo: file,
-        anonimo: isAnonymous,
         origemVereador: isAlderman,
+        anonimo: isAnonymous,
+        anexo: file,
       },
     });
   };
 
   useEffect(() => {
     if (sendMessageData) {
-      console.log('Mensagem enviada com sucesso:', sendMessageData);
+      setMessage('');
+      setFile(undefined);
     }
   }, [sendMessageData]);
 

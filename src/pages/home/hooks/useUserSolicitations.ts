@@ -12,11 +12,19 @@ const useUserSolicitations = (user: User | null) => {
   const {setIsLoading} = useLoadingContext();
 
   const getUserSolicitations = () => {
-    if (user && user.id)
-      getSolicitations({
-        id: user.id,
-        tipoUsuario: user.vereador ? 'vereador' : 'usuario',
-      });
+    if (user && user.id) {
+      if (Boolean(user.vereador)) {
+        getSolicitations({
+          id: String(user.vereador?.pk),
+          tipoUsuario: 'vereador',
+        });
+      } else {
+        getSolicitations({
+          id: String(user.id),
+          tipoUsuario: 'usuario',
+        });
+      }
+    }
   };
 
   useEffect(() => {

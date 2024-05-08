@@ -1,3 +1,11 @@
+import {Alderman} from './alderman';
+
+interface Attachment {
+  pk?: number;
+  arquivo?: string;
+  arquivoNome?: string;
+}
+
 // OBS: ESSE OBJETO NÃO ESTÁ TOTALMENTE MAPEADO
 export interface User {
   cep?: string;
@@ -16,5 +24,6 @@ export interface User {
   telefone?: string;
   tipoDocumento?: 'CPF' | 'CNPJ';
   uf?: string;
-  vereador?: boolean;
+  vereador?: Alderman;
+  anexo?: Attachment;
 }

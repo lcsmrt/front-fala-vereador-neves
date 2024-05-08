@@ -1,4 +1,4 @@
-import {View, Text, FlatList} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import Header from '../../components/header/header';
 import Avatar from '../../components/avatar/avatar';
 import {useRoute} from '@react-navigation/native';
@@ -13,7 +13,10 @@ import PaperclipIcon from '../../assets/icons/paperclip';
 import useHandleSendMessage from './hooks/useSendMessage';
 import {useEffect, useRef} from 'react';
 import DocumentPicker from 'react-native-document-picker';
-import {File} from '../../lib/types/system/document';
+import RNFetchBlob from 'rn-fetch-blob';
+import CrossIcon from '../../assets/icons/cross';
+import ChatMessage from './components/chatMessage';
+import useUser from '../../lib/hooks/useUser';
 
 const Chat = () => {
   const route = useRoute();
@@ -21,9 +24,16 @@ const Chat = () => {
 
   const flatListRef = useRef<FlatList>(null);
 
-  const {chatMessages, profileImage} = useChatMessages(solicitation.pk ?? 0);
-  const {message, setMessage, setFile, handleSendMessage} =
+  const {user} = useUser();
+  const {chatMessages} = useChatMessages(solicitation.pk ?? 0);
+  const {message, setMessage, file, setFile, handleSendMessage} =
     useHandleSendMessage(solicitation.pk ?? 0);
+
+  useEffect(() => {
+    setTimeout(() => {
+      console.log('SOLICITAÇÃO: ', solicitation);
+    }, 10000);
+  }, [solicitation]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -38,9 +48,16 @@ const Chat = () => {
         allowMultiSelection: false,
       });
 
-      setFile(result[0] as File);
+      const fileName = result[0]?.name || undefined;
+      const fileType = result[0]?.type || undefined;
+      const filePath = result[0]?.uri;
+      const fileData = await RNFetchBlob.fs.readFile(filePath, 'base64');
 
-      console.log('Arquivo selecionado:', result[0]);
+      setFile({
+        nome: fileName,
+        contentType: fileType,
+        documento: fileData,
+      });
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         console.log('Selecão de arquivo cancelada');
@@ -67,10 +84,14 @@ const Chat = () => {
               {`Assunto: ${solicitation?.assunto ?? ''}`}
             </Text>
           </View>
-          <Avatar
-            size="lg"
-            fallback={getNameInitials(solicitation?.vereador?.nomeCivil ?? '')}
-          />
+          {!user?.vereador && (
+            <Avatar
+              size="lg"
+              fallback={getNameInitials(
+                solicitation?.vereador?.nomeCivil ?? '',
+              )}
+            />
+          )}
         </View>
 
         <Separator orientation="horizontal" classes="mb-4" />
@@ -80,25 +101,20 @@ const Chat = () => {
             ref={flatListRef}
             showsVerticalScrollIndicator={false}
             data={chatMessages}
-            renderItem={({item}) => (
-              <>
-                {item.origemVereador ? (
-                  <View className="flex flex-row items-center justify-start mb-1">
-                    <View className="bg-slate-200 p-2 rounded-lg">
-                      <Text>{item.mensagem}</Text>
-                    </View>
-                  </View>
-                ) : (
-                  <View className="flex flex-row items-center justify-end mb-1">
-                    <View className="bg-sky-200 p-2 rounded-lg">
-                      <Text>{item.mensagem}</Text>
-                    </View>
-                  </View>
-                )}
-              </>
-            )}
+            renderItem={({item}) => <ChatMessage chatMessage={item} />}
           />
         </View>
+
+        {file && (
+          <View className="p-3 mb-3 bg-gray-200 rounded-lg flex-row justify-between items-center">
+            <Text className="flex-1 mr-2">{file.nome}</Text>
+            <TouchableOpacity onPress={() => setFile(undefined)}>
+              <View className="h-5 w-5">
+                <CrossIcon stroke="#777" />
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
 
         <View className="flex flex-row w-full justify-between items-end">
           <Input

@@ -6,11 +6,10 @@ import {useGetProfileImage} from '../../../lib/api/tanstackQuery/imageRequests';
 const useChatMessages = (id: string | number) => {
   const {data: chatMessages, isLoading: isChatMessagesLoading} =
     useGetChatMessages(id);
-
+    
   const {
     data: profileImage,
     isLoading: isProfileImageLoading,
-    error: profileImageError,
   } = useGetProfileImage(id);
 
   const {setIsLoading} = useLoadingContext();

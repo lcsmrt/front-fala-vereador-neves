@@ -14,8 +14,8 @@ interface GetSolicitationParams {
 }
 
 const getSolicitations = async ({id, tipoUsuario}: GetSolicitationParams) => {
-  const response = await httpRequest.get(`/solicitacoes/${tipoUsuario}/${id}`);
-  return response.data.content || [];
+  const {data} = await httpRequest.get(`/solicitacoes/${tipoUsuario}/${id}`);
+  return data.content || [];
 };
 
 export const useGetSolicitations = ({

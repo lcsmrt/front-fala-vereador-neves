@@ -10,15 +10,16 @@ import Card from '../../components/card/card';
 import useUser from '../../lib/hooks/useUser';
 import useUserSolicitations from './hooks/useUserSolicitations';
 import useUserSolicitationsKpis from './hooks/useUseSolicitationsKpis';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Button from '../../components/button/button';
 import PlusIcon from '../../assets/icons/plus';
 import {useBottomSheetContext} from '../../lib/contexts/useBottomSheetContext';
+import {HomeScreenNavigationProp} from '../../lib/types/system/navigation';
 
 const Home = () => {
-  const navigation: NavigationProp<any, any> = useNavigation();
+  const navigation: HomeScreenNavigationProp = useNavigation();
   const {setIsBottomSheetVisible} = useBottomSheetContext();
-  const {user} = useUser();
+  const {user, userProfileImage} = useUser();
   const {isSolicitationsLoading, getUserSolicitations, solicitations} =
     useUserSolicitations(user);
   const {
@@ -36,7 +37,11 @@ const Home = () => {
 
         <View className="p-4 w-full">
           <View className="flex flex-row items-center">
-            <Avatar fallback={getNameInitials(user?.nome ?? '')} size="lg" />
+            <Avatar
+              src={userProfileImage}
+              fallback={getNameInitials(user?.nome ?? '')}
+              size="lg"
+            />
             <View className="ml-5">
               <Text className="text-lg">{`Bem vind${
                 user?.sexo === 'F' ? 'a' : user?.sexo === 'M' ? 'o' : 'o(a)'

@@ -12,11 +12,19 @@ const useUserSolicitationsKpis = (user: User | null) => {
   const {setIsLoading} = useLoadingContext();
 
   const getUserSolicitationsKpis = () => {
-    if (user && user.id)
-      getSolicitationsKpis({
-        id: user.id,
-        tipoUsuario: user.vereador ? 'vereador' : 'usuario',
-      });
+    if (user && user.id) {
+      if (Boolean(user.vereador)) {
+        getSolicitationsKpis({
+          id: String(user.vereador?.pk),
+          tipoUsuario: 'vereador',
+        });
+      } else {
+        getSolicitationsKpis({
+          id: String(user.id),
+          tipoUsuario: 'usuario',
+        });
+      }
+    }
   };
 
   useEffect(() => {
@@ -27,7 +35,11 @@ const useUserSolicitationsKpis = (user: User | null) => {
     setIsLoading(isSolicitationsKpisLoading);
   }, [isSolicitationsKpisLoading]);
 
-  return {isSolicitationsKpisLoading, getUserSolicitationsKpis, solicitationsKpis};
+  return {
+    isSolicitationsKpisLoading,
+    getUserSolicitationsKpis,
+    solicitationsKpis,
+  };
 };
 
 export default useUserSolicitationsKpis;

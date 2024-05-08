@@ -18,7 +18,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 const AppDrawer = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const {user} = useUser();
+  const {user, userProfileImage} = useUser();
   const {isDrawerVisible, setIsDrawerVisible} = useDrawerContext();
 
   const logout = async () => {
@@ -39,7 +39,11 @@ const AppDrawer = () => {
         onCloseDrawer={() => setIsDrawerVisible(false)}>
         <View className="px-8 w-full">
           <View className="flex flex-row items-center">
-            <Avatar fallback={getNameInitials(user?.nome ?? '')} size="lg" />
+            <Avatar
+              src={userProfileImage}
+              fallback={getNameInitials(user?.nome ?? '')}
+              size="lg"
+            />
             <Text className="text-lg font-bold ml-3">
               {turnIntoTitleCase(getFirstAndLastName(user?.nome ?? ''))}
             </Text>

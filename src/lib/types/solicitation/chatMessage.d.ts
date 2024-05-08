@@ -1,4 +1,4 @@
-import { File } from "../system/document";
+import { Document } from "../system/document";
 import { Attachment } from "./attachment";
 
 interface MessageOptions {
@@ -19,7 +19,7 @@ export interface ChatMessage {
 
 export interface ChatMessageFormData {
   mensagem?: string;
-  arquivo?: File;
   origemVereador?: boolean;
   anonimo?: boolean;
+  anexo?: Document;
 }

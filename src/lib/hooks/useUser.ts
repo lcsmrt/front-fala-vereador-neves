@@ -5,13 +5,9 @@ import {useGetProfileImage} from '../api/tanstackQuery/imageRequests';
 
 const useUser = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [userProfileImage, setUserProfileImage] = useState<string[] | null>(
-    null,
-  );
+  const [userProfileImage, setUserProfileImage] = useState<string | null>(null);
 
-  const {data: profileImage, error: profileImageError} = useGetProfileImage(
-    user?.id || '',
-  );
+  const {data: profileImage} = useGetProfileImage(user?.anexo?.pk || '');
 
   useEffect(() => {
     const getUser = async () => {
@@ -31,12 +27,6 @@ const useUser = () => {
       setUserProfileImage(profileImage.documento);
     }
   }, [profileImage]);
-
-  useEffect(() => {
-    if (profileImageError) {
-      console.error('Erro ao buscar imagem de perfil: ', profileImageError);
-    }
-  }, [profileImageError]);
 
   return {user, userProfileImage};
 };
