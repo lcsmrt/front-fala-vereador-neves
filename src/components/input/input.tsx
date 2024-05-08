@@ -58,7 +58,7 @@ const Input = React.forwardRef<TextInput, InputProps>(
               <TextInput
                 ref={ref}
                 {...inputProps}
-                className="h-full flex-1 border-none bg-transparent py-2"
+                className="h-full flex-1 border-none bg-transparent py-2 text-slate-700"
                 textAlignVertical={inputSize === 'multiline' ? 'top' : 'center'}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}

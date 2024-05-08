@@ -33,7 +33,7 @@ const CodeInput = ({onComplete}: CodeInputProps) => {
     <View className="flex flex-row justify-between">
       {code.map((_, index) => (
         <TextInput
-          className="w-14 h-14 text-center border rounded-md border-slate-400"
+          className="w-14 h-14 text-center border rounded-md border-slate-400 text-slate-700"
           ref={ref => (inputRefs.current[index] = ref)}
           key={index}
           keyboardType="number-pad"

@@ -140,6 +140,7 @@ const ComboBox = React.forwardRef(
           <Backdrop open={isOpen} onPress={() => setIsOpen(false)}>
             <View className="bg-white w-11/12 max-h-[65%] mx-auto rounded-xl p-4">
               <Input
+                className="text-slate-700"
                 placeholder="Digite para buscar..."
                 onChangeText={text => {
                   if (onChange) onChange(text);
