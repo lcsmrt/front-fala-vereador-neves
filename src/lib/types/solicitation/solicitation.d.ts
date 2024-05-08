@@ -1,4 +1,5 @@
 import {Alderman} from '../accessControl/alderman';
+import { User } from '../accessControl/user';
 
 interface SolicitationStatus {
   pk?: number;
@@ -12,9 +13,10 @@ export interface Solicitation {
   conteudo?: string;
   dataHoraCriou?: string;
   dataHoraModificou?: string;
-  usuarioAbertura?: {};
+  usuarioAbertura?: User;
   statusSolicitacao?: SolicitationStatus;
   vereador?: Alderman;
+  anonimo?: string;
 }
 
 export interface SolicitationKpi {

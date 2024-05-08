@@ -66,6 +66,7 @@ export const useActionableGetSolicitationKpis = () => {
   });
 };
 
+// ABRE UMA NOVA SOLICITAÇÃO
 interface OpenSolicitationParams {
   assunto: string;
   conteudo: string;
@@ -87,6 +88,48 @@ export const useOpenSolicitation = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['solicitations']});
       queryClient.invalidateQueries({queryKey: ['solicitationKpis']});
+    },
+  });
+};
+
+// FINALIZA UMA SOLICITAÇÃO
+const finishSolicitation = async (solicitationId: number) => {
+  const {data} = await httpRequest.put(
+    `/solicitacoes/finalizar/${solicitationId}`,
+  );
+  return data;
+};
+
+export const useFinishSolicitation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: finishSolicitation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['solicitations']});
+      queryClient.invalidateQueries({queryKey: ['solicitationKpis']});
+      queryClient.invalidateQueries({queryKey: ['chatMessages']});
+    },
+  });
+};
+
+// REABRE UMA SOLICITAÇÃO
+const reopenSolicitation = async (solicitationId: number) => {
+  const {data} = await httpRequest.put(
+    `/solicitacoes/reabrir/${solicitationId}`,
+  );
+  return data;
+};
+
+export const useReopenSolicitation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: reopenSolicitation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['solicitations']});
+      queryClient.invalidateQueries({queryKey: ['solicitationKpis']});
+      queryClient.invalidateQueries({queryKey: ['chatMessages']});
     },
   });
 };

@@ -15,6 +15,7 @@ import Button from '../../components/button/button';
 import PlusIcon from '../../assets/icons/plus';
 import {useBottomSheetContext} from '../../lib/contexts/useBottomSheetContext';
 import {HomeScreenNavigationProp} from '../../lib/types/system/navigation';
+import clsx from 'clsx';
 
 const Home = () => {
   const navigation: HomeScreenNavigationProp = useNavigation();
@@ -84,14 +85,32 @@ const Home = () => {
               hasShadow
               classes="w-full mb-4 p-4 flex flex-row items-center"
               onPress={() => navigation.navigate('Chat', {solicitation: item})}>
-              <Avatar
+              {/* <Avatar
                 size="lg"
                 fallback={getNameInitials(item.vereador?.nomeCivil ?? '')}
+              /> */}
+              <View
+                className={clsx(
+                  'h-full w-2 rounded-lg',
+                  item.statusSolicitacao?.pk === 1 && 'bg-green-700',
+                  item.statusSolicitacao?.pk === 2 && 'bg-yellow-600',
+                  item.statusSolicitacao?.pk === 3 && 'bg-red-700',
+                )}
               />
               <View className="ml-4">
-                <Text className="font-semibold mb-1">
-                  {item.vereador?.nomePopular ?? ''}
-                </Text>
+                {!user?.vereador ? (
+                  <Text className="font-semibold mb-1">
+                    {item.vereador?.nomePopular ?? ''}
+                  </Text>
+                ) : item.anonimo ? (
+                  <Text className="font-semibold mb-1">Anônimo</Text>
+                ) : (
+                  <Text className="font-semibold mb-1">
+                    {turnIntoTitleCase(
+                      getFirstAndLastName(item.usuarioAbertura?.nome ?? ''),
+                    )}
+                  </Text>
+                )}
                 <Text className="font-medium text-xs mb-1">{`Protocolo: ${
                   item.protocolo ?? ''
                 }`}</Text>

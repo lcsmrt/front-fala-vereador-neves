@@ -24,7 +24,7 @@ const getAldermanImage = async (pictureName?: string) => {
   return data || '';
 };
 
-export const useGetAldermanImage = async (pictureName?: string) => {
+export const useGetAldermanImage = (pictureName?: string) => {
   return useQuery<Document, Error>({
     queryKey: ['aldermanProfileImage'],
     queryFn: () => getAldermanImage(pictureName),
