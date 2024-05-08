@@ -1,13 +1,16 @@
 import {useEffect, useState} from 'react';
 import {User} from '../types/accessControl/user';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {useGetProfileImage} from '../api/tanstackQuery/imageRequests';
+import {
+  useActionableGetProfileImage,
+} from '../api/tanstackQuery/imageRequests';
 
 const useUser = () => {
   const [user, setUser] = useState<User | null>(null);
   const [userProfileImage, setUserProfileImage] = useState<string | null>(null);
 
-  const {data: profileImage} = useGetProfileImage(user?.anexo?.pk || '');
+  const {mutate: getProfileImage, data: profileImage} =
+    useActionableGetProfileImage();
 
   useEffect(() => {
     const getUser = async () => {
@@ -21,6 +24,12 @@ const useUser = () => {
 
     getUser();
   }, []);
+
+  useEffect(() => {
+    if (user && user?.anexo?.pk) {
+      getProfileImage(user.anexo.pk);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (profileImage && profileImage.documento) {

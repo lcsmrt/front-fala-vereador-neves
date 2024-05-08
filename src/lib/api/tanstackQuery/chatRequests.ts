@@ -6,12 +6,12 @@ import {
 } from '../../types/solicitation/chatMessage';
 
 // BUSCA MENSAGENS DO CHAT
-const getChatMessages = async (id: string | number) => {
+const getChatMessages = async (id?: string | number) => {
   const {data} = await httpRequest.get(`/conversas/${id}`);
   return data || [];
 };
 
-export const useGetChatMessages = (id: string | number) => {
+export const useGetChatMessages = (id?: string | number) => {
   return useQuery<ChatMessage[], Error>({
     queryKey: ['chatMessages'],
     queryFn: () => getChatMessages(id),

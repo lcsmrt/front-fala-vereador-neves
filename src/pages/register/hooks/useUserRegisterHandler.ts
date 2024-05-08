@@ -63,8 +63,6 @@ const useUserRegisterHandler = () => {
         sexo: userData.sexo?.value,
       };
 
-      console.log('formattedUserData', formattedUserData);
-
       registerUser(formattedUserData as User);
     }
   };

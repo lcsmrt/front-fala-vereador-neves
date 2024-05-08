@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import {useEffect} from 'react';
 import {Image, Text, View} from 'react-native';
 
 interface AvatarProps {

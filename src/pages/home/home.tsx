@@ -85,10 +85,6 @@ const Home = () => {
               hasShadow
               classes="w-full mb-4 p-4 flex flex-row items-center"
               onPress={() => navigation.navigate('Chat', {solicitation: item})}>
-              {/* <Avatar
-                size="lg"
-                fallback={getNameInitials(item.vereador?.nomeCivil ?? '')}
-              /> */}
               <View
                 className={clsx(
                   'h-full w-2 rounded-lg',
@@ -102,7 +98,7 @@ const Home = () => {
                   <Text className="font-semibold mb-1">
                     {item.vereador?.nomePopular ?? ''}
                   </Text>
-                ) : item.anonimo ? (
+                ) : item.anonimo === "1" ? (
                   <Text className="font-semibold mb-1">Anônimo</Text>
                 ) : (
                   <Text className="font-semibold mb-1">

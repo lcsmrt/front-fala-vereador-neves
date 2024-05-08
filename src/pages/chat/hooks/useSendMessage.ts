@@ -3,9 +3,13 @@ import {useSendMessage} from '../../../lib/api/tanstackQuery/chatRequests';
 import useUser from '../../../lib/hooks/useUser';
 import {Document} from '../../../lib/types/system/document';
 
-const useHandleSendMessage = (solicitationPk: number) => {
+const useHandleSendMessage = (solicitationPk: number, isAnonymous: boolean) => {
   const {user} = useUser();
-  const {mutate: sendMessage, data: sendMessageData} = useSendMessage();
+  const {
+    mutate: sendMessage,
+    isSuccess: isSendMessageSuccess,
+    data: sendMessageData,
+  } = useSendMessage();
 
   const [message, setMessage] = useState<string>('');
   const [file, setFile] = useState<Document>();
@@ -14,7 +18,6 @@ const useHandleSendMessage = (solicitationPk: number) => {
     if (!user || !solicitationPk) return;
     if (!message && !file) return;
 
-    const isAnonymous = false; // IMPLEMENTAR ESSA FUNCIONALIDADE DEPOIS
     const isAlderman = Boolean(user.vereador);
 
     sendMessage({
@@ -29,11 +32,11 @@ const useHandleSendMessage = (solicitationPk: number) => {
   };
 
   useEffect(() => {
-    if (sendMessageData) {
+    if (isSendMessageSuccess || sendMessageData) {
       setMessage('');
       setFile(undefined);
     }
-  }, [sendMessageData]);
+  }, [isSendMessageSuccess, sendMessageData]);
 
   return {
     message,
@@ -41,6 +44,7 @@ const useHandleSendMessage = (solicitationPk: number) => {
     file,
     setFile,
     handleSendMessage,
+    isSendMessageSuccess,
   };
 };
 

@@ -58,7 +58,6 @@ const AppBottomSheet = () => {
       };
 
       try {
-        console.log(solicitation);
         openSolicitation(solicitation);
       } catch (error: any) {
         const errorMessage = error.response.data.message;

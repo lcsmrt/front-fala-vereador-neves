@@ -11,7 +11,7 @@ import Button from '../../components/button/button';
 import SendIcon from '../../assets/icons/send';
 import PaperclipIcon from '../../assets/icons/paperclip';
 import useHandleSendMessage from './hooks/useSendMessage';
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import DocumentPicker from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import CrossIcon from '../../assets/icons/cross';
@@ -22,24 +22,40 @@ import {
   useReopenSolicitation,
 } from '../../lib/api/tanstackQuery/solicitationRequests';
 import {useLoadingContext} from '../../lib/contexts/useLoadingContext';
+import {useToastContext} from '../../lib/contexts/useToastContext';
 
 const Chat = () => {
   const route = useRoute();
   const {solicitation} = route.params as {solicitation: Solicitation};
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   const flatListRef = useRef<FlatList>(null);
 
   const {user} = useUser();
-  const {chatMessages, aldermanImage} = useChatMessages(
-    solicitation.pk ?? 0,
+  const {
+    message,
+    setMessage,
+    file,
+    setFile,
+    handleSendMessage,
+    isSendMessageSuccess,
+  } = useHandleSendMessage(solicitation.pk ?? 0, solicitation.anonimo === '1');
+  const {
+    chatMessages,
+    isChatMessagesLoading,
+    isChatMessagesSuccess,
+    aldermanImage,
+    isAldermanImageLoading,
+  } = useChatMessages(
+    solicitation?.pk,
     solicitation?.vereador?.foto,
+    isSendMessageSuccess,
   );
-  const {message, setMessage, file, setFile, handleSendMessage} =
-    useHandleSendMessage(solicitation.pk ?? 0);
   const {mutate: finishSolicitation, isPending: isFinishingSolicitation} =
     useFinishSolicitation();
   const {mutate: reopenSolicitation, isPending: isReopeningSolicitation} =
     useReopenSolicitation();
+  const {showToast} = useToastContext();
   const {setIsLoading} = useLoadingContext();
 
   useEffect(() => {
@@ -51,6 +67,10 @@ const Chat = () => {
       flatListRef.current?.scrollToEnd({animated: true});
     }, 100);
   }, [chatMessages]);
+
+  useEffect(() => {
+    if (isChatMessagesSuccess) setIsFirstLoad(false);
+  }, [isChatMessagesSuccess]);
 
   const selectFile = async () => {
     try {
@@ -70,10 +90,8 @@ const Chat = () => {
         documento: fileData,
       });
     } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        console.log('Selecão de arquivo cancelada');
-      } else {
-        console.error('Erro ao selecionar arquivo:', err);
+      if (!DocumentPicker.isCancel(err)) {
+        showToast('Erro ao selecionar arquivo', 'error');
       }
     }
   };
@@ -89,7 +107,7 @@ const Chat = () => {
               <Text className="font-semibold mb-1">
                 {solicitation?.vereador?.nomePopular ?? ''}
               </Text>
-            ) : solicitation?.anonimo ? (
+            ) : solicitation?.anonimo === '1' ? (
               <Text className="font-semibold mb-1">Anônimo</Text>
             ) : (
               <Text className="font-semibold mb-1">
@@ -128,7 +146,7 @@ const Chat = () => {
             </>
           ) : (
             <Avatar
-              src={aldermanImage}
+              src={isAldermanImageLoading ? '' : aldermanImage}
               size="lg"
               fallback={getNameInitials(
                 solicitation?.vereador?.nomeCivil ?? '',
@@ -140,12 +158,14 @@ const Chat = () => {
         <Separator orientation="horizontal" classes="mb-4" />
 
         <View className="flex-1">
-          <FlatList
-            ref={flatListRef}
-            showsVerticalScrollIndicator={false}
-            data={chatMessages}
-            renderItem={({item}) => <ChatMessage chatMessage={item} />}
-          />
+          {(!isChatMessagesLoading || !isFirstLoad) && (
+            <FlatList
+              ref={flatListRef}
+              showsVerticalScrollIndicator={false}
+              data={chatMessages}
+              renderItem={({item}) => <ChatMessage chatMessage={item} />}
+            />
+          )}
         </View>
 
         {file && (
