@@ -104,21 +104,21 @@ const Chat = () => {
         <View className="w-full flex flex-row items-end justify-between mb-4">
           <View>
             {!user?.vereador ? (
-              <Text className="font-semibold mb-1">
+              <Text className="font-semibold mb-1 text-slate-700">
                 {solicitation?.vereador?.nomePopular ?? ''}
               </Text>
             ) : solicitation?.anonimo === '1' ? (
-              <Text className="font-semibold mb-1">Anônimo</Text>
+              <Text className="font-semibold mb-1 text-slate-700">Anônimo</Text>
             ) : (
-              <Text className="font-semibold mb-1">
+              <Text className="font-semibold mb-1 text-slate-700">
                 {getFirstAndLastName(solicitation?.usuarioAbertura?.nome ?? '')}
               </Text>
             )}
-            <Text className="font-medium mb-1">
+            <Text className="font-medium mb-1 text-slate-700">
               <Text className="font-semibold">Protocolo: </Text>
               {solicitation?.protocolo ?? ''}
             </Text>
-            <Text className="font-medium">
+            <Text className="font-medium text-slate-700">
               <Text className="font-semibold">Assunto: </Text>
               {solicitation?.assunto ?? ''}
             </Text>

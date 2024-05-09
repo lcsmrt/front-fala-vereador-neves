@@ -20,7 +20,14 @@ const Avatar = ({src, fallback, size}: AvatarProps) => {
   );
 
   const textStyles = clsx(
-    size === 'sm' ? 'text-base' : size === 'lg' ? 'text-xl' : 'text-lg',
+    'text-slate-700',
+    size === 'sm'
+      ? 'text-base'
+      : size === 'lg'
+      ? 'text-xl'
+      : size === 'xl'
+      ? 'text-2xl'
+      : 'text-lg',
   );
 
   const imageSource = src ? `data:image/jpeg;base64,${src}` : '';

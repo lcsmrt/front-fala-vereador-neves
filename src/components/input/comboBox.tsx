@@ -112,7 +112,7 @@ const ComboBox = React.forwardRef(
       <View className={wrapperStyle}>
         <View className="grid w-full">
           <View className="grid w-full">
-            {label && <Text className="mb-1">{label}</Text>}
+            {label && <Text className="mb-1 text-slate-700">{label}</Text>}
             <TouchableOpacity
               className={selectStyle}
               onPress={() => !disabled && setIsOpen(true)}
@@ -140,7 +140,6 @@ const ComboBox = React.forwardRef(
           <Backdrop open={isOpen} onPress={() => setIsOpen(false)}>
             <View className="bg-white w-11/12 max-h-[65%] mx-auto rounded-xl p-4">
               <Input
-                className="text-slate-700"
                 placeholder="Digite para buscar..."
                 onChangeText={text => {
                   if (onChange) onChange(text);
@@ -160,7 +159,7 @@ const ComboBox = React.forwardRef(
                   <TouchableOpacity
                     className="py-3 px-3"
                     onPress={() => handleSelect(item)}>
-                    <Text className="text-base">{item[displayKey]}</Text>
+                    <Text className="text-base text-slate-700">{item[displayKey]}</Text>
                   </TouchableOpacity>
                 )}
               />

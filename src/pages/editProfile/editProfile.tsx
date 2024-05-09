@@ -96,7 +96,7 @@ const EditProfile = () => {
           keyboardShouldPersistTaps="handled">
           <View className="bg-sky-500 flex items-center justify-center py-6">
             <Avatar fallback={getNameInitials(user?.nome ?? '')} size="xl" />
-            <Text className="text-lg font-bold mt-3">
+            <Text className="text-lg font-bold mt-3 text-slate-700">
               {turnIntoTitleCase(getFirstAndLastName(user?.nome ?? ''))}
             </Text>
           </View>

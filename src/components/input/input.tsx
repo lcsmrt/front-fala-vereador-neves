@@ -52,12 +52,13 @@ const Input = React.forwardRef<TextInput, InputProps>(
       <View className={wrapperStyle}>
         <View className="grid w-full">
           <View className="grid w-full">
-            {label && <Text className="mb-1">{label}</Text>}
+            {label && <Text className="mb-1 text-slate-700">{label}</Text>}
             <View className={inputStyle}>
               {leftIcon && <>{leftIcon}</>}
               <TextInput
                 ref={ref}
                 {...inputProps}
+                placeholderTextColor={'#A0AEC0'}
                 className="h-full flex-1 border-none bg-transparent py-2 text-slate-700"
                 textAlignVertical={inputSize === 'multiline' ? 'top' : 'center'}
                 onFocus={() => setIsFocused(true)}

@@ -49,7 +49,7 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
                   <DownloadIcon stroke="#38bdf8" />
                 </View>
                 <View>
-                  <Text>{chatMessage.anexo?.arquivoNome}</Text>
+                  <Text className='text-slate-700'>{chatMessage.anexo?.arquivoNome}</Text>
                   <View className="flex flex-row items-center justify-end">
                     <Text className="text-xs text-sky-400">Download</Text>
                   </View>
@@ -59,7 +59,7 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
           ) : (
             <View className="flex flex-row items-center justify-end mb-1">
               <View className="bg-sky-200 p-2 rounded-lg">
-                <Text>{chatMessage.mensagem}</Text>
+                <Text className='text-slate-700'>{chatMessage.mensagem}</Text>
               </View>
             </View>
           )}
@@ -80,7 +80,7 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
                   <DownloadIcon stroke="#38bdf8" />
                 </View>
                 <View>
-                  <Text>{chatMessage.anexo?.arquivoNome}</Text>
+                  <Text className='text-slate-700'>{chatMessage.anexo?.arquivoNome}</Text>
                   <View className="flex flex-row items-center justify-end">
                     <Text className="text-xs text-sky-400">Download</Text>
                   </View>
@@ -90,7 +90,7 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
           ) : (
             <View className="flex flex-row items-center justify-start mb-1">
               <View className="bg-slate-200 p-2 rounded-lg">
-                <Text>{chatMessage.mensagem}</Text>
+                <Text className='text-slate-700'>{chatMessage.mensagem}</Text>
               </View>
             </View>
           )}

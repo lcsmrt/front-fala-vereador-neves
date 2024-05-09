@@ -44,7 +44,7 @@ const AppDrawer = () => {
               fallback={getNameInitials(user?.nome ?? '')}
               size="lg"
             />
-            <Text className="text-lg font-bold ml-3">
+            <Text className="text-lg font-bold ml-3 text-slate-700">
               {turnIntoTitleCase(getFirstAndLastName(user?.nome ?? ''))}
             </Text>
           </View>
@@ -59,7 +59,7 @@ const AppDrawer = () => {
                 setIsDrawerVisible(false);
                 navigation.navigate('EditProfile');
               }}>
-              <Text className="text-lg">Editar Perfil</Text>
+              <Text className="text-lg text-slate-700">Editar Perfil</Text>
             </Button>
           )}
           {/* <Button variant="ghost" className="w-full items-start">
@@ -72,7 +72,7 @@ const AppDrawer = () => {
             variant="ghost"
             className="w-full items-start"
             onPress={logout}>
-            <Text className="text-lg">Sair</Text>
+            <Text className="text-lg text-slate-700">Sair</Text>
           </Button>
         </View>
       </Drawer>

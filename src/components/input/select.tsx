@@ -72,7 +72,7 @@ const Select = React.forwardRef(
       <View className={wrapperStyle}>
         <View className="grid w-full">
           <View className="grid w-full">
-            {label && <Text className="mb-1">{label}</Text>}
+            {label && <Text className="mb-1 text-slate-700">{label}</Text>}
             <TouchableOpacity
               className={selectStyle}
               onPress={() => !disabled && setIsOpen(true)}
@@ -111,7 +111,7 @@ const Select = React.forwardRef(
                   <TouchableOpacity
                     className="py-3 px-3"
                     onPress={() => handleSelect(item)}>
-                    <Text className="text-base">{item[displayKey]}</Text>
+                    <Text className="text-base text-slate-700">{item[displayKey]}</Text>
                   </TouchableOpacity>
                 )}
               />

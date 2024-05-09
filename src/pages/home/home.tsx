@@ -44,15 +44,17 @@ const Home = () => {
               size="lg"
             />
             <View className="ml-5">
-              <Text className="text-lg">{`Bem vind${
+              <Text className="text-lg text-slate-700">{`Bem vind${
                 user?.sexo === 'F' ? 'a' : user?.sexo === 'M' ? 'o' : 'o(a)'
               },`}</Text>
-              <Text className="text-lg font-bold">
+              <Text className="text-lg font-bold text-slate-700">
                 {turnIntoTitleCase(getFirstAndLastName(user?.nome ?? ''))}
               </Text>
             </View>
           </View>
-          <Text className="text-lg font-bold mt-6">Solicitações</Text>
+          <Text className="text-lg font-bold mt-6 text-slate-700">
+            Solicitações
+          </Text>
         </View>
 
         <View className="w-full flex flex-row justify-between px-4">
@@ -60,19 +62,19 @@ const Home = () => {
             <Text className="text-xl text-green-700 font-semibold">
               {solicitationsKpis?.abertas}
             </Text>
-            <Text>Abertas</Text>
+            <Text className="text-slate-700">Abertas</Text>
           </Card>
           <Card touchable hasShadow classes="items-center px-2 py-4 w-[32%]">
             <Text className="text-xl text-yellow-600 font-semibold">
               {solicitationsKpis?.emAndamento}
             </Text>
-            <Text>Andamento</Text>
+            <Text className="text-slate-700">Andamento</Text>
           </Card>
           <Card touchable hasShadow classes="items-center px-2 py-4 w-[32%]">
             <Text className="text-xl text-red-700 font-semibold">
               {solicitationsKpis?.encerradas}
             </Text>
-            <Text>Encerradas</Text>
+            <Text className="text-slate-700">Encerradas</Text>
           </Card>
         </View>
 
@@ -95,22 +97,22 @@ const Home = () => {
               />
               <View className="ml-4">
                 {!user?.vereador ? (
-                  <Text className="font-semibold mb-1">
+                  <Text className="font-semibold mb-1 text-slate-700">
                     {item.vereador?.nomePopular ?? ''}
                   </Text>
-                ) : item.anonimo === "1" ? (
-                  <Text className="font-semibold mb-1">Anônimo</Text>
+                ) : item.anonimo === '1' ? (
+                  <Text className="font-semibold mb-1 text-slate-700">Anônimo</Text>
                 ) : (
-                  <Text className="font-semibold mb-1">
+                  <Text className="font-semibold mb-1 text-slate-700">
                     {turnIntoTitleCase(
                       getFirstAndLastName(item.usuarioAbertura?.nome ?? ''),
                     )}
                   </Text>
                 )}
-                <Text className="font-medium text-xs mb-1">{`Protocolo: ${
+                <Text className="font-medium text-xs mb-1 text-slate-700">{`Protocolo: ${
                   item.protocolo ?? ''
                 }`}</Text>
-                <Text className="font-semibold text-xs">
+                <Text className="font-semibold text-xs text-slate-700">
                   {item.statusSolicitacao?.descricao ?? ''}
                 </Text>
               </View>
@@ -118,7 +120,7 @@ const Home = () => {
           )}
           ListEmptyComponent={
             <View className="flex-1 justify-center items-center mt-20">
-              <Text className="text-base text-center">
+              <Text className="text-base text-center text-slate-700">
                 Nenhuma solicitação encontrada.
               </Text>
             </View>

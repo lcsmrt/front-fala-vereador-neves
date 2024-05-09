@@ -83,7 +83,7 @@ const AppBottomSheet = () => {
         isBottomSheetVisible={isBottomSheetVisible}
         onCloseBottomSheet={() => setIsBottomSheetVisible(false)}>
         <View className="w-full">
-          <Text className="text-center font-semibold text-lg">
+          <Text className="text-center font-semibold text-lg text-slate-700">
             Nova Solicitação
           </Text>
           <Separator orientation="horizontal" classes="mt-4 mb-1" />
@@ -130,7 +130,7 @@ const AppBottomSheet = () => {
 
         <View className="flex flex-row items-center justify-between mt-4">
           <View>
-            <Text>Anônimo</Text>
+            <Text className='text-slate-700'>Anônimo</Text>
             <Text className="text-xs text-slate-400 mt-1">
               Sua identidade será ocultada
             </Text>
