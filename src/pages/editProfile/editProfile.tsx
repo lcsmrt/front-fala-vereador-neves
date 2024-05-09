@@ -21,7 +21,7 @@ import ComboBox from '../../components/input/comboBox';
 import Button from '../../components/button/button';
 
 const EditProfile = () => {
-  const {user} = useUser();
+  const {user, userProfileImage} = useUser();
 
   const {userData, handleUserDataChange, userDataErrors, handleUpdateUser} =
     useEditUserProfileHandler();
@@ -95,7 +95,13 @@ const EditProfile = () => {
           contentContainerStyle={{flexGrow: 1}}
           keyboardShouldPersistTaps="handled">
           <View className="bg-sky-500 flex items-center justify-center py-6">
-            <Avatar fallback={getNameInitials(user?.nome ?? '')} size="xl" />
+            <Avatar
+              touchable
+              onPress={() => {}}
+              src={userProfileImage}
+              fallback={getNameInitials(user?.nome ?? '')}
+              size="xl"
+            />
             <Text className="text-lg font-bold mt-3 text-slate-700">
               {turnIntoTitleCase(getFirstAndLastName(user?.nome ?? ''))}
             </Text>

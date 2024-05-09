@@ -37,37 +37,8 @@ export interface UpdateUserParams {
 }
 
 const updateUser = async ({id, userData}: UpdateUserParams) => {
-  const token = await EncryptedStorage.getItem('token');
-
-  try {
-    const response = await RNFetchBlob.fetch(
-      'PUT',
-      `http://198.27.114.51:8083/usuario_publico/${id}`,
-      {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${token}`,
-      },
-      [
-        {
-          name: 'form',
-          data: JSON.stringify(userData),
-          type: 'application/json',
-        },
-      ],
-    );
-
-    if (response.respInfo.status >= 400) {
-      console.log('Error response:', response.data);
-      throw new Error(
-        `Erro ao atualizar usuário. Status code: ${response.respInfo.status}`,
-      );
-    }
-
-    console.log('Usuário atualizado com sucesso: ', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Erro ao atualizar usuário: ', error);
-  }
+  const {data} = await httpRequest.put(`/usuario/${id}`, userData);
+  return data;
 };
 
 export const useUpdateUser = () => {

@@ -4,6 +4,7 @@ import {useLoadingContext} from '../../../lib/contexts/useLoadingContext';
 import useUser from '../../../lib/hooks/useUser';
 import useValidation from '../../../lib/hooks/useValidation';
 import {User} from '../../../lib/types/accessControl/user';
+import {useToastContext} from '../../../lib/contexts/useToastContext';
 
 const useEditUserProfileHandler = () => {
   const {user} = useUser();
@@ -49,13 +50,14 @@ const useEditUserProfileHandler = () => {
   };
 
   const {setIsLoading} = useLoadingContext();
+  const {showToast} = useToastContext();
 
   useEffect(() => {
     setIsLoading(isUpdating);
   }, [isUpdating, setIsLoading]);
 
   useEffect(() => {
-    
+    if (isUpdated) showToast('Perfil atualizado com sucesso', 'success');
   }, [isUpdated]);
 
   return {
