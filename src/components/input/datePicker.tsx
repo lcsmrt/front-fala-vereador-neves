@@ -73,7 +73,7 @@ const DatePicker = ({
     <View className={wrapperStyle}>
       <View className="grid w-full">
         <View className="grid w-full">
-          {label && <Text className="mb-1">{label}</Text>}
+          {label && <Text className="mb-1 text-slate-700">{label}</Text>}
           <TouchableOpacity
             className={datePickerStyle}
             onPress={showDatepicker}>

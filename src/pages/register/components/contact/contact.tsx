@@ -64,7 +64,7 @@ const Contact = ({
         contentContainerStyle={{flexGrow: 1}}
         keyboardShouldPersistTaps="handled"
         className="p-7">
-        <Text className="text-lg font-semibold">Contato</Text>
+        <Text className="text-lg font-semibold text-slate-700">Contato</Text>
 
         <Separator orientation="horizontal" classes="mt-4 mb-4" />
 

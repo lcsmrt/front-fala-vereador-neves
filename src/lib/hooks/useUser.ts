@@ -8,6 +8,7 @@ import {
 const useUser = () => {
   const [user, setUser] = useState<User | null>(null);
   const [userProfileImage, setUserProfileImage] = useState<string | null>(null);
+  const [trigger, setTrigger] = useState<number>(0);
 
   const {mutate: getProfileImage, data: profileImage} =
     useActionableGetProfileImage();
@@ -23,7 +24,7 @@ const useUser = () => {
     };
 
     getUser();
-  }, []);
+  }, [trigger]);
 
   useEffect(() => {
     if (user && user?.anexo?.pk) {
@@ -37,7 +38,7 @@ const useUser = () => {
     }
   }, [profileImage]);
 
-  return {user, userProfileImage};
+  return {user, userProfileImage, setTrigger};
 };
 
 export default useUser;

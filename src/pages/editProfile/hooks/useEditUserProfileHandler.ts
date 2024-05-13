@@ -1,13 +1,15 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useUpdateUser} from '../../../lib/api/tanstackQuery/accessControlRequests';
 import {useLoadingContext} from '../../../lib/contexts/useLoadingContext';
 import useUser from '../../../lib/hooks/useUser';
 import useValidation from '../../../lib/hooks/useValidation';
 import {User} from '../../../lib/types/accessControl/user';
 import {useToastContext} from '../../../lib/contexts/useToastContext';
+import {Document} from '../../../lib/types/system/document';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const useEditUserProfileHandler = () => {
-  const {user} = useUser();
+  const {user, setTrigger} = useUser();
   const {
     values: userData,
     handleChange: handleUserDataChange,
@@ -30,6 +32,8 @@ const useEditUserProfileHandler = () => {
     },
   );
 
+  const [file, setFile] = useState<Document>();
+
   const {
     mutate: updateUser,
     isPending: isUpdating,
@@ -43,6 +47,7 @@ const useEditUserProfileHandler = () => {
         ...userData,
         uf: userData.uf?.sigla,
         cidade: userData.cidade?.nome,
+        img: file,
       };
 
       updateUser({id: user.id, userData: formattedUserData as User});
@@ -57,15 +62,22 @@ const useEditUserProfileHandler = () => {
   }, [isUpdating, setIsLoading]);
 
   useEffect(() => {
-    if (isUpdated) showToast('Perfil atualizado com sucesso', 'success');
+    if (isUpdated && updatedUser) {
+      showToast('Perfil atualizado com sucesso', 'success');
+      EncryptedStorage.setItem('user', JSON.stringify(updatedUser));
+      setTrigger(prev => prev + 1);
+    }
   }, [isUpdated]);
 
   return {
     userData,
     handleUserDataChange,
+    file,
+    setFile,
     userDataErrors,
     validateUserDataField,
     handleUpdateUser,
+    updatedUser,
   };
 };
 

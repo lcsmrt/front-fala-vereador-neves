@@ -19,12 +19,20 @@ import {
 import {useGetAddresByCep} from '../../lib/api/tanstackQuery/viaCep/cepRequest';
 import ComboBox from '../../components/input/comboBox';
 import Button from '../../components/button/button';
+import ImageCropPicker from 'react-native-image-crop-picker';
+import {Document} from '../../lib/types/system/document';
 
 const EditProfile = () => {
-  const {user, userProfileImage} = useUser();
+  const {user, userProfileImage } = useUser();
 
-  const {userData, handleUserDataChange, userDataErrors, handleUpdateUser} =
-    useEditUserProfileHandler();
+  const {
+    userData,
+    handleUserDataChange,
+    file,
+    setFile,
+    userDataErrors,
+    handleUpdateUser,
+  } = useEditUserProfileHandler();
 
   const {data: states} = useGetStates();
   const {data: cities} = useGetCities();
@@ -52,7 +60,8 @@ const EditProfile = () => {
       cities?.find(city => city.nome === user?.cidade),
     );
     handleUserDataChange('telefone', user?.telefone ?? '');
-  }, [user]);
+    handleUserDataChange('profileImage', userProfileImage);
+  }, [user, userProfileImage]);
 
   useEffect(() => {
     if (user?.cep === userData.cep) return;
@@ -86,6 +95,32 @@ const EditProfile = () => {
     }
   }, [address]);
 
+  const handleSelectImage = () => {
+    ImageCropPicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+      includeBase64: true,
+      mediaType: 'photo',
+    })
+      .then(image => {
+        if (image?.data) {
+          setFile({
+            nome: image.filename ?? 'profile-image',
+            contentType: image.mime,
+            documento: image.data,
+          });
+        }
+      })
+      .catch(error => {
+        if (error.code === 'E_PICKER_CANCELLED') {
+          console.log('User canceled the image picker');
+        } else {
+          console.log('Error selecting image:', error.message);
+        }
+      });
+  };
+
   return (
     <>
       <Header hasBackButton />
@@ -97,8 +132,8 @@ const EditProfile = () => {
           <View className="bg-sky-500 flex items-center justify-center py-6">
             <Avatar
               touchable
-              onPress={() => {}}
-              src={userProfileImage}
+              onPress={handleSelectImage}
+              src={file?.documento ?? userData.profileImage}
               fallback={getNameInitials(user?.nome ?? '')}
               size="xl"
             />

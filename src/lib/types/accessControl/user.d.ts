@@ -4,6 +4,11 @@ interface Attachment {
   pk?: number;
   arquivo?: string;
   arquivoNome?: string;
+
+  //  SEPARAR ISSO DEPOIS, TIVE QUE MESCLAR OS OBJETOS TEMPORARIAMENTE
+  nome?: string;
+  contentType?: string;
+  documento?: string;
 }
 
 // OBS: ESSE OBJETO NÃO ESTÁ TOTALMENTE MAPEADO

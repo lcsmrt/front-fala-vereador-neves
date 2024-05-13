@@ -10,17 +10,18 @@ import Card from '../../components/card/card';
 import useUser from '../../lib/hooks/useUser';
 import useUserSolicitations from './hooks/useUserSolicitations';
 import useUserSolicitationsKpis from './hooks/useUseSolicitationsKpis';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import Button from '../../components/button/button';
 import PlusIcon from '../../assets/icons/plus';
 import {useBottomSheetContext} from '../../lib/contexts/useBottomSheetContext';
 import {HomeScreenNavigationProp} from '../../lib/types/system/navigation';
 import clsx from 'clsx';
+import { useEffect } from 'react';
 
 const Home = () => {
   const navigation: HomeScreenNavigationProp = useNavigation();
   const {setIsBottomSheetVisible} = useBottomSheetContext();
-  const {user, userProfileImage} = useUser();
+  const {user, userProfileImage, setTrigger} = useUser();
   const {isSolicitationsLoading, getUserSolicitations, solicitations} =
     useUserSolicitations(user);
   const {
@@ -101,7 +102,9 @@ const Home = () => {
                     {item.vereador?.nomePopular ?? ''}
                   </Text>
                 ) : item.anonimo === '1' ? (
-                  <Text className="font-semibold mb-1 text-slate-700">Anônimo</Text>
+                  <Text className="font-semibold mb-1 text-slate-700">
+                    Anônimo
+                  </Text>
                 ) : (
                   <Text className="font-semibold mb-1 text-slate-700">
                     {turnIntoTitleCase(
@@ -129,6 +132,7 @@ const Home = () => {
             <RefreshControl
               refreshing={isSolicitationsLoading || isSolicitationsKpisLoading}
               onRefresh={() => {
+                setTrigger(prev => prev + 1);
                 getUserSolicitations();
                 getUserSolicitationsKpis();
               }}

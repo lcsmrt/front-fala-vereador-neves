@@ -46,7 +46,7 @@ const PersonalData = ({
 
   return (
     <View className="flex-1 p-7">
-      <Text className="text-lg font-semibold">Dados pessoais</Text>
+      <Text className="text-lg font-semibold text-slate-700">Dados pessoais</Text>
 
       <Separator orientation="horizontal" classes="mt-4 mb-4" />
 

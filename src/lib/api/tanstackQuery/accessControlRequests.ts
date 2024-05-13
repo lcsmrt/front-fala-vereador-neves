@@ -1,8 +1,6 @@
 import {useMutation} from '@tanstack/react-query';
 import httpRequest from '../axios/httpRequest';
 import {User} from '../../types/accessControl/user';
-import EncryptedStorage from 'react-native-encrypted-storage';
-import RNFetchBlob from 'rn-fetch-blob';
 import {PasswordReset} from '../../types/accessControl/passwordReset';
 
 // AUTENTICA USUÁRIO
@@ -37,7 +35,7 @@ export interface UpdateUserParams {
 }
 
 const updateUser = async ({id, userData}: UpdateUserParams) => {
-  const {data} = await httpRequest.put(`/usuario/${id}`, userData);
+  const {data} = await httpRequest.put(`/usuario_publico/${id}`, userData);
   return data;
 };
 

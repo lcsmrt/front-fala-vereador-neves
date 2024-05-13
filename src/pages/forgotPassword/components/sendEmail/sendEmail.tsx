@@ -18,11 +18,11 @@ const SendEmail = ({
 }: SendEmailProps) => {
   return (
     <View className="flex-1 p-7">
-      <Text className="text-lg font-semibold">Esqueceu a senha</Text>
+      <Text className="text-lg font-semibold text-slate-700">Esqueceu a senha</Text>
 
       <Separator orientation="horizontal" classes="mt-4 mb-4" />
 
-      <Text className="text-base mb-6">
+      <Text className="text-base mb-6 text-slate-700">
         Informe o e-mail que você utiliza para realizar login em sua conta
       </Text>
 

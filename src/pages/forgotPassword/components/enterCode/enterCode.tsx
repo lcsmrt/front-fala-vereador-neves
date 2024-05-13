@@ -23,11 +23,11 @@ const EnterCode = ({
 
   return (
     <View className="flex-1 p-7">
-      <Text className="text-lg font-semibold">Verifique seu e-mail</Text>
+      <Text className="text-lg font-semibold text-slate-700">Verifique seu e-mail</Text>
 
       <Separator orientation="horizontal" classes="mt-4 mb-4" />
 
-      <Text className="text-base mb-10">
+      <Text className="text-base mb-10 text-slate-700">
         Por favor, insira o código que enviamos para o seu e-mail{' '}
         {passwordResetData.email}
       </Text>

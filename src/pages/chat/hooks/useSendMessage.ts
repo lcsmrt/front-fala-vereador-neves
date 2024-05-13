@@ -5,14 +5,14 @@ import {Document} from '../../../lib/types/system/document';
 
 const useHandleSendMessage = (solicitationPk: number, isAnonymous: boolean) => {
   const {user} = useUser();
+  const [message, setMessage] = useState<string>('');
+  const [file, setFile] = useState<Document>();
+
   const {
     mutate: sendMessage,
     isSuccess: isSendMessageSuccess,
     data: sendMessageData,
   } = useSendMessage();
-
-  const [message, setMessage] = useState<string>('');
-  const [file, setFile] = useState<Document>();
 
   const handleSendMessage = () => {
     if (!user || !solicitationPk) return;

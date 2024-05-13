@@ -26,7 +26,7 @@ const Account = ({
 
   return (
     <View className="flex-1 px-7 py-7">
-      <Text className="text-lg font-semibold">Dados da conta</Text>
+      <Text className="text-lg font-semibold text-slate-700">Dados da conta</Text>
 
       <Separator orientation="horizontal" classes="mt-4 mb-4" />
 

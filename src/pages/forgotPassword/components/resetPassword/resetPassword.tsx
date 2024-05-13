@@ -24,11 +24,11 @@ const ResetPassword = ({
     useState(false);
   return (
     <View className="flex-1 p-7">
-      <Text className="text-lg font-semibold">Redefinir senha</Text>
+      <Text className="text-lg font-semibold text-slate-700">Redefinir senha</Text>
 
       <Separator orientation="horizontal" classes="mt-4 mb-4" />
 
-      <Text className="text-base mb-6">
+      <Text className="text-base mb-6 text-slate-700">
         Informe a nova senha que você deseja utilizar
       </Text>
 
