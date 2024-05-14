@@ -10,25 +10,27 @@ import Card from '../../components/card/card';
 import useUser from '../../lib/hooks/useUser';
 import useUserSolicitations from './hooks/useUserSolicitations';
 import useUserSolicitationsKpis from './hooks/useUseSolicitationsKpis';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Button from '../../components/button/button';
 import PlusIcon from '../../assets/icons/plus';
 import {useBottomSheetContext} from '../../lib/contexts/useBottomSheetContext';
 import {HomeScreenNavigationProp} from '../../lib/types/system/navigation';
 import clsx from 'clsx';
-import { useEffect } from 'react';
+import {useSolicitationUpdateContext} from '../../lib/contexts/useSolicitationUpdateContext';
+import {useUserUpdateContext} from '../../lib/contexts/useUserUpdateContext';
 
 const Home = () => {
   const navigation: HomeScreenNavigationProp = useNavigation();
   const {setIsBottomSheetVisible} = useBottomSheetContext();
   const {user, userProfileImage, setTrigger} = useUser();
+  const {solicitationUpdatesCount} = useSolicitationUpdateContext();
   const {isSolicitationsLoading, getUserSolicitations, solicitations} =
-    useUserSolicitations(user);
+    useUserSolicitations(user, solicitationUpdatesCount);
   const {
     isSolicitationsKpisLoading,
     getUserSolicitationsKpis,
     solicitationsKpis,
-  } = useUserSolicitationsKpis(user);
+  } = useUserSolicitationsKpis(user, solicitationUpdatesCount);
 
   return (
     <>
@@ -132,9 +134,9 @@ const Home = () => {
             <RefreshControl
               refreshing={isSolicitationsLoading || isSolicitationsKpisLoading}
               onRefresh={() => {
-                setTrigger(prev => prev + 1);
                 getUserSolicitations();
                 getUserSolicitationsKpis();
+                setTrigger(prev => prev + 1);
               }}
             />
           }

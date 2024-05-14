@@ -23,6 +23,7 @@ import {
 } from '../../lib/api/tanstackQuery/solicitationRequests';
 import {useLoadingContext} from '../../lib/contexts/useLoadingContext';
 import {useToastContext} from '../../lib/contexts/useToastContext';
+import {useSolicitationUpdateContext} from '../../lib/contexts/useSolicitationUpdateContext';
 
 const Chat = () => {
   const route = useRoute();
@@ -51,12 +52,19 @@ const Chat = () => {
     solicitation?.vereador?.foto,
     isSendMessageSuccess,
   );
-  const {mutate: finishSolicitation, isPending: isFinishingSolicitation} =
-    useFinishSolicitation();
-  const {mutate: reopenSolicitation, isPending: isReopeningSolicitation} =
-    useReopenSolicitation();
+  const {
+    mutate: finishSolicitation,
+    isPending: isFinishingSolicitation,
+    isSuccess: isFinishingSolicitationSuccess,
+  } = useFinishSolicitation();
+  const {
+    mutate: reopenSolicitation,
+    isPending: isReopeningSolicitation,
+    isSuccess: isReopeningSolicitationSuccess,
+  } = useReopenSolicitation();
   const {showToast} = useToastContext();
   const {setIsLoading} = useLoadingContext();
+  const {setSolicitationUpdatesCount} = useSolicitationUpdateContext();
 
   useEffect(() => {
     setIsLoading(isFinishingSolicitation || isReopeningSolicitation);
@@ -65,12 +73,26 @@ const Chat = () => {
   useEffect(() => {
     setTimeout(() => {
       flatListRef.current?.scrollToEnd({animated: true});
-    }, 100);
+    }, 150);
   }, [chatMessages]);
 
   useEffect(() => {
     if (isChatMessagesSuccess) setIsFirstLoad(false);
   }, [isChatMessagesSuccess]);
+
+  useEffect(() => {
+    if (isFinishingSolicitationSuccess) {
+      showToast('Solicitação finalizada com sucesso', 'success');
+      setSolicitationUpdatesCount(prev => prev + 1);
+    }
+  }, [isFinishingSolicitationSuccess]);
+
+  useEffect(() => {
+    if (isReopeningSolicitationSuccess) {
+      showToast('Solicitação reaberta com sucesso', 'success');
+      setSolicitationUpdatesCount(prev => prev + 1);
+    }
+  }, [isReopeningSolicitationSuccess]);
 
   const selectFile = async () => {
     try {

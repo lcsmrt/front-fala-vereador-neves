@@ -7,6 +7,7 @@ import {DrawerContextProvider} from './src/lib/contexts/useDrawerContext';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {BottomSheetContextProvider} from './src/lib/contexts/useBottomSheetContext';
 import {ToastContextProvider} from './src/lib/contexts/useToastContext';
+import {SolicitationUpdateContextProvider} from './src/lib/contexts/useSolicitationUpdateContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,13 +24,15 @@ function App(): React.JSX.Element {
       <NavigationContainer>
         <LoadingContextProvider>
           <ToastContextProvider>
-            <DrawerContextProvider>
-              <BottomSheetContextProvider>
-                <GestureHandlerRootView style={{flex: 1}}>
-                  <Router />
-                </GestureHandlerRootView>
-              </BottomSheetContextProvider>
-            </DrawerContextProvider>
+            <SolicitationUpdateContextProvider>
+              <DrawerContextProvider>
+                <BottomSheetContextProvider>
+                  <GestureHandlerRootView style={{flex: 1}}>
+                    <Router />
+                  </GestureHandlerRootView>
+                </BottomSheetContextProvider>
+              </DrawerContextProvider>
+            </SolicitationUpdateContextProvider>
           </ToastContextProvider>
         </LoadingContextProvider>
       </NavigationContainer>
