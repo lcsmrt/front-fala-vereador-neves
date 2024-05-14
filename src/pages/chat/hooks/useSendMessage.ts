@@ -36,7 +36,7 @@ const useHandleSendMessage = (solicitationPk: number, isAnonymous: boolean) => {
 
   useEffect(() => {
     if (isSendMessageSuccess || sendMessageData) {
-      setSolicitationUpdatesCount(prev => prev + 1);
+      // setSolicitationUpdatesCount(prev => prev + 1);
       setMessage('');
       setFile(undefined);
     }
