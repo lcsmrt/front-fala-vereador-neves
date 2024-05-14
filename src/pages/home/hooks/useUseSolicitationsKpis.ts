@@ -3,7 +3,7 @@ import {useActionableGetSolicitationKpis} from '../../../lib/api/tanstackQuery/s
 import {useLoadingContext} from '../../../lib/contexts/useLoadingContext';
 import {User} from '../../../lib/types/accessControl/user';
 
-const useUserSolicitationsKpis = (user: User | null) => {
+const useUserSolicitationsKpis = (user: User | null, shouldRefetch?: number) => {
   const {
     mutate: getSolicitationsKpis,
     isPending: isSolicitationsKpisLoading,
@@ -29,7 +29,7 @@ const useUserSolicitationsKpis = (user: User | null) => {
 
   useEffect(() => {
     getUserSolicitationsKpis();
-  }, [user]);
+  }, [user, shouldRefetch]);
 
   useEffect(() => {
     setIsLoading(isSolicitationsKpisLoading);

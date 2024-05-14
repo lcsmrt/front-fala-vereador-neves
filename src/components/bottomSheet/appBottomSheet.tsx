@@ -13,6 +13,7 @@ import {useOpenSolicitation} from '../../lib/api/tanstackQuery/solicitationReque
 import {useEffect} from 'react';
 import {useLoadingContext} from '../../lib/contexts/useLoadingContext';
 import {useToastContext} from '../../lib/contexts/useToastContext';
+import {useSolicitationUpdateContext} from '../../lib/contexts/useSolicitationUpdateContext';
 
 const AppBottomSheet = () => {
   const {isBottomSheetVisible, setIsBottomSheetVisible} =
@@ -46,6 +47,7 @@ const AppBottomSheet = () => {
 
   const {setIsLoading} = useLoadingContext();
   const {showToast} = useToastContext();
+  const {setSolicitationUpdatesCount} = useSolicitationUpdateContext();
 
   const handleOpenSolicitation = () => {
     if (validateForm()) {
@@ -72,6 +74,7 @@ const AppBottomSheet = () => {
 
   useEffect(() => {
     if (isSolicitationOpened) {
+      setSolicitationUpdatesCount(prev => prev + 1);
       setIsBottomSheetVisible(false);
       showToast('Solicitação enviada com sucesso', 'success');
     }
@@ -130,7 +133,7 @@ const AppBottomSheet = () => {
 
         <View className="flex flex-row items-center justify-between mt-4">
           <View>
-            <Text className='text-slate-700'>Anônimo</Text>
+            <Text className="text-slate-700">Anônimo</Text>
             <Text className="text-xs text-slate-400 mt-1">
               Sua identidade será ocultada
             </Text>

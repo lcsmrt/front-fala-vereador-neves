@@ -20,7 +20,6 @@ import {useGetAddresByCep} from '../../lib/api/tanstackQuery/viaCep/cepRequest';
 import ComboBox from '../../components/input/comboBox';
 import Button from '../../components/button/button';
 import ImageCropPicker from 'react-native-image-crop-picker';
-import {Document} from '../../lib/types/system/document';
 
 const EditProfile = () => {
   const {user, userProfileImage } = useUser();

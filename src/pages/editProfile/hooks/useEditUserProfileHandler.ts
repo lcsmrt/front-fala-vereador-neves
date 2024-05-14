@@ -7,9 +7,10 @@ import {User} from '../../../lib/types/accessControl/user';
 import {useToastContext} from '../../../lib/contexts/useToastContext';
 import {Document} from '../../../lib/types/system/document';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import { useUserUpdateContext } from '../../../lib/contexts/useUserUpdateContext';
 
 const useEditUserProfileHandler = () => {
-  const {user, setTrigger} = useUser();
+  const {user} = useUser();
   const {
     values: userData,
     handleChange: handleUserDataChange,
@@ -56,6 +57,7 @@ const useEditUserProfileHandler = () => {
 
   const {setIsLoading} = useLoadingContext();
   const {showToast} = useToastContext();
+  const {setUserUpdatesCount} = useUserUpdateContext();
 
   useEffect(() => {
     setIsLoading(isUpdating);
@@ -65,7 +67,7 @@ const useEditUserProfileHandler = () => {
     if (isUpdated && updatedUser) {
       showToast('Perfil atualizado com sucesso', 'success');
       EncryptedStorage.setItem('user', JSON.stringify(updatedUser));
-      setTrigger(prev => prev + 1);
+      setUserUpdatesCount(prev => prev + 1);
     }
   }, [isUpdated]);
 

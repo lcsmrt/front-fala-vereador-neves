@@ -17,7 +17,13 @@ const useUser = () => {
     const getUser = async () => {
       try {
         const userJson = await EncryptedStorage.getItem('user');
-        userJson && setUser(JSON.parse(userJson));
+        if(userJson) {
+          const storedUser = JSON.parse(userJson);
+          setUser(storedUser);
+          if (storedUser.anexo?.pk) {
+            getProfileImage(storedUser.anexo.pk);
+          }
+        };
       } catch (error) {
         console.error('Erro ao acessar os dados do usuário: ', error);
       }
@@ -25,12 +31,6 @@ const useUser = () => {
 
     getUser();
   }, [trigger]);
-
-  useEffect(() => {
-    if (user && user?.anexo?.pk) {
-      getProfileImage(user.anexo.pk);
-    }
-  }, [user]);
 
   useEffect(() => {
     if (profileImage && profileImage.documento) {
