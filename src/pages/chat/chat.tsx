@@ -1,4 +1,11 @@
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Platform,
+  PermissionsAndroid,
+} from 'react-native';
 import Header from '../../components/header/header';
 import Avatar from '../../components/avatar/avatar';
 import {useRoute} from '@react-navigation/native';
@@ -96,14 +103,45 @@ const Chat = () => {
 
   const selectFile = async () => {
     try {
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        );
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          showToast(
+            'O aplicativo não tem permissão para acessar os arquivos deste dispositivo',
+            'error',
+          );
+          return;
+        }
+      }
+
       const result = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
+        type: [
+          DocumentPicker.types.doc,
+          DocumentPicker.types.docx,
+          DocumentPicker.types.images,
+          DocumentPicker.types.plainText,
+          DocumentPicker.types.pdf,
+          DocumentPicker.types.ppt,
+          DocumentPicker.types.pptx,
+          DocumentPicker.types.xls,
+          DocumentPicker.types.xlsx,
+        ],
         allowMultiSelection: false,
       });
 
       const fileName = result[0]?.name || undefined;
       const fileType = result[0]?.type || undefined;
       const filePath = result[0]?.uri;
+      const fileSize = result[0]?.size;
+
+      // POSSIBILIDADE DE PARAMETRIZAR FUTURAMENTE (?)
+      if (fileSize && fileSize > 5242880) {
+        showToast('Arquivo muito grande. O tamanho máximo é 5MB', 'error');
+        return;
+      }
+
       const fileData = await RNFetchBlob.fs.readFile(filePath, 'base64');
 
       setFile({
@@ -171,7 +209,7 @@ const Chat = () => {
               src={isAldermanImageLoading ? '' : aldermanImage}
               size="lg"
               fallback={getNameInitials(
-                solicitation?.vereador?.nomeCivil ?? '',
+                solicitation?.vereador?.nomePopular ?? '',
               )}
             />
           )}
@@ -192,7 +230,7 @@ const Chat = () => {
 
         {file && (
           <View className="p-3 mb-3 bg-gray-200 rounded-lg flex-row justify-between items-center">
-            <Text className="flex-1 mr-2">{file.nome}</Text>
+            <Text className="flex-1 mr-2 text-slate-700">{file.nome}</Text>
             <TouchableOpacity onPress={() => setFile(undefined)}>
               <View className="h-5 w-5">
                 <CrossIcon stroke="#777" />
@@ -212,6 +250,7 @@ const Chat = () => {
                 <PaperclipIcon stroke="#999" />
               </Button>
             }
+            maxLength={2000}
           />
           <Button
             className="w-14 ml-4 bg-sky-500 rounded-full"
