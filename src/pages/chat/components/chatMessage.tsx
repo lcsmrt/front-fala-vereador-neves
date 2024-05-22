@@ -58,7 +58,7 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
             </TouchableOpacity>
           ) : (
             <View className="flex flex-row items-center justify-end mb-1">
-              <View className="bg-sky-200 p-2 rounded-lg">
+              <View className="bg-sky-200 p-2 rounded-lg max-w-[70%]">
                 <Text className='text-slate-700'>{chatMessage.mensagem}</Text>
               </View>
             </View>
@@ -89,7 +89,7 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
             </TouchableOpacity>
           ) : (
             <View className="flex flex-row items-center justify-start mb-1">
-              <View className="bg-slate-200 p-2 rounded-lg">
+              <View className="bg-slate-200 p-2 rounded-lg max-w-[70%]">
                 <Text className='text-slate-700'>{chatMessage.mensagem}</Text>
               </View>
             </View>
