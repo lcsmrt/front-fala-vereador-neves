@@ -11,25 +11,36 @@ import {Alderman} from '../../types/accessControl/alderman';
 interface GetSolicitationParams {
   id: string;
   tipoUsuario: 'usuario' | 'vereador';
+  idStatus?: number | string;
 }
 
-const getSolicitations = async ({id, tipoUsuario}: GetSolicitationParams) => {
-  const {data} = await httpRequest.get(`/solicitacoes/${tipoUsuario}/${id}`);
+const getSolicitations = async ({
+  id,
+  tipoUsuario,
+  idStatus,
+}: GetSolicitationParams) => {
+  let filter = '';
+  if (idStatus) filter += `?idStatus=${idStatus}`;
+  
+  const {data} = await httpRequest.get(
+    `/solicitacoes/${tipoUsuario}/${id}${filter}`,
+  );
   return data.content || [];
 };
 
 export const useGetSolicitations = ({
   id,
   tipoUsuario,
+  idStatus,
 }: GetSolicitationParams) => {
   return useQuery<Solicitation[], Error>({
     queryKey: ['solicitations'],
-    queryFn: () => getSolicitations({id, tipoUsuario}),
+    queryFn: () => getSolicitations({id, tipoUsuario, idStatus}),
   });
 };
 
 export const useActionableGetSolicitations = () => {
-  return useMutation<Solicitation[], Error, GetSolicitationKpisParams>({
+  return useMutation<Solicitation[], Error, GetSolicitationParams>({
     mutationFn: getSolicitations,
   });
 };
@@ -131,5 +142,16 @@ export const useReopenSolicitation = () => {
       queryClient.invalidateQueries({queryKey: ['solicitationKpis']});
       queryClient.invalidateQueries({queryKey: ['chatMessages']});
     },
+  });
+};
+
+const getSolicitation = async (solicitationId: number) => {
+  const {data} = await httpRequest.get(`/solicitacoes/${solicitationId}`);
+  return data;
+};
+
+export const useActionableGetSolicitation = () => {
+  return useMutation({
+    mutationFn: getSolicitation,
   });
 };

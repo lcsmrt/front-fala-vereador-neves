@@ -14,6 +14,8 @@ import {useDrawerContext} from '../../lib/contexts/useDrawerContext';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {RootStackParamList} from '../../lib/types/system/navigation';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import EditContainedIcon from '../../assets/icons/editContained';
+import LogoutIcon from '../../assets/icons/logout';
 
 const AppDrawer = () => {
   const navigation =
@@ -54,12 +56,15 @@ const AppDrawer = () => {
           {!user?.vereador && (
             <Button
               variant="ghost"
-              className="w-full items-start"
+              className="w-full justify-start items-center gap-x-2 flex-row px-2"
               onPress={() => {
                 setIsDrawerVisible(false);
                 navigation.navigate('EditProfile');
               }}>
-              <Text className="text-lg text-slate-700">Editar Perfil</Text>
+              <View className="h-6 w-6">
+                <EditContainedIcon stroke="#555" strokeWidth={1.8} />
+              </View>
+              <Text className="text-lg text-slate-600">Editar Perfil</Text>
             </Button>
           )}
           {/* <Button variant="ghost" className="w-full items-start">
@@ -70,9 +75,12 @@ const AppDrawer = () => {
           <Separator orientation="horizontal" classes="mb-6" />
           <Button
             variant="ghost"
-            className="w-full items-start"
+            className="w-full justify-start items-center gap-x-2 flex-row px-2"
             onPress={logout}>
-            <Text className="text-lg text-slate-700">Sair</Text>
+            <View className="h-6 w-6">
+              <LogoutIcon stroke="#555" strokeWidth={1.8} />
+            </View>
+            <Text className="text-lg text-slate-600">Sair</Text>
           </Button>
         </View>
       </Drawer>

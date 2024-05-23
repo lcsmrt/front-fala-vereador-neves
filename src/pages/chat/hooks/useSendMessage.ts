@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {useSendMessage} from '../../../lib/api/tanstackQuery/chatRequests';
 import useUser from '../../../lib/hooks/useUser';
 import {Document} from '../../../lib/types/system/document';
-import { useSolicitationUpdateContext } from '../../../lib/contexts/useSolicitationUpdateContext';
+// import { useSolicitationUpdateContext } from '../../../lib/contexts/useSolicitationUpdateContext';
 
 const useHandleSendMessage = (solicitationPk: number, isAnonymous: boolean) => {
   const {user} = useUser();
@@ -15,7 +15,7 @@ const useHandleSendMessage = (solicitationPk: number, isAnonymous: boolean) => {
     data: sendMessageData,
   } = useSendMessage();
 
-  const {setSolicitationUpdatesCount} = useSolicitationUpdateContext();
+  // const {setSolicitationUpdatesCount} = useSolicitationUpdateContext();
 
   const handleSendMessage = () => {
     if (!user || !solicitationPk) return;
@@ -35,7 +35,7 @@ const useHandleSendMessage = (solicitationPk: number, isAnonymous: boolean) => {
   };
 
   useEffect(() => {
-    if (isSendMessageSuccess || sendMessageData) {
+    if (isSendMessageSuccess && sendMessageData) {
       // setSolicitationUpdatesCount(prev => prev + 1);
       setMessage('');
       setFile(undefined);

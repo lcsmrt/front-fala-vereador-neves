@@ -65,7 +65,7 @@ const Select = React.forwardRef(
       size === 'sm' ? 'h-12' : size === 'lg' ? 'h-16' : 'h-14',
     );
     const textStyle = clsx(
-      selectedOption || value ? 'text-zinc-900' : 'text-zinc-400',
+      selectedOption || value ? 'text-slate-900' : 'text-slate-400',
     );
 
     return (

@@ -3,7 +3,7 @@ import {useActionableGetSolicitations} from '../../../lib/api/tanstackQuery/soli
 import {useLoadingContext} from '../../../lib/contexts/useLoadingContext';
 import {User} from '../../../lib/types/accessControl/user';
 
-const useUserSolicitations = (user: User | null, shouldRefetch?: number) => {
+const useUserSolicitations = (user: User | null, shouldRefetch?: number, status?: number | string) => {
   const {
     mutate: getSolicitations,
     isPending: isSolicitationsLoading,
@@ -17,11 +17,15 @@ const useUserSolicitations = (user: User | null, shouldRefetch?: number) => {
         getSolicitations({
           id: String(user.vereador?.pk),
           tipoUsuario: 'vereador',
+          idStatus: status,
         });
       } else {
+        console.log('user.id', user.id);
+        console.log('status', status);
         getSolicitations({
           id: String(user.id),
           tipoUsuario: 'usuario',
+          idStatus: status,
         });
       }
     }
@@ -29,7 +33,7 @@ const useUserSolicitations = (user: User | null, shouldRefetch?: number) => {
 
   useEffect(() => {
     getUserSolicitations();
-  }, [user, shouldRefetch]);
+  }, [user, shouldRefetch, status]);
 
   useEffect(() => {
     setIsLoading(isSolicitationsLoading);

@@ -10,8 +10,8 @@ httpRequest.interceptors.request.use(
     await EncryptedStorage.getItem('token').then(token => {
       if (token) config.headers.Authorization = `Bearer ${token}`;
     });
-    console.log('Requisição: ', config);
-    console.log('Token: ', config.headers.Authorization);
+    // console.log('Requisição: ', config);
+    // console.log('Token: ', config.headers.Authorization);
     return config;
   },
   error => {
@@ -22,7 +22,7 @@ httpRequest.interceptors.request.use(
 
 httpRequest.interceptors.response.use(
   response => {
-    console.log('Resposta: ', response);
+    // console.log('Resposta: ', response);
     return response;
   },
   error => {

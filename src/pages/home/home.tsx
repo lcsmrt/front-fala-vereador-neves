@@ -1,4 +1,4 @@
-import {FlatList, RefreshControl, ScrollView, Text, View} from 'react-native';
+import {FlatList, RefreshControl, Text, View} from 'react-native';
 import Header from '../../components/header/header';
 import Avatar from '../../components/avatar/avatar';
 import {
@@ -17,15 +17,23 @@ import {useBottomSheetContext} from '../../lib/contexts/useBottomSheetContext';
 import {HomeScreenNavigationProp} from '../../lib/types/system/navigation';
 import clsx from 'clsx';
 import {useSolicitationUpdateContext} from '../../lib/contexts/useSolicitationUpdateContext';
-import {useUserUpdateContext} from '../../lib/contexts/useUserUpdateContext';
+import {useState} from 'react';
+import {
+  CLOSED_SOLICITATION_STATUS,
+  IN_PROGRESS_SOLICITATION_STATUS,
+  OPEN_SOLICITATION_STATUS,
+} from '../../lib/utils/constants';
 
 const Home = () => {
   const navigation: HomeScreenNavigationProp = useNavigation();
+
+  const [selectedStatus, setSelectedStatus] = useState<number | string>('');
+
   const {setIsBottomSheetVisible} = useBottomSheetContext();
   const {user, userProfileImage, setTrigger} = useUser();
   const {solicitationUpdatesCount} = useSolicitationUpdateContext();
   const {isSolicitationsLoading, getUserSolicitations, solicitations} =
-    useUserSolicitations(user, solicitationUpdatesCount);
+    useUserSolicitations(user, solicitationUpdatesCount, selectedStatus);
   const {
     isSolicitationsKpisLoading,
     getUserSolicitationsKpis,
@@ -61,19 +69,58 @@ const Home = () => {
         </View>
 
         <View className="w-full flex flex-row justify-between px-4">
-          <Card touchable hasShadow classes="items-center px-2 py-4 w-[32%]">
+          <Card
+            touchable
+            hasShadow
+            classes={`items-center px-2 py-4 w-[32%] ${
+              selectedStatus === OPEN_SOLICITATION_STATUS ? 'bg-slate-200' : ''
+            }`}
+            onPress={() => {
+              selectedStatus === OPEN_SOLICITATION_STATUS
+                ? setSelectedStatus('')
+                : setSelectedStatus(OPEN_SOLICITATION_STATUS);
+            }}>
             <Text className="text-xl text-green-700 font-semibold">
               {solicitationsKpis?.abertas}
             </Text>
             <Text className="text-slate-700">Abertas</Text>
           </Card>
-          <Card touchable hasShadow classes="items-center px-2 py-4 w-[32%]">
+          <Card
+            touchable
+            hasShadow
+            classes={`items-center px-2 py-4 w-[32%]
+            ${
+              selectedStatus === IN_PROGRESS_SOLICITATION_STATUS
+                ? 'bg-slate-200'
+                : ''
+            }
+            `}
+            onPress={() => {
+              selectedStatus === IN_PROGRESS_SOLICITATION_STATUS
+                ? setSelectedStatus('')
+                : setSelectedStatus(IN_PROGRESS_SOLICITATION_STATUS);
+            }}>
             <Text className="text-xl text-yellow-600 font-semibold">
               {solicitationsKpis?.emAndamento}
             </Text>
             <Text className="text-slate-700">Andamento</Text>
           </Card>
-          <Card touchable hasShadow classes="items-center px-2 py-4 w-[32%]">
+          <Card
+            touchable
+            hasShadow
+            classes={`items-center px-2 py-4 w-[32%]
+            ${
+              selectedStatus === CLOSED_SOLICITATION_STATUS
+                ? 'bg-slate-200'
+                : ''
+            }
+            
+            `}
+            onPress={() => {
+              selectedStatus === CLOSED_SOLICITATION_STATUS
+                ? setSelectedStatus('')
+                : setSelectedStatus(CLOSED_SOLICITATION_STATUS);
+            }}>
             <Text className="text-xl text-red-700 font-semibold">
               {solicitationsKpis?.encerradas}
             </Text>

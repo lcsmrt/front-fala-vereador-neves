@@ -9,7 +9,11 @@ import {
 import Header from '../../components/header/header';
 import Avatar from '../../components/avatar/avatar';
 import {useRoute} from '@react-navigation/native';
-import {getFirstAndLastName, getNameInitials} from '../../lib/utils/formatters';
+import {
+  getFirstAndLastName,
+  getNameInitials,
+  turnIntoTitleCase,
+} from '../../lib/utils/formatters';
 import {Solicitation} from '../../lib/types/solicitation/solicitation';
 import Separator from '../../components/separator/separator';
 import useChatMessages from './hooks/useChatMessages';
@@ -31,6 +35,8 @@ import {
 import {useLoadingContext} from '../../lib/contexts/useLoadingContext';
 import {useToastContext} from '../../lib/contexts/useToastContext';
 import {useSolicitationUpdateContext} from '../../lib/contexts/useSolicitationUpdateContext';
+import {CLOSED_SOLICITATION_STATUS} from '../../lib/utils/constants';
+import useUpdateSolicitation from './hooks/useUpdateSolicitation';
 
 const Chat = () => {
   const route = useRoute();
@@ -69,9 +75,14 @@ const Chat = () => {
     isPending: isReopeningSolicitation,
     isSuccess: isReopeningSolicitationSuccess,
   } = useReopenSolicitation();
+  const {solicitationData, isGetSolicitationSuccess, handleUpdateSolicitation} =
+    useUpdateSolicitation(solicitation?.pk);
   const {showToast} = useToastContext();
   const {setIsLoading} = useLoadingContext();
   const {setSolicitationUpdatesCount} = useSolicitationUpdateContext();
+
+  const [updatedSolicitation, setUpdatedSolicitation] =
+    useState<Solicitation>(solicitation);
 
   useEffect(() => {
     setIsLoading(isFinishingSolicitation || isReopeningSolicitation);
@@ -100,6 +111,29 @@ const Chat = () => {
       setSolicitationUpdatesCount(prev => prev + 1);
     }
   }, [isReopeningSolicitationSuccess]);
+
+  useEffect(() => {
+    if (
+      (updatedSolicitation?.statusSolicitacao?.pk ===
+        CLOSED_SOLICITATION_STATUS &&
+        isChatMessagesSuccess) ||
+      isFinishingSolicitationSuccess ||
+      isReopeningSolicitationSuccess
+    ) {
+      handleUpdateSolicitation();
+    }
+  }, [
+    isChatMessagesSuccess,
+    isFinishingSolicitationSuccess,
+    isReopeningSolicitationSuccess,
+  ]);
+
+  useEffect(() => {
+    if (isGetSolicitationSuccess && solicitationData) {
+      setUpdatedSolicitation(solicitationData);
+      setSolicitationUpdatesCount(prev => prev + 1);
+    }
+  }, [solicitationData, isGetSolicitationSuccess]);
 
   const selectFile = async () => {
     try {
@@ -165,31 +199,35 @@ const Chat = () => {
           <View>
             {!user?.vereador ? (
               <Text className="font-semibold mb-1 text-slate-700">
-                {solicitation?.vereador?.nomePopular ?? ''}
+                {updatedSolicitation?.vereador?.nomePopular ?? ''}
               </Text>
-            ) : solicitation?.anonimo === '1' ? (
+            ) : updatedSolicitation?.anonimo === '1' ? (
               <Text className="font-semibold mb-1 text-slate-700">Anônimo</Text>
             ) : (
               <Text className="font-semibold mb-1 text-slate-700">
-                {getFirstAndLastName(solicitation?.usuarioAbertura?.nome ?? '')}
+                {getFirstAndLastName(
+                  updatedSolicitation?.usuarioAbertura?.nome ?? '',
+                )}
               </Text>
             )}
             <Text className="font-medium mb-1 text-slate-700">
               <Text className="font-semibold">Protocolo: </Text>
-              {solicitation?.protocolo ?? ''}
+              {updatedSolicitation?.protocolo ?? ''}
             </Text>
             <Text className="font-medium text-slate-700">
               <Text className="font-semibold">Assunto: </Text>
-              {solicitation?.assunto ?? ''}
+              {updatedSolicitation?.assunto ?? ''}
             </Text>
           </View>
           {user?.vereador ? (
             <>
-              {solicitation?.statusSolicitacao?.pk !== 3 ? (
+              {updatedSolicitation?.statusSolicitacao?.pk !==
+              CLOSED_SOLICITATION_STATUS ? (
                 <Button
                   size="sm"
                   onPress={() =>
-                    solicitation.pk && finishSolicitation(solicitation.pk)
+                    updatedSolicitation.pk &&
+                    finishSolicitation(updatedSolicitation.pk)
                   }>
                   <Text className="text-slate-50">Finalizar</Text>
                 </Button>
@@ -198,7 +236,8 @@ const Chat = () => {
                   className="bg-slate-500"
                   size="sm"
                   onPress={() =>
-                    solicitation.pk && reopenSolicitation(solicitation.pk)
+                    updatedSolicitation.pk &&
+                    reopenSolicitation(updatedSolicitation.pk)
                   }>
                   <Text className="text-slate-50">Reabrir</Text>
                 </Button>
@@ -209,7 +248,7 @@ const Chat = () => {
               src={isAldermanImageLoading ? '' : aldermanImage}
               size="lg"
               fallback={getNameInitials(
-                solicitation?.vereador?.nomePopular ?? '',
+                updatedSolicitation?.vereador?.nomePopular ?? '',
               )}
             />
           )}
@@ -236,6 +275,17 @@ const Chat = () => {
                 <CrossIcon stroke="#777" />
               </View>
             </TouchableOpacity>
+          </View>
+        )}
+
+        {updatedSolicitation?.statusSolicitacao?.pk ===
+          CLOSED_SOLICITATION_STATUS && (
+          <View className="p-3 mb-3 bg-gray-200 rounded-lg flex-row justify-between items-center">
+            <Text className="text-slate-700 text-center w-full">
+              {`${turnIntoTitleCase(
+                updatedSolicitation?.vereador?.nomePopular ?? '',
+              )} finalizou esta solicitação`}
+            </Text>
           </View>
         )}
 

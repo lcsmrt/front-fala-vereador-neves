@@ -7,7 +7,7 @@ import {User} from '../../../lib/types/accessControl/user';
 import {useToastContext} from '../../../lib/contexts/useToastContext';
 import {Document} from '../../../lib/types/system/document';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import { useUserUpdateContext } from '../../../lib/contexts/useUserUpdateContext';
+import {useUserUpdateContext} from '../../../lib/contexts/useUserUpdateContext';
 
 const useEditUserProfileHandler = () => {
   const {user} = useUser();
@@ -46,6 +46,8 @@ const useEditUserProfileHandler = () => {
     if (validateUserData() && user?.id) {
       const formattedUserData = {
         ...userData,
+        tipoDocumento: userData.doc?.length === 14 ? 'CPF' : 'CNPJ',
+        sexo: userData.sexo?.value,
         uf: userData.uf?.sigla,
         cidade: userData.cidade?.nome,
         img: file,

@@ -4,6 +4,7 @@ import Avatar from '../../components/avatar/avatar';
 import {
   getFirstAndLastName,
   getNameInitials,
+  maksCpfCnpj,
   maskCep,
   maskPhone,
   turnIntoTitleCase,
@@ -20,9 +21,10 @@ import {useGetAddresByCep} from '../../lib/api/tanstackQuery/viaCep/cepRequest';
 import ComboBox from '../../components/input/comboBox';
 import Button from '../../components/button/button';
 import ImageCropPicker from 'react-native-image-crop-picker';
+import Select from '../../components/input/select';
 
 const EditProfile = () => {
-  const {user, userProfileImage } = useUser();
+  const {user, userProfileImage} = useUser();
 
   const {
     userData,
@@ -39,6 +41,13 @@ const EditProfile = () => {
 
   useEffect(() => {
     handleUserDataChange('nome', user?.nome ?? '');
+    handleUserDataChange('doc', user?.doc ?? '');
+    handleUserDataChange(
+      'sexo',
+      user?.sexo === 'M'
+        ? {label: 'Masculino', value: 'M'}
+        : {label: 'Feminino', value: 'F'},
+    );
     handleUserDataChange('cep', user?.cep ?? '');
     handleUserDataChange('endereco', user?.endereco ?? '');
     handleUserDataChange(
@@ -101,6 +110,10 @@ const EditProfile = () => {
       cropping: true,
       includeBase64: true,
       mediaType: 'photo',
+      compressImageQuality: 0.3,
+      cropperToolbarTitle: 'Ajuste a imagem',
+      writeTempFile: false,
+      hideBottomControls: true,
     })
       .then(image => {
         if (image?.data) {
@@ -149,6 +162,32 @@ const EditProfile = () => {
               value={userData.nome || ''}
               onChangeText={text => handleUserDataChange('nome', text)}
               notification={userDataErrors.nome || ''}
+            />
+
+            <Input
+              placeholder="Digite seu CPF ou CNPJ"
+              classes="mb-4 w-full"
+              label="CPF/CNPJ"
+              value={userData.doc || ''}
+              onChangeText={text =>
+                handleUserDataChange('doc', maksCpfCnpj(text))
+              }
+              notification={userDataErrors.doc || ''}
+              keyboardType="numeric"
+            />
+
+            <Select
+              placeholder="Selecione seu sexo"
+              classes="mb-4 w-full"
+              label="Sexo"
+              options={[
+                {label: 'Masculino', value: 'M'},
+                {label: 'Feminino', value: 'F'},
+              ]}
+              displayKey="label"
+              value={userData.sexo}
+              onSelect={value => handleUserDataChange('sexo', value)}
+              notification={userDataErrors.sexo || ''}
             />
 
             <Input

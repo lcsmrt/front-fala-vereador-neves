@@ -6,7 +6,7 @@ const ibgeHttpRequest = axios.create({
 
 ibgeHttpRequest.interceptors.request.use(
   async config => {
-    console.log('Requisição: ', config);
+    // console.log('Requisição: ', config);
     return config;
   },
   error => {
@@ -17,7 +17,7 @@ ibgeHttpRequest.interceptors.request.use(
 
 ibgeHttpRequest.interceptors.response.use(
   response => {
-    console.log('Resposta: ', response);
+    // console.log('Resposta: ', response);
     return response;
   },
   error => {

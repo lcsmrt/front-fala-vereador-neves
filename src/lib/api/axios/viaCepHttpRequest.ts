@@ -6,7 +6,7 @@ const viaCepHttpRequest = axios.create({
 
 viaCepHttpRequest.interceptors.request.use(
   async config => {
-    console.log('Requisição: ', config);
+    // console.log('Requisição: ', config);
     return config;
   },
   error => {
@@ -17,7 +17,7 @@ viaCepHttpRequest.interceptors.request.use(
 
 viaCepHttpRequest.interceptors.response.use(
   response => {
-    console.log('Resposta: ', response);
+    // console.log('Resposta: ', response);
     return response;
   },
   error => {
