@@ -3,8 +3,8 @@ import Toast from '../../components/toast/toast';
 
 const ToastContext = createContext({
   showToast: (
-    message: string,
-    type: 'success' | 'error' | 'warning' | 'info',
+    _message: string,
+    _type: 'success' | 'error' | 'warning' | 'info',
   ) => {},
   hideToast: () => {},
 });
