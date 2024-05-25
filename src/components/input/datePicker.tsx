@@ -3,7 +3,6 @@ import {View, Platform, Text} from 'react-native';
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
-import Button from '../button/button';
 import clsx from 'clsx';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import CalendarIcon from '../../assets/icons/calendar';

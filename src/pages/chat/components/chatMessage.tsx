@@ -59,12 +59,15 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
             <TouchableOpacity
               className="flex flex-row items-center justify-end mb-1"
               onPress={() => handleGetAttachment(chatMessage.anexo?.pk)}>
-              <View className="bg-sky-200 px-3 py-2 rounded-lg flex flex-row items-center">
-                <View className="h-7 w-7 mr-3">
+              <View className="bg-sky-200 px-3 py-2 rounded-lg flex flex-row items-center max-w-[70%]">
+                <View className="h-7 w-7 mr-2">
                   <DownloadIcon stroke="#38bdf8" />
                 </View>
-                <View>
-                  <Text className="text-slate-700">
+                <View className="flex-1">
+                  <Text
+                    className="text-slate-700"
+                    numberOfLines={1}
+                    ellipsizeMode="middle">
                     {chatMessage.anexo?.arquivoNome}
                   </Text>
                   <View className="flex flex-row items-center justify-end">
@@ -88,22 +91,22 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
           {messageType === 'file' ? (
             <TouchableOpacity
               className="flex flex-row items-center justify-start mb-1"
-              onPress={() =>
-                handleDownload(
-                  chatMessage.anexo?.doc?.documento,
-                  chatMessage.anexo?.doc?.nome,
-                )
-              }>
-              <View className="bg-slate-200 px-3 py-2 rounded-lg flex flex-row items-center">
-                <View className="h-7 w-7 mr-3">
+              onPress={() => handleGetAttachment(chatMessage.anexo?.pk)}>
+              <View className="bg-slate-200 px-3 py-2 rounded-lg flex flex-row items-center max-w-[70%]">
+                <View className="h-7 w-7 mr-2">
                   <DownloadIcon stroke="#38bdf8" />
                 </View>
-                <View>
-                  <Text className="text-slate-700">
+                <View className="flex-1">
+                  <Text
+                    className="text-slate-700"
+                    numberOfLines={1}
+                    ellipsizeMode="middle">
                     {chatMessage.anexo?.arquivoNome}
                   </Text>
                   <View className="flex flex-row items-center justify-end">
-                    <Text className="text-xs text-sky-400">Download</Text>
+                    <Text className="text-xs text-sky-400">
+                      {isAttachmentPending ? 'Baixando...' : 'Download'}
+                    </Text>
                   </View>
                 </View>
               </View>

@@ -15,16 +15,6 @@ const useDownloadFile = () => {
     setIsDownloaded(false);
     setIsError(false);
 
-    const permission = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-    );
-
-    if (permission !== PermissionsAndroid.RESULTS.GRANTED) {
-      setIsError(true);
-      setIsDownloading(false);
-      return;
-    }
-
     const dirs = RNFetchBlob.fs.dirs;
     const filePath = `${dirs.DownloadDir}/${fileName}`;
 

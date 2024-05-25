@@ -17,12 +17,13 @@ import {useBottomSheetContext} from '../../lib/contexts/useBottomSheetContext';
 import {HomeScreenNavigationProp} from '../../lib/types/system/navigation';
 import clsx from 'clsx';
 import {useSolicitationUpdateContext} from '../../lib/contexts/useSolicitationUpdateContext';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {
   CLOSED_SOLICITATION_STATUS,
   IN_PROGRESS_SOLICITATION_STATUS,
   OPEN_SOLICITATION_STATUS,
 } from '../../lib/utils/constants';
+import { requestPermissions } from '../../lib/utils/permissions';
 
 const Home = () => {
   const navigation: HomeScreenNavigationProp = useNavigation();
@@ -39,6 +40,10 @@ const Home = () => {
     getUserSolicitationsKpis,
     solicitationsKpis,
   } = useUserSolicitationsKpis(user, solicitationUpdatesCount);
+
+  useEffect(() => {
+    requestPermissions();
+  }, []);
 
   return (
     <>

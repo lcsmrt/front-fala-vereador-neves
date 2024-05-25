@@ -1,7 +1,5 @@
 /**
- * Filtra opções de um Combobox/Autocomplete com base em um texto de filtro,
- * lembrando que o componente trabalha exclusivamente com objetos.
- * Acentos e caracteres especiais são ignorados no filtro.
+ * Filtra opções (objetos) com base em um texto de filtro, ignorando acentos e caracteres especiais.
  * @param options Lista de opções a serem filtradas
  * @param key Chave da opção, define qual propriedade será considerada pelo filtro
  * @param filterText Texto do filtro, ou seja, o que o usuário digitou no campo de busca
