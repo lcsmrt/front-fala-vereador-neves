@@ -1,4 +1,4 @@
-import {PermissionsAndroid, Platform} from 'react-native';
+import {Platform} from 'react-native';
 import {
   check,
   checkMultiple,
@@ -11,13 +11,15 @@ import {
 export const requestPermissions = async (): Promise<boolean> => {
   try {
     if (Platform.OS === 'android') {
-      const permissions = [
-        PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-        PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-      ];
+      const permissions =
+        Platform.Version >= 33
+          ? [PERMISSIONS.ANDROID.READ_MEDIA_IMAGES]
+          : [
+              PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+              PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+            ];
 
       const statuses = await checkMultiple(permissions);
-
       const allGranted = Object.values(statuses).every(
         status => status === RESULTS.GRANTED,
       );
@@ -26,10 +28,9 @@ export const requestPermissions = async (): Promise<boolean> => {
         return true;
       } else {
         const requestStatuses = await requestMultiple(permissions);
-        const allRequestGranted = Object.values(requestStatuses).every(
+        return Object.values(requestStatuses).every(
           status => status === RESULTS.GRANTED,
         );
-        return allRequestGranted;
       }
     } else if (Platform.OS === 'ios') {
       const status = await check(PERMISSIONS.IOS.PHOTO_LIBRARY);

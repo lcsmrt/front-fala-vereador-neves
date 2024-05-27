@@ -37,6 +37,7 @@ import {useToastContext} from '../../lib/contexts/useToastContext';
 import {useSolicitationUpdateContext} from '../../lib/contexts/useSolicitationUpdateContext';
 import {CLOSED_SOLICITATION_STATUS} from '../../lib/utils/constants';
 import useUpdateSolicitation from './hooks/useUpdateSolicitation';
+import { requestPermissions } from '../../lib/utils/permissions';
 
 const Chat = () => {
   const route = useRoute();
@@ -137,17 +138,10 @@ const Chat = () => {
 
   const selectFile = async () => {
     try {
-      if (Platform.OS === 'android') {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        );
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          showToast(
-            'O aplicativo não tem permissão para acessar os arquivos deste dispositivo',
-            'error',
-          );
-          return;
-        }
+      const hasPermission = await requestPermissions();
+      if (!hasPermission) {
+        showToast('O aplicativo não tem permissão para acessar arquivos', 'error');
+        return;
       }
 
       const result = await DocumentPicker.pick({
