@@ -128,3 +128,13 @@ export const maskPhone = (value: string): string => {
     .replace(/(\d{5})(\d)/, '$1-$2')
     .replace(/(-\d{4})\d+?$/, '$1');
 };
+
+/**
+ * Função para remover caracteres especiais de uma string.
+ * @param value Texto a ser limpo.
+ * @returns Texto sem caracteres especiais.
+ */
+
+export const sanitizeFileName = (text: string): string => {
+  return text.replace(/[^a-zA-Z0-9._-]/g, '_');
+};

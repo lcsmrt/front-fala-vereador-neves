@@ -1,4 +1,4 @@
-import {Platform} from 'react-native';
+import {PermissionsAndroid, Platform} from 'react-native';
 import {
   check,
   checkMultiple,
