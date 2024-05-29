@@ -3,8 +3,6 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  Platform,
-  PermissionsAndroid,
 } from 'react-native';
 import Header from '../../components/header/header';
 import Avatar from '../../components/avatar/avatar';
