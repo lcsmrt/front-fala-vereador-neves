@@ -1,5 +1,4 @@
 import {useState} from 'react';
-import {PermissionsAndroid} from 'react-native';
 import RNFetchBlob from 'rn-fetch-blob';
 import {useToastContext} from '../contexts/useToastContext';
 
