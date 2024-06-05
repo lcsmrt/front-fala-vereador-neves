@@ -1,9 +1,4 @@
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import Header from '../../components/header/header';
 import Avatar from '../../components/avatar/avatar';
 import {useRoute} from '@react-navigation/native';
@@ -35,7 +30,8 @@ import {useToastContext} from '../../lib/contexts/useToastContext';
 import {useSolicitationUpdateContext} from '../../lib/contexts/useSolicitationUpdateContext';
 import {CLOSED_SOLICITATION_STATUS} from '../../lib/utils/constants';
 import useUpdateSolicitation from './hooks/useUpdateSolicitation';
-import { requestPermissions } from '../../lib/utils/permissions';
+import {requestPermissions} from '../../lib/utils/permissions';
+import clsx from 'clsx';
 
 const Chat = () => {
   const route = useRoute();
@@ -51,6 +47,7 @@ const Chat = () => {
     file,
     setFile,
     handleSendMessage,
+    isSendMessagePending,
     isSendMessageSuccess,
   } = useHandleSendMessage(solicitation.pk ?? 0, solicitation.anonimo === '1');
   const {
@@ -138,7 +135,10 @@ const Chat = () => {
     try {
       const hasPermission = await requestPermissions();
       if (!hasPermission) {
-        showToast('O aplicativo não tem permissão para acessar arquivos', 'error');
+        showToast(
+          'O aplicativo não tem permissão para acessar arquivos',
+          'error',
+        );
         return;
       }
 
@@ -162,9 +162,8 @@ const Chat = () => {
       const filePath = result[0]?.uri;
       const fileSize = result[0]?.size;
 
-      // POSSIBILIDADE DE PARAMETRIZAR FUTURAMENTE (?)
-      if (fileSize && fileSize > 5242880) {
-        showToast('Arquivo muito grande. O tamanho máximo é 5MB', 'error');
+      if (fileSize && fileSize > 16000000) {
+        showToast('Arquivo muito grande. O tamanho máximo é 16MB', 'error');
         return;
       }
 
@@ -283,20 +282,35 @@ const Chat = () => {
 
         <View className="flex flex-row w-full justify-between items-end">
           <Input
-            placeholder="Mensagem"
+            placeholder={
+              isSendMessagePending || isChatMessagesLoading
+                ? 'Enviando...'
+                : 'Mensagem'
+            }
             classes="flex-1"
             value={message}
             onChangeText={(text: string) => setMessage(text)}
             rightIcon={
-              <Button size="icon" variant="ghost" onPress={selectFile}>
+              <Button
+                size="icon"
+                variant="ghost"
+                onPress={selectFile}
+                disabled={isSendMessagePending || isChatMessagesLoading}>
                 <PaperclipIcon stroke="#999" />
               </Button>
             }
             maxLength={2000}
+            readOnly={isSendMessagePending || isChatMessagesLoading}
           />
           <Button
-            className="w-14 ml-4 bg-sky-500 rounded-full"
-            onPress={handleSendMessage}>
+            className={clsx(
+              'w-14 ml-4 rounded-full',
+              isSendMessagePending || isChatMessagesLoading
+                ? 'bg-slate-500'
+                : 'bg-sky-500',
+            )}
+            onPress={handleSendMessage}
+            disabled={isSendMessagePending || isChatMessagesLoading}>
             <SendIcon stroke="#fff" />
           </Button>
         </View>

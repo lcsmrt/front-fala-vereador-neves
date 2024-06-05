@@ -3,6 +3,7 @@ import RNFS from 'react-native-fs';
 import {useToastContext} from '../contexts/useToastContext';
 import {requestPermissions} from '../utils/permissions';
 import {sanitizeFileName} from '../utils/formatters';
+import FileViewer from 'react-native-file-viewer';
 
 const useDownloadFile = () => {
   const [isDownloading, setIsDownloading] = useState(false);
@@ -37,7 +38,7 @@ const useDownloadFile = () => {
     }
 
     const uniqueFileName = generateUniqueFileName(fileName);
-    const filePath = `${RNFS.DownloadDirectoryPath}/${uniqueFileName}`;
+    const filePath = `${RNFS.ExternalDirectoryPath}/${uniqueFileName}`;
 
     try {
       const hasPermission = await requestPermissions();
@@ -51,14 +52,14 @@ const useDownloadFile = () => {
         return;
       }
 
-      const chunkSize = 1024 * 1024; // CHUNKS DE 1MB
+      const chunkSize = 1024 * 1024;
       for (let i = 0; i < base64.length; i += chunkSize) {
         const chunk = base64.slice(i, i + chunkSize);
         await RNFS.appendFile(filePath, chunk, 'base64');
       }
 
+      await FileViewer.open(filePath, {showOpenWithDialog: true});
       setIsDownloaded(true);
-      showToast('Arquivo salvo com sucesso', 'success');
     } catch (error) {
       console.error(error);
       showToast('Erro ao salvar arquivo', 'error');

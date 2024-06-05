@@ -14,7 +14,7 @@ const LoadingContextProvider = ({children}: {children: React.ReactNode}) => {
   return (
     <LoadingContext.Provider value={{isLoading, setIsLoading}}>
       {children}
-      {isLoading && <Loading />}
+      {true && <Loading />}
     </LoadingContext.Provider>
   );
 };

@@ -4,8 +4,8 @@ import useValidation from '../../../lib/hooks/useValidation';
 import {useRegisterUser} from '../../../lib/api/tanstackQuery/accessControlRequests';
 import {useLoadingContext} from '../../../lib/contexts/useLoadingContext';
 import {useEffect} from 'react';
-import { useToastContext } from '../../../lib/contexts/useToastContext';
-import { User } from '../../../lib/types/accessControl/user';
+import {useToastContext} from '../../../lib/contexts/useToastContext';
+import {User} from '../../../lib/types/accessControl/user';
 
 const useUserRegisterHandler = () => {
   const navigation: RegisterScreenNavigationProp = useNavigation();
@@ -83,8 +83,15 @@ const useUserRegisterHandler = () => {
 
   useEffect(() => {
     if (registerError) {
-      showToast('Erro ao cadastrar usuário', 'error');
-    }}, [registerError]);
+      const errorMessage = (registerError as any)?.response?.data?.message;
+
+      if (errorMessage) {
+        showToast(errorMessage, 'error');
+      } else {
+        showToast('Erro ao cadastrar usuário', 'error');
+      }
+    }
+  }, [registerError]);
 
   return {
     userData,
