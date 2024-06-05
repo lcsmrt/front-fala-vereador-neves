@@ -37,6 +37,8 @@ import {useToastContext} from '../../lib/contexts/useToastContext';
 import {useSolicitationUpdateContext} from '../../lib/contexts/useSolicitationUpdateContext';
 import {CLOSED_SOLICITATION_STATUS} from '../../lib/utils/constants';
 import useUpdateSolicitation from './hooks/useUpdateSolicitation';
+import clsx from 'clsx';
+import {requestPermissions} from '../../lib/utils/permissions';
 
 const Chat = () => {
   const route = useRoute();
@@ -52,6 +54,7 @@ const Chat = () => {
     file,
     setFile,
     handleSendMessage,
+    isSendMessagePending,
     isSendMessageSuccess,
   } = useHandleSendMessage(solicitation.pk ?? 0, solicitation.anonimo === '1');
   const {
@@ -137,17 +140,14 @@ const Chat = () => {
 
   const selectFile = async () => {
     try {
-      if (Platform.OS === 'android') {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      const granted = await requestPermissions();
+
+      if (!granted) {
+        showToast(
+          'O aplicativo não tem permissão para acessar os arquivos deste dispositivo',
+          'error',
         );
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          showToast(
-            'O aplicativo não tem permissão para acessar os arquivos deste dispositivo',
-            'error',
-          );
-          return;
-        }
+        return;
       }
 
       const result = await DocumentPicker.pick({
@@ -170,9 +170,8 @@ const Chat = () => {
       const filePath = result[0]?.uri;
       const fileSize = result[0]?.size;
 
-      // POSSIBILIDADE DE PARAMETRIZAR FUTURAMENTE (?)
-      if (fileSize && fileSize > 5242880) {
-        showToast('Arquivo muito grande. O tamanho máximo é 5MB', 'error');
+      if (fileSize && fileSize > 160000000) {
+        showToast('Arquivo muito grande. O tamanho máximo é 16MB', 'error');
         return;
       }
 
@@ -291,20 +290,29 @@ const Chat = () => {
 
         <View className="flex flex-row w-full justify-between items-end">
           <Input
-            placeholder="Mensagem"
+            placeholder={isSendMessagePending ? 'Enviando...' : 'Mensagem'}
             classes="flex-1"
             value={message}
             onChangeText={(text: string) => setMessage(text)}
             rightIcon={
-              <Button size="icon" variant="ghost" onPress={selectFile}>
+              <Button
+                size="icon"
+                variant="ghost"
+                onPress={selectFile}
+                disabled={isSendMessagePending}>
                 <PaperclipIcon stroke="#999" />
               </Button>
             }
             maxLength={2000}
+            readOnly={isSendMessagePending}
           />
           <Button
-            className="w-14 ml-4 bg-sky-500 rounded-full"
-            onPress={handleSendMessage}>
+            className={clsx(
+              'w-14 ml-4 rounded-full',
+              isSendMessagePending ? 'bg-slate-500' : 'bg-sky-500',
+            )}
+            onPress={handleSendMessage}
+            disabled={isSendMessagePending}>
             <SendIcon stroke="#fff" />
           </Button>
         </View>
