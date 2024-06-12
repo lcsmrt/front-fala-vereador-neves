@@ -136,5 +136,31 @@ export const maskPhone = (value: string): string => {
  */
 
 export const sanitizeFileName = (text: string): string => {
-  return text.replace(/[^a-zA-Z0-9._-]/g, '_');
+  let sanitizedText = text.replace(/[^a-zA-Z0-9._-]/g, '_');
+
+  const parts = sanitizedText.split('.');
+  if (parts.length > 2) {
+    const extension = parts.pop();
+    sanitizedText = parts.join('_') + '.' + extension;
+  }
+
+  return sanitizedText;
+};
+
+/**
+ * Função para formatar uma data ISO para o padrão HH:mm.
+ * @param date String ISO a ser formatada.
+ * @returns Data formatada no padrão HH:mm.
+ */
+
+export const isoDateToTime = (isoDate: string): string => {
+  if (!isoDate) return '';
+
+  const date = new Date(isoDate);
+
+  return new Intl.DateTimeFormat('pt-BR', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).format(date);
 };

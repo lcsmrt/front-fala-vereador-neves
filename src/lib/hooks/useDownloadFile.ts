@@ -21,8 +21,7 @@ const useDownloadFile = () => {
   const generateUniqueFileName = (fileName: string) => {
     const timestamp = new Date().getTime();
     const sanitizedFileName = sanitizeFileName(fileName);
-    const extension = fileName.split('.').pop();
-    return `${sanitizedFileName}-${timestamp}.${extension}`;
+    return `${timestamp}_${sanitizedFileName}`;
   };
 
   const saveBase64File = async (base64: string, fileName: string) => {
@@ -38,7 +37,8 @@ const useDownloadFile = () => {
     }
 
     const uniqueFileName = generateUniqueFileName(fileName);
-    const filePath = `${RNFS.ExternalDirectoryPath}/${uniqueFileName}`;
+    const filePath = `${RNFS.DownloadDirectoryPath}/${uniqueFileName}`;
+    console.log('Salvando arquivo em:', filePath);
 
     try {
       const hasPermission = await requestPermissions();
@@ -58,8 +58,36 @@ const useDownloadFile = () => {
         await RNFS.appendFile(filePath, chunk, 'base64');
       }
 
-      await FileViewer.open(filePath, {showOpenWithDialog: true});
-      setIsDownloaded(true);
+      await RNFS.scanFile(filePath)
+        .then(() => {
+          console.log('Arquivo escaneado com sucesso:', filePath);
+        })
+        .catch(error => {
+          console.error('Erro ao escanear arquivo:', error);
+        });
+
+      const fileExists = await RNFS.exists(filePath);
+      if (fileExists) {
+        console.log('Arquivo salvo com sucesso:', filePath);
+      } else {
+        console.error('O arquivo não existe:', filePath);
+        showToast('Erro ao salvar arquivo', 'error');
+        setIsError(true);
+        setIsDownloading(false);
+        return;
+      }
+
+      try {
+        await FileViewer.open(filePath, {showOpenWithDialog: true});
+        setIsDownloaded(true);
+      } catch (openError) {
+        console.error('Error opening file:', openError);
+        showToast(
+          'Erro ao abrir arquivo. Verifique se há um app instalado para abrir este tipo de arquivo.',
+          'error',
+        );
+        setIsError(true);
+      }
     } catch (error) {
       console.error(error);
       showToast('Erro ao salvar arquivo', 'error');
