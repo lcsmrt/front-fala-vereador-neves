@@ -3,8 +3,6 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  Platform,
-  PermissionsAndroid,
 } from 'react-native';
 import Header from '../../components/header/header';
 import Avatar from '../../components/avatar/avatar';
@@ -24,7 +22,7 @@ import PaperclipIcon from '../../assets/icons/paperclip';
 import useHandleSendMessage from './hooks/useSendMessage';
 import {useEffect, useRef, useState} from 'react';
 import DocumentPicker from 'react-native-document-picker';
-import RNFetchBlob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs';
 import CrossIcon from '../../assets/icons/cross';
 import ChatMessage from './components/chatMessage';
 import useUser from '../../lib/hooks/useUser';
@@ -175,7 +173,7 @@ const Chat = () => {
         return;
       }
 
-      const fileData = await RNFetchBlob.fs.readFile(filePath, 'base64');
+      const fileData = await RNFS.readFile(filePath, 'base64');
 
       setFile({
         nome: fileName,
@@ -183,6 +181,7 @@ const Chat = () => {
         documento: fileData,
       });
     } catch (err) {
+      console.error(err);
       if (!DocumentPicker.isCancel(err)) {
         showToast('Erro ao selecionar arquivo', 'error');
       }
