@@ -39,6 +39,7 @@ const useEditUserProfileHandler = () => {
     mutate: updateUser,
     isPending: isUpdating,
     isSuccess: isUpdated,
+    error: updateError,
     data: updatedUser,
   } = useUpdateUser();
 
@@ -72,6 +73,18 @@ const useEditUserProfileHandler = () => {
       setUserUpdatesCount(prev => prev + 1);
     }
   }, [isUpdated]);
+
+  useEffect(() => {
+    if (updateError) {
+      const errorMessage = (updateError as any)?.response?.data?.message;
+
+      if (errorMessage) {
+        showToast(errorMessage, 'error');
+      } else {
+        showToast('Erro ao atualizar perfil', 'error');
+      }
+    }
+  }, [updateError]);
 
   return {
     userData,
