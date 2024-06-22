@@ -1,9 +1,4 @@
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import Header from '../../components/header/header';
 import Avatar from '../../components/avatar/avatar';
 import {useRoute} from '@react-navigation/native';
@@ -35,8 +30,8 @@ import {useToastContext} from '../../lib/contexts/useToastContext';
 import {useSolicitationUpdateContext} from '../../lib/contexts/useSolicitationUpdateContext';
 import {CLOSED_SOLICITATION_STATUS} from '../../lib/utils/constants';
 import useUpdateSolicitation from './hooks/useUpdateSolicitation';
-import clsx from 'clsx';
 import {requestPermissions} from '../../lib/utils/permissions';
+import clsx from 'clsx';
 
 const Chat = () => {
   const route = useRoute();
@@ -138,11 +133,10 @@ const Chat = () => {
 
   const selectFile = async () => {
     try {
-      const granted = await requestPermissions();
-
-      if (!granted) {
+      const hasPermission = await requestPermissions();
+      if (!hasPermission) {
         showToast(
-          'O aplicativo não tem permissão para acessar os arquivos deste dispositivo',
+          'O aplicativo não tem permissão para acessar arquivos',
           'error',
         );
         return;
@@ -168,7 +162,7 @@ const Chat = () => {
       const filePath = result[0]?.uri;
       const fileSize = result[0]?.size;
 
-      if (fileSize && fileSize > 160000000) {
+      if (fileSize && fileSize > 16000000) {
         showToast('Arquivo muito grande. O tamanho máximo é 16MB', 'error');
         return;
       }
@@ -289,7 +283,11 @@ const Chat = () => {
 
         <View className="flex flex-row w-full justify-between items-end">
           <Input
-            placeholder={isSendMessagePending ? 'Enviando...' : 'Mensagem'}
+            placeholder={
+              isSendMessagePending || isChatMessagesLoading
+                ? 'Enviando...'
+                : 'Mensagem'
+            }
             classes="flex-1"
             value={message}
             onChangeText={(text: string) => setMessage(text)}
@@ -298,20 +296,22 @@ const Chat = () => {
                 size="icon"
                 variant="ghost"
                 onPress={selectFile}
-                disabled={isSendMessagePending}>
+                disabled={isSendMessagePending || isChatMessagesLoading}>
                 <PaperclipIcon stroke="#999" />
               </Button>
             }
             maxLength={2000}
-            readOnly={isSendMessagePending}
+            readOnly={isSendMessagePending || isChatMessagesLoading}
           />
           <Button
             className={clsx(
               'w-14 ml-4 rounded-full',
-              isSendMessagePending ? 'bg-slate-500' : 'bg-sky-500',
+              isSendMessagePending || isChatMessagesLoading
+                ? 'bg-slate-500'
+                : 'bg-sky-500',
             )}
             onPress={handleSendMessage}
-            disabled={isSendMessagePending}>
+            disabled={isSendMessagePending || isChatMessagesLoading}>
             <SendIcon stroke="#fff" />
           </Button>
         </View>

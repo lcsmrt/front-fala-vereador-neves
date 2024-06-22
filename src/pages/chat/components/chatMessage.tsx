@@ -5,6 +5,7 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import DownloadIcon from '../../../assets/icons/download';
 import useDownloadFile from '../../../lib/hooks/useDownloadFile';
 import {useActionableGetAttachment} from '../../../lib/api/tanstackQuery/imageRequests';
+import {isoDateToTime} from '../../../lib/utils/formatters';
 
 interface ChatMessageProps {
   chatMessage: ChatMessageType;
@@ -70,9 +71,12 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
                     ellipsizeMode="middle">
                     {chatMessage.anexo?.arquivoNome}
                   </Text>
-                  <View className="flex flex-row items-center justify-end">
+                  <View className="flex flex-row items-center justify-between mt-1">
                     <Text className="text-xs text-sky-400">
                       {isAttachmentPending ? 'Baixando...' : 'Download'}
+                    </Text>
+                    <Text className="text-xs text-slate-500">
+                      {isoDateToTime(chatMessage.dataHora ?? '')}
                     </Text>
                   </View>
                 </View>
@@ -82,6 +86,11 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
             <View className="flex flex-row items-center justify-end mb-1">
               <View className="bg-sky-200 p-2 rounded-lg max-w-[70%]">
                 <Text className="text-slate-700">{chatMessage.mensagem}</Text>
+                <View className="flex-1 flex flex-row justify-end">
+                  <Text className="text-xs text-slate-500">
+                    {isoDateToTime(chatMessage.dataHora ?? '')}
+                  </Text>
+                </View>
               </View>
             </View>
           )}
@@ -103,9 +112,12 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
                     ellipsizeMode="middle">
                     {chatMessage.anexo?.arquivoNome}
                   </Text>
-                  <View className="flex flex-row items-center justify-end">
+                  <View className="flex flex-row items-center justify-between mt-1">
                     <Text className="text-xs text-sky-400">
                       {isAttachmentPending ? 'Baixando...' : 'Download'}
+                    </Text>
+                    <Text className="text-xs text-slate-500">
+                      {isoDateToTime(chatMessage.dataHora ?? '')}
                     </Text>
                   </View>
                 </View>
@@ -115,6 +127,11 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
             <View className="flex flex-row items-center justify-start mb-1">
               <View className="bg-slate-200 p-2 rounded-lg max-w-[70%]">
                 <Text className="text-slate-700">{chatMessage.mensagem}</Text>
+                <View className="flex-1 flex flex-row justify-end">
+                  <Text className="text-xs text-slate-500">
+                    {isoDateToTime(chatMessage.dataHora ?? '')}
+                  </Text>
+                </View>
               </View>
             </View>
           )}
