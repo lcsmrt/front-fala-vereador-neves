@@ -36,7 +36,7 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
 
   useEffect(() => {
     if (isAttachmentSuccess && attachment?.documento) {
-      handleDownload(attachment.documento, attachment.nome ?? 'Anexo');
+      handleDownload(attachment.documento, attachment.nome ?? 'Anexo', attachment.contentType ?? '');
     }
   }, [isAttachmentSuccess, attachment]);
 
@@ -46,10 +46,10 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
     getAttachment(attachmentId);
   };
 
-  const handleDownload = async (base64?: string, fileName?: string) => {
-    if (!base64 || !fileName) return;
+  const handleDownload = async (base64?: string, fileName?: string, fileType?: string) => {
+    if (!base64 || !fileName || !fileType) return;
 
-    saveBase64File(base64, fileName);
+    saveBase64File(base64, fileName, fileType);
   };
 
   return (

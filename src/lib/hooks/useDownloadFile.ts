@@ -24,7 +24,26 @@ const useDownloadFile = () => {
     return `${timestamp}_${sanitizedFileName}`;
   };
 
-  const saveBase64File = async (base64: string, fileName: string) => {
+  const getFileTypeDirectory = (fileType: string) => {
+    switch (fileType) {
+      case 'image/jpeg':
+      case 'image/png':
+        return 'Images';
+      case 'application/pdf':
+        return 'PDFs';
+      case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+      case 'application/vnd.ms-excel':
+        return 'Spreadsheets';
+      default:
+        return 'Documents';
+    }
+  };
+
+  const saveBase64File = async (
+    base64: string,
+    fileName: string,
+    fileType: string,
+  ) => {
     setIsDownloading(true);
     setIsDownloaded(false);
     setIsError(false);
@@ -37,8 +56,10 @@ const useDownloadFile = () => {
     }
 
     const uniqueFileName = generateUniqueFileName(fileName);
-    const filePath = `${RNFS.DownloadDirectoryPath}/${uniqueFileName}`;
-    console.log('Salvando arquivo em:', filePath);
+    const parentDirectory = `${RNFS.ExternalStorageDirectoryPath}/FalaVereador/${getFileTypeDirectory(fileType)}`;
+    const filePath = `${parentDirectory}/${uniqueFileName}`;
+    const fallbackDirectory = `${RNFS.DownloadDirectoryPath}/${uniqueFileName}`;
+    let finalFilePath = filePath;
 
     try {
       const hasPermission = await requestPermissions();
@@ -52,25 +73,38 @@ const useDownloadFile = () => {
         return;
       }
 
+      if (!(await RNFS.exists(parentDirectory))) {
+        console.log('Diretório não existe:', parentDirectory);
+        try {
+          await RNFS.mkdir(parentDirectory, {
+            NSURLIsExcludedFromBackupKey: true,
+          });
+          console.log('Diretório criado com sucesso:', parentDirectory);
+        } catch (err) {
+          console.error('Erro ao criar diretório:', err);
+          finalFilePath = fallbackDirectory;
+        }
+      }
+
       const chunkSize = 1024 * 1024;
       for (let i = 0; i < base64.length; i += chunkSize) {
         const chunk = base64.slice(i, i + chunkSize);
-        await RNFS.appendFile(filePath, chunk, 'base64');
+        await RNFS.appendFile(finalFilePath, chunk, 'base64');
       }
 
-      await RNFS.scanFile(filePath)
+      await RNFS.scanFile(finalFilePath)
         .then(() => {
-          console.log('Arquivo escaneado com sucesso:', filePath);
+          console.log('Arquivo escaneado com sucesso:', finalFilePath);
         })
         .catch(error => {
           console.error('Erro ao escanear arquivo:', error);
         });
 
-      const fileExists = await RNFS.exists(filePath);
+      const fileExists = await RNFS.exists(finalFilePath);
       if (fileExists) {
-        console.log('Arquivo salvo com sucesso:', filePath);
+        console.log('Arquivo salvo com sucesso:', finalFilePath);
       } else {
-        console.error('O arquivo não existe:', filePath);
+        console.error('O arquivo não existe:', finalFilePath);
         showToast('Erro ao salvar arquivo', 'error');
         setIsError(true);
         setIsDownloading(false);
@@ -78,7 +112,7 @@ const useDownloadFile = () => {
       }
 
       try {
-        await FileViewer.open(filePath, {showOpenWithDialog: true});
+        await FileViewer.open(finalFilePath, {showOpenWithDialog: true});
         setIsDownloaded(true);
       } catch (openError) {
         console.error('Error opening file:', openError);
