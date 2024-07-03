@@ -3,22 +3,22 @@ import httpRequest from '../axios/httpRequest';
 import {Document} from '../../types/system/document';
 
 // BUSCA IMAGEM DE PERFIL POR ID
-const getAttachment = async (attachmentId?: string | number) => {
-  if (!attachmentId) return;
+const getAttachment = async (imagePath?: string) => {
+  if (!imagePath) return;
 
-  const {data} = await httpRequest.get(`/anexos/id/${attachmentId}`);
+  const {data} = await httpRequest.get(`/anexos/nome/${imagePath}`);
   return data || '';
 };
 
-export const useGetAttachment = (attachmentId?: string | number) => {
+export const useGetAttachment = (imagePath?: string) => {
   return useQuery<Document, Error>({
     queryKey: ['profileImage'],
-    queryFn: () => getAttachment(attachmentId),
+    queryFn: () => getAttachment(imagePath),
   });
 };
 
 export const useActionableGetAttachment = () => {
-  return useMutation<Document, Error, string | number>({
+  return useMutation<Document, Error, string>({
     mutationFn: getAttachment,
   });
 };

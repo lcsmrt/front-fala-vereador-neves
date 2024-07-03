@@ -18,6 +18,7 @@ const useUser = () => {
         if (userJson) {
           const storedUser = JSON.parse(userJson);
           setUser(storedUser);
+          // AJUSTAR AQUI
           if (storedUser.anexo?.pk) {
             getProfileImage(storedUser.anexo.pk);
           }
