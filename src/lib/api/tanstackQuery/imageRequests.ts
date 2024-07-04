@@ -2,28 +2,28 @@ import {useMutation, useQuery} from '@tanstack/react-query';
 import httpRequest from '../axios/httpRequest';
 import {Document} from '../../types/system/document';
 
-// BUSCA IMAGEM DE PERFIL POR ID
-const getAttachment = async (imagePath?: string) => {
-  if (!imagePath) return;
+// BUSCA IMAGEM POR ID
+const getAttachment = async (attachmentId?: string | number) => {
+  if (!attachmentId) return;
 
-  const {data} = await httpRequest.get(`/anexos/nome/${imagePath}`);
+  const {data} = await httpRequest.get(`/anexos/id/${attachmentId}`);
   return data || '';
 };
 
-export const useGetAttachment = (imagePath?: string) => {
+export const useGetAttachment = (attachmentId?: string | number) => {
   return useQuery<Document, Error>({
     queryKey: ['profileImage'],
-    queryFn: () => getAttachment(imagePath),
+    queryFn: () => getAttachment(attachmentId),
   });
 };
 
 export const useActionableGetAttachment = () => {
-  return useMutation<Document, Error, string>({
+  return useMutation<Document, Error, string | number>({
     mutationFn: getAttachment,
   });
 };
 
-// BUSCA IMAGEM DE VEREADOR POR NOME
+// BUSCA IMAGEM POR NOME
 const getAldermanImage = async (pictureName?: string) => {
   if (!pictureName) return;
 

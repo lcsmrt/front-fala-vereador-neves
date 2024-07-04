@@ -40,10 +40,10 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
     }
   }, [isAttachmentSuccess, attachment]);
 
-  const handleGetAttachment = async (imagePath?: string) => {
-    if (!imagePath || isAttachmentPending) return;
+  const handleGetAttachment = async (attachmentId?: string | number) => {
+    if (!attachmentId || isAttachmentPending) return;
 
-    getAttachment(imagePath);
+    getAttachment(attachmentId);
   };
 
   const handleDownload = async (base64?: string, fileName?: string, fileType?: string) => {
@@ -59,7 +59,6 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
           {messageType === 'file' ? (
             <TouchableOpacity
               className="flex flex-row items-center justify-end mb-1"
-              // AJUSTAR AQUI
               onPress={() => handleGetAttachment(chatMessage.anexo?.pk)}>
               <View className="bg-sky-200 px-3 py-2 rounded-lg flex flex-row items-center max-w-[70%]">
                 <View className="h-7 w-7 mr-2">
