@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {User} from '../types/accessControl/user';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {useActionableGetAttachment} from '../api/tanstackQuery/imageRequests';
+import {useActionableGetAttachmentByName} from '../api/tanstackQuery/imageRequests';
 
 const useUser = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -9,7 +9,7 @@ const useUser = () => {
   const [trigger, setTrigger] = useState<number>(0);
 
   const {mutate: getProfileImage, data: profileImage} =
-    useActionableGetAttachment();
+    useActionableGetAttachmentByName();
 
   useEffect(() => {
     const getUser = async () => {
@@ -18,9 +18,8 @@ const useUser = () => {
         if (userJson) {
           const storedUser = JSON.parse(userJson);
           setUser(storedUser);
-          // AJUSTAR AQUI
-          if (storedUser.anexo?.pk) {
-            getProfileImage(storedUser.anexo.pk);
+          if (storedUser.caminhoImagem) {
+            getProfileImage(storedUser.caminhoImagem);
           }
         }
       } catch (error) {

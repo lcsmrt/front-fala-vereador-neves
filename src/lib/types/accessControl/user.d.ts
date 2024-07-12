@@ -31,4 +31,5 @@ export interface User {
   uf?: string;
   vereador?: Alderman;
   anexo?: Attachment;
+  caminhoImagem?: string;
 }

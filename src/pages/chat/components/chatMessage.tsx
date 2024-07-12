@@ -4,7 +4,7 @@ import useUser from '../../../lib/hooks/useUser';
 import {Text, TouchableOpacity, View} from 'react-native';
 import DownloadIcon from '../../../assets/icons/download';
 import useDownloadFile from '../../../lib/hooks/useDownloadFile';
-import {useActionableGetAttachment} from '../../../lib/api/tanstackQuery/imageRequests';
+import {useActionableGetAttachmentById} from '../../../lib/api/tanstackQuery/imageRequests';
 import {isoDateToTime} from '../../../lib/utils/formatters';
 
 interface ChatMessageProps {
@@ -26,7 +26,7 @@ const ChatMessage = ({chatMessage}: ChatMessageProps) => {
     data: attachment,
     isPending: isAttachmentPending,
     isSuccess: isAttachmentSuccess,
-  } = useActionableGetAttachment();
+  } = useActionableGetAttachmentById();
 
   useEffect(() => {
     setUserType(user?.vereador ? 'vereador' : 'cidadao');

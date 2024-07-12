@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {useActionableGetChatMessages} from '../../../lib/api/tanstackQuery/chatRequests';
+import {useActionableGetAttachmentByName} from '../../../lib/api/tanstackQuery/imageRequests';
 import {useLoadingContext} from '../../../lib/contexts/useLoadingContext';
-import {useActionableGetAldermanImage} from '../../../lib/api/tanstackQuery/imageRequests';
 import {ChatMessage} from '../../../lib/types/solicitation/chatMessage';
 
 const useChatMessages = (
@@ -23,7 +23,7 @@ const useChatMessages = (
     isPending: isAldermanImageLoading,
     isSuccess: isAldermanImageSuccess,
     data: aldermanImageData,
-  } = useActionableGetAldermanImage();
+  } = useActionableGetAttachmentByName();
 
   useEffect(() => {
     if (pictureName) getAldermanImage(pictureName);
